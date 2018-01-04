@@ -2,8 +2,9 @@ using System;
 using System.IO;
 using Commons.ConfigModel;
 using Commons.Interfaces;
+using Commons.DB;
 
-namespace Commons.DB
+namespace Commons
 {
   /// <summary>
   /// DBインスタンス生成クラス
