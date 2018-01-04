@@ -1,0 +1,38 @@
+<style type="text/css">
+.buttons-row
+{
+    height:2em;
+}
+td
+{
+    padding-top:0.25em;
+    padding-bottom:0.25em;
+}
+</style>
+
+<!-- メイン画面 -->
+<div class="height-100percent" data-ng-controller="mainController as ctrl">
+    <!-- ヘッダー -->
+    <header data-on-send-root="ctrl.sendRootHeader(src)"></header>
+
+    <!-- メイン画面 -->
+    <div  class="container main-area" data-ng-cloak >
+        <div class="row form-group">
+            <button data-ng-click="ctrl.gotoPage('/master/userlist')" class="btn">ユーザーマスタ検索</button>
+        </div>
+        <div class="row form-group">
+            <button data-ng-click="ctrl.gotoPage('/sample/upload')" class="btn">サンプル/アップロード</button>
+            <button data-ng-click="ctrl.gotoPage('/sample/nopagerlist')" class="btn">ページャーなし検索</button>
+            <button data-ng-click="ctrl.gotoPage('/sample/inputcheck')" class="btn">入力確認</button>
+            <button data-ng-click="ctrl.gotoPage('/sample/fileupload')" class="btn">ファイルアップロード</button>
+        </div>
+        <div class="row form-group">
+            <button data-ng-click="ctrl.gotoPage('/sample/numbercheck')" class="btn">数値入力確認</button>
+            <button data-ng-click="ctrl.gotoPage('/sample/multi')" class="btn">複数モデル登録</button>
+        </div>
+        <div class="row form-group">
+            <button data-ng-click="ctrl.gotoPage('/passwordChange')" class="btn">パスワード変更</button>
+        </div>
+    </div>
+
+</div>

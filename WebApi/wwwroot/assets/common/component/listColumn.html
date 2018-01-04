@@ -1,0 +1,7 @@
+<button type="button" class="btn-link" data-ng-disabled="$ctrl.existRecord==='false'" data-ng-click="$ctrl.changeSort()">
+    {{$ctrl.title}}
+    <span data-ng-show="$ctrl.key === $ctrl.activeKey && $ctrl.existRecord==='true'">
+        <span data-ng-show="$ctrl.sortType==='ASC'">▲</span>
+        <span data-ng-show="$ctrl.sortType==='DESC'">▼</span>
+    </span>
+</button>

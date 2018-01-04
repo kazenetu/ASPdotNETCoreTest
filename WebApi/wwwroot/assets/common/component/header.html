@@ -1,0 +1,33 @@
+<div class="container header">
+    <div class="Jumbotron">
+        <div class="row">
+            <h1 class="col-sm-7">{{ $ctrl.title }}</h1>
+            <h3 class="col-sm-5 text-right" data-ng-show="$ctrl.isAllDisplay">{{ $ctrl.userName() }}
+                <button class="btn btn-primary" data-ng-click="$ctrl.logout()" style="margin-left:1em;">ログアウト</button>
+            </h3>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-left: 0px;padding-right: 0px;">
+    <h3 class="error-area bg-danger ng-hide" data-ng-show="$ctrl.isError">
+    {{$ctrl.errorMsg}}
+    </h3>
+</div>
+
+<!-- ダイアログ -->
+<div class="modal fade" id="confirm" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{$ctrl.dialogTitle}}</h4>
+      </div>
+      <div class="modal-body">
+        <p data-ng-bind-html="$ctrl.dialogMessage"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" data-ng-show="$ctrl.isConfirmMode">キャンセル</button>
+        <button type="button" data-ng-click="$ctrl.dialogCommitClick()" class="btn btn-primary">{{$ctrl.dialogCommitText}}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

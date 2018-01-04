@@ -1,0 +1,23 @@
+<div class="pull-right" style="margin-right: 0em;">
+    <div aria-label="Page navigation" data-ng-show="$ctrl.totalPage > 0" >
+
+      <ul class="pagination">
+        <li data-ng-class="{'disabled':!$ctrl.isEnabledPrev()}">
+          <a aria-label="Previous" data-ng-click="$ctrl.prev()" >
+            <span aria-hidden="true" style="cursor: pointer;">&laquo;</span>
+          </a>
+        </li>
+
+        <li data-ng-repeat="page in $ctrl.getPages()" data-ng-class="{'active':page===$ctrl.pageIndex}">
+            <a data-ng-click="$ctrl.selectPage(page)">{{page+1}}</a>
+        </li>
+
+        <li data-ng-class="{'disabled':!$ctrl.isEnabledNext()}">
+          <a aria-label="Next" data-ng-click="$ctrl.next()">
+            <span aria-hidden="true" style="cursor: pointer;">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+
+    </div>
+</div>

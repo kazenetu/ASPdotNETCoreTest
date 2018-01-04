@@ -1,0 +1,17 @@
+<div class="height-100percent" data-ng-init="ctrl.init()" data-ng-controller="numbercheckController as ctrl">
+    <!-- ヘッダー -->
+    <header data-on-send-root="ctrl.sendRootHeader(src)"></header>
+
+    <!-- メイン画面 -->
+    <div  class="container main-area" data-ng-cloak style="padding-left:2em;padding-right:0em;">
+        <div>
+            入力値：<input type="number" style="text-align:right;" data-ng-model="ctrl.inputNumber" data-text-ex>
+        </div>
+        <div>
+            制限桁数：<input type="number" min=1 style="width:3em;text-align:right;" data-ng-model="ctrl.intPartCount">．<input type="number" style="width:3em;text-align:right;" data-ng-model="ctrl.decimalPartCount">
+        </div>
+
+        <button data-ng-click="ctrl.inputCheck()">入力チェック</button>
+    </div>
+
+</div>

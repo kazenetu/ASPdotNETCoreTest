@@ -1,0 +1,85 @@
+<!-- メイン画面 -->
+<div class="height-100percent" data-ng-cloak data-ng-init="ctrl.init()" data-ng-controller="userEditController as ctrl">
+    <!-- ヘッダー -->
+    <header data-on-send-root="ctrl.sendRootHeader(src)"></header>
+
+    <!-- メイン画面 -->
+    <div  class="container main-area" data-ng-cloak >
+        <!-- ボタン類 -->
+        <div class="form-group buttons-row">
+            <input type="button" class="btn" data-ng-click="ctrl.cancel()"  value="戻る">
+            <div class="pull-right">
+                <input type="button" class="btn" data-ng-click="ctrl.delete()"  value="削除" data-ng-show="!ctrl.isCreateMode()">
+
+                <input type="button" class="btn" data-ng-click="ctrl.insertOrUpdate()"  value="{{ctrl.commmitButtonName}}">
+            </div>
+        </div>
+        <hr>
+
+        <!-- 編集項目 -->
+        <div class="scroll-area">
+            <form class="form-horizontal">
+                <div class="form-group {{ctrl.errorUserId}}">
+                    <div class=col-sm-2>
+                        <label class="control-label" for="userId">ユーザーID</label>
+                    </div>
+                    <div class=col-sm-2>
+                    <input type="text" maxlength="10" data-ng-disabled="!ctrl.isCreateMode()" class="form-control ime-disabled" text-ex
+                        data-ng-change='ctrl.duplicateUserId()' data-ng-model="ctrl.userId">
+                    </div>
+                    <div class=col-sm-5 data-ng-show="ctrl.isCreateMode()">
+                        <span data-ng-show="ctrl.userIdIcon === ctrl.ICONS.OK" class="glyphicon {{ctrl.userIdIcon}} text-success" aria-hidden="true">登録できます</span>
+                        <span data-ng-show="ctrl.userIdIcon === ctrl.ICONS.NG && ctrl.userId!==''" class="glyphicon {{ctrl.userIdIcon}} text-danger" aria-hidden="true">すでに登録されています</span>
+                    </div>
+                </div>
+
+                <div class="form-group {{ctrl.errorUserName}}">
+                    <div class=col-sm-2>
+                        <label class="control-label" for="userName">ユーザー名</label>
+                    </div>
+                    <div class=col-sm-10>
+                    <input type="text" maxlength="30" style="width:35em;" class="form-control" data-ng-model="ctrl.userName" data-text-ex>
+                    </div>
+                </div>
+
+                <div class="form-group {{ctrl.errorBirthDay}}">
+                    <div class=col-sm-2>
+                        <label class="control-label" for="birthDay">誕生日</label>
+                    </div>
+                    <div class=col-sm-2>
+                    <input type="date" id = "birthDay" class="form-control" data-ng-model="ctrl.birthDay" data-text-ex>
+                    </div>
+                </div>
+
+                <div class="form-group {{ctrl.errorTime}}">
+                    <div class=col-sm-2>
+                        <label class="control-label" for="time">時刻入力</label>
+                    </div>
+                    <div class=col-sm-2>
+                    <input type="time" id = "time" class="form-control" data-ng-model="ctrl.time" data-text-ex>
+                    </div>
+                </div>
+
+                <div class="form-group {{ctrl.errorTs}}">
+                    <div class=col-sm-2>
+                        <label class="control-label" for="ts">日時入力</label>
+                    </div>
+                    <div class=col-sm-3>
+                    <input type="datetime-local" id = "ts" class="form-control" data-ng-model="ctrl.ts">
+                    </div>
+                </div>
+
+                <div class="form-group {{ctrl.errorPassword}}">
+                    <div class=col-sm-2>
+                        <label class="control-label" for="password">パスワード</label>
+                    </div>
+                    <div class=col-sm-2>
+                        <input type="text" id = "password" maxlength="10"
+                            class="form-control ime-disabled" text-ex data-ng-model="ctrl.password">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

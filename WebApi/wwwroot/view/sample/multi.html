@@ -1,0 +1,20 @@
+<!-- メイン画面 -->
+<div class="height-100percent" data-ng-cloak data-ng-init="ctrl.init()" data-ng-controller="multiController as ctrl">
+    <!-- ヘッダー -->
+    <header data-on-send-root="ctrl.sendRootHeader(src)"></header>
+
+    <!-- メイン画面 -->
+    <div  class="container main-area" data-ng-cloak style="height:100%;">
+
+
+        <div class="row">
+            ID:<input type="text" class="ime-disabled" maxlength="10" data-ng-model="ctrl.id" data-text-ex  >
+        </div>
+        <div class="row">
+            NAME:<input type="text" maxlength="30" data-ng-model="ctrl.name" data-text-ex  >
+        </div>
+        <div class="row">
+            <button data-ng-click="ctrl.insert()" class="btn">登録</button>
+        </div>
+    </div>
+</div>

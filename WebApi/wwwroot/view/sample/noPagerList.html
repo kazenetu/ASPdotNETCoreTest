@@ -1,0 +1,195 @@
+<style type="text/css">
+td
+{
+    padding-top:0.25em;
+    padding-bottom:0.25em;
+    vertical-align: middle;
+}
+.fixed-header
+{
+    margin-bottom: 0px !important;
+    border-bottom-width: 0px !important;
+    border-left-width: 0px !important;
+}
+.fixed-header th
+{
+    border-bottom-width: 1px !important;
+    padding-left: 0.0px !important;
+    padding-right: 0.0px !important;
+}
+.fixed-header td
+{
+    border-top-width: 0px !important;
+    border-left-width: 0.5px !important;
+    border-right-width: 0.5px !important;
+}
+/* ゼロ件用 */
+.result-zero td{
+    padding: 0px !important;
+}
+/* サイズ調整 */
+.main-area{
+     height:auto !important;
+}
+.scroll-area{
+    height:auto !important;
+}
+</style>
+
+<div class="height-100percent" data-ng-init="ctrl.init()" data-ng-controller="noPagerListController as ctrl">
+    <!-- ヘッダー -->
+    <header data-on-send-root="ctrl.sendRootHeader(src)"></header>
+
+    <!-- メイン画面 -->
+    <div  class="container main-area" data-ng-cloak style="padding-left:0em;padding-right:0em;padding-bottom:0em;">
+        <!-- ボタン類 -->
+        <div class="form-group buttons-row" style="padding-left: 2em;padding-right: 2em;">
+            <input type="button" class="btn" data-ng-click="ctrl.back()"  value="戻る">
+            <div class="pull-right">
+                <!--
+                <input type="button" class="btn" data-ng-click="ctrl.create()"  value="新規作成">
+                 -->
+            </div>
+        </div>
+        <hr>
+
+        <div class="scroll-area">
+            <div style="padding-left: 2em;padding-right: 2em;height:100%;">
+                <!-- 検索条件 -->
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="searchUserId">ユーザーID</label>
+                        <input type="text" id = "searchUserId" data-text-ex data-ng-model="ctrl.searchUserId">
+                    </div>
+                </form>
+
+                <!-- ボタン類 -->
+                <div class="form-group buttons-row">
+                    <div class="pull-right">
+                        <form action="api/user/download" method="POST" style="float:left;padding-right:1em;">
+                            <input type="hidden" name="userId" value={{ctrl.userId}}>
+                            <input type="hidden" name="userName" value={{ctrl.userName}}>
+                            <input type="hidden" name="searchUserId" value={{ctrl.searchUserId}}>
+
+                            <input type="submit" class="btn" value="CSV出力">
+                        </form>
+                        <form action="api/user/downloadPDF" method="POST" style="float:left;padding-right:1em;">
+                            <input type="hidden" name="userId" value={{ctrl.userId}}>
+                            <input type="hidden" name="userName" value={{ctrl.userName}}>
+                            <input type="hidden" name="searchUserId" value={{ctrl.searchUserId}}>
+
+                            <input type="submit" class="btn" value="PDF出力">
+
+                        </form>
+                        <input type="button" class="btn" data-ng-click="ctrl.search(0)"  value="検索">
+                    </div>
+                </div>
+
+                <!-- 検索結果 -->
+                <div style="overflow: hidden;height:60%;" id="list_main">
+                    <div class="scroll-area" style="overflow-x: auto;max-height:60%;height: auto;" id="sc_target">
+                        <table class="table table-bordered fixed-header" style="width:1500px;max-width: none;">
+                            <thead fix-head>
+                                <tr class="success">
+                                    <th class="text-center" style="width:10em;">
+                                        <listColumn title="ID" key="id"
+                                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
+                                            exist-record="{{ctrl.searchResult!==null}}"
+                                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+
+                                        <br>
+                                        <input type="text" id = "columnId"  data-ng-model="ctrl.columnId" data-ng-change='ctrl.changeFilter()'>
+                                    </th>
+                                    <th class="text-center" style="width:30em;">
+                                        <listColumn title="名前" key="name"
+                                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
+                                            exist-record="{{ctrl.searchResult!==null}}"
+                                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+
+                                        <br>
+                                        <input type="text" id = "columnName"  data-ng-model="ctrl.columnName" data-ng-change='ctrl.changeFilter()'>
+                                    </th>
+                                    <th class="text-center" style="width:20em;">
+                                        <listColumn title="パスワード" key="password"
+                                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
+                                            exist-record="{{ctrl.searchResult!==null}}"
+                                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+
+                                    </th>
+                                    <th class="text-center" style="width:10em;">
+                                        <listColumn title="Date" key="date"
+                                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
+                                            exist-record="{{ctrl.searchResult!==null}}"
+                                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+
+                                            <input type="date" data-text-ex  class="ime-disabled" id="dummyDate"
+                                                placeholder="日付" data-ng-model="ctrl.columnDate">
+                                    </th>
+                                    <th class="text-center" style="width:10em;">
+                                        <listColumn title="Time" key="time"
+                                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
+                                            exist-record="{{ctrl.searchResult!==null}}"
+                                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+
+                                            <input type="time" data-text-ex  class="ime-disabled" id="dummyTime"
+                                                placeholder="時刻" data-ng-model="ctrl.columnTime">
+                                    </th>
+                                    <th class="text-center" style="width:15em;">
+                                        <listColumn title="TS" key="ts"
+                                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
+                                            exist-record="{{ctrl.searchResult!==null}}"
+                                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-show="ctrl.searchResult === null" class="result-zero">
+                                    <td class="text-center">
+                                    </td>
+                                    <td class="text-left">
+                                    </td>
+                                    <td class="text-left">
+                                    </td>
+                                    <td class="text-left">
+                                    </td>
+                                    <td class="text-left">
+                                    </td>
+                                    <td class="text-left">
+                                    </td>
+                                </tr>
+
+                                <tr data-ng-repeat="result in ctrl.searchResult | filter:ctrl.filter() | orderBy:ctrl.order()">
+                                    <td class="text-center">
+                                        <a class="btn btn-link" data-ng-click="ctrl.clickCell('columnId',result.id)">
+                                            {{result.id}}
+                                        </a>
+                                    </td>
+                                    <td class="text-left">
+                                        <a class="btn btn-link" data-ng-click="ctrl.clickCell('columnName',result.name)">
+                                            {{result.name}}
+                                        </a>
+                                    </td>
+                                    <td class="text-left">
+                                        {{result.password}}
+                                    </td>
+
+                                    <td class="text-left">
+                                        {{result.date | date:'yyyy/MM/dd' }}
+                                    </td>
+                                    <td class="text-left">
+                                        {{result.time | date:'hh:mmm'}}
+                                    </td>
+                                    <td class="text-left">
+                                        {{result.ts | date:'yyyy/MM/dd HH:mm:ss':'+0900'}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

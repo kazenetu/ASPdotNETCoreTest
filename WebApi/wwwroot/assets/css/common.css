@@ -1,0 +1,62 @@
+@CHARSET "UTF-8";
+
+/* 読み込み完了前の非表示設定 */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+html,body{
+    background-color: #eee;
+    height:100%;
+}
+
+/* IE用日付の場合はクリアアイコンを非表示にする */
+input[type=date]::-ms-clear,
+input[type=month]::-ms-clear,
+input[type=time]::-ms-clear
+{
+    display:none;
+}
+
+/* ヘッダー */
+.header, .header small{
+    background-color: green;
+    color:white !important;
+    padding-bottom: 1em!important;
+    margin-bottom: 0px !important;
+}
+.error-area{
+    margin: 0px;
+    padding: 0.5em;
+}
+
+/* メインエリア */
+.main-area{
+    background-color: cornsilk;
+    padding:2em;
+    height:85%;
+}
+.main-area .table{
+    margin-top:0.5em;
+    margin-bottom:0.5em;
+}
+.height-100percent{
+    height:100% !important;
+}
+.scroll-area{
+    height:85%;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+.buttons-row
+{
+    height:2em;
+    padding-top:1em;
+    padding-bottom:3em;
+}
+hr{
+    border-color: black !important;
+}
+.ime-disabled{
+    ime-mode:disabled !important;
+}

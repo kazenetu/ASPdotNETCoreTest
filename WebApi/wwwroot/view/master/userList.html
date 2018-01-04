@@ -1,0 +1,132 @@
+<style type="text/css">
+td
+{
+    padding-top:0.25em;
+    padding-bottom:0.25em;
+    vertical-align: middle;
+}
+</style>
+
+<div class="height-100percent" data-ng-init="ctrl.init()" data-ng-controller="userListController as ctrl">
+    <!-- ヘッダー -->
+    <header data-on-send-root="ctrl.sendRootHeader(src)"></header>
+
+    <!-- メイン画面 -->
+    <div  class="container main-area" data-ng-cloak >
+        <!-- ボタン類 -->
+        <div class="form-group buttons-row">
+            <input type="button" class="btn" data-ng-click="ctrl.back()"  value="戻る">
+            <div class="pull-right">
+                <input type="button" class="btn" data-ng-click="ctrl.create()"  value="新規作成">
+            </div>
+        </div>
+        <hr>
+
+        <div class="scroll-area">
+            <!-- 検索条件 -->
+            <form class="form-inline">
+                <div class="form-group {{ctrl.errorSearchUserId}}">
+                    <label class="control-label" for="searchUserId">ユーザーID</label>
+                    <input type="text" class="form-control ime-disabled" maxlength="10" data-text-ex data-ng-model="ctrl.searchUserId" placeholder="半角英数字">
+                </div>
+            </form>
+
+            <!-- ボタン類 -->
+            <div class="form-group buttons-row">
+                <div class="pull-right">
+                    <form action="{{ctrl.csvAction}}" method="POST" style="float:left;padding-right:1em;">
+                        <input type="hidden" name="json" value={{ctrl.json}}>
+
+                        <input type="submit" id="csv" style="display: none;">
+
+                        <input type="button" class="btn" value="CSV出力"
+                            data-ng-click="ctrl.downloadCsv('api/user/download')">
+                        <input type="button" class="btn" value="ヘッダー付CSV出力"
+                            data-ng-click="ctrl.downloadCsv('api/user/downloadHeaderCSV')">
+                        <input type="button" class="btn" value="CSV出力ストリーム版"
+                            data-ng-click="ctrl.downloadCsv('api/user/downloadCSV')">
+
+                        <input type="button" class="btn" value="PDF出力"
+                            data-ng-click="ctrl.downloadCsv('api/user/downloadPDF')">
+                    </form>
+                    <input type="button" class="btn" data-ng-click="ctrl.search(0)"  value="検索">
+                </div>
+            </div>
+
+            <!-- 検索結果 -->
+            <pager total-page={{ctrl.totalPage}} on-paging="ctrl.paging(pageIndex,sender)" on-send-root="ctrl.sendRoot(src)" />
+
+            <table class="table table-bordered">
+                <tr class="success">
+                    <th class="text-center" style="width:10em;">
+                        <listColumn title="ID" key="ID"
+                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
+                            exist-record="{{ctrl.searchResult!==null}}"
+                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+                    </th>
+                    <th class="text-center" style="width:30em;">
+                        <listColumn title="名前" key="NAME"
+                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
+                            exist-record="{{ctrl.searchResult!==null}}"
+                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+
+                    </th>
+                    <th class="text-center" style="width:10em;">
+                        <listColumn title="パスワード" key="PASSWORD"
+                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
+                            exist-record="{{ctrl.searchResult!==null}}"
+                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+                    </th>
+                    <th class="text-center" style="width:7em;">
+                        <listColumn title="Date" key="DATE"
+                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
+                            exist-record="{{ctrl.searchResult!==null}}"
+                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+                    </th>
+                    <th class="text-center" style="width:7em;">
+                        <listColumn title="Time" key="TIME"
+                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
+                            exist-record="{{ctrl.searchResult!==null}}"
+                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+                    </th>
+                    <th class="text-center" style="width:7em;">
+                        <listColumn title="TS" key="TS"
+                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
+                            exist-record="{{ctrl.searchResult!==null}}"
+                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+                    </th>
+                    <th class="text-center" style="width:5em;">
+                        変更
+                    </th>
+                </tr>
+                <tr  data-ng-repeat="result in ctrl.searchResult">
+                    <td class="text-center">
+                        {{result.id}}
+                    </td>
+                    <td class="text-left">
+                        {{result.name}}
+                    </td>
+                    <td class="text-left">
+                        {{result.password}}
+                    </td>
+
+                    <td class="text-left">
+                        {{result.date | date:'yyyy/MM/dd' }}
+                    </td>
+                    <td class="text-left">
+                        {{result.time | date:'hh:mmm'}}
+                    </td>
+                    <td class="text-left">
+                        {{result.ts | date:'yyyy/MM/dd HH:mm:ss':'+0900'}}
+                    </td>
+
+                    <td class="text-center">
+                        <button class="btn btn-sm" data-ng-click="ctrl.edit(result)">編集</button>
+                    </td>
+                </tr>
+            </table>
+
+            <pager total-page={{ctrl.totalPage}} on-paging="ctrl.paging(pageIndex,sender)" on-send-root="ctrl.sendRoot(src)" />
+        </div>
+    </div>
+</div>

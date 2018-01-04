@@ -1,0 +1,69 @@
+<div class="height-100percent" data-ng-init="ctrl.init()" data-ng-controller="inputcheckController as ctrl">
+    <!-- ヘッダー -->
+    <header data-on-send-root="ctrl.sendRootHeader(src)"></header>
+
+    <!-- メイン画面 -->
+    <div  class="container main-area" data-ng-cloak style="padding-left:2em;padding-right:0em;">
+        <div>
+            <label>入力チェック用</label>
+            <div>
+                <input type="text" data-ng-model="ctrl.inputTest">
+                ※英数字・10桁まで
+
+            </div>
+            <div>
+                <input type="text" data-ng-model="ctrl.inputAlpha"> ※英字のみ
+            </div>
+            <div>
+                <input type="text" data-ng-model="ctrl.inputKana"> ※全角カタカナのみ
+            </div>
+            <div>
+                <input type="text" class="ime-disabled" data-ng-model="ctrl.inputSingle" data-ng-blur="ctrl.blur('TEST')">※半角のみ
+            </div>
+        </div>
+
+        <div>
+            <label>入力規制※input拡張コンポーネント「inputex」利用</label>
+            <div>
+                <inputex type="text" class="ime-disabled" id="dummy" placeholder="半角のみ"
+                 data-ng-model="ctrl.inputSingle" data-ng-blur="ctrl.blur('DUMMY_A')"></inputex>※半角のみ
+            </div>
+            <div>
+                <inputex type="text" id="dummy" placeholder="全角・半角" maxlength="10"
+                 data-ng-model="ctrl.inputTest" ></inputex>※全角・半角
+            </div>
+
+        </div>
+
+        <div>
+            <label>入力規制※input拡張ディレクティブ「text-ex」利用</label>
+            <div>
+                <input type="text" data-text-ex  class="ime-disabled" id="dummy" placeholder="半角のみ"
+                data-ng-model="ctrl.inputSingle" data-ng-blur="ctrl.blur('DUMMY_Ba')">※半角のみ
+            </div>
+            <div>
+                <input type="text" data-text-ex  id="dummy" placeholder="全角・半角"
+                data-ng-model="ctrl.inputTest" data-ng-blur="ctrl.blur('DUMMY_Bb')">※全角・半角
+            </div>
+            <div>
+                <input type="number" data-text-ex  class="ime-disabled" id="dummy" placeholder="数値"
+                data-ng-model="ctrl.inputNumber" data-ng-blur="ctrl.blur('number')">※数値
+            </div>
+            <div>
+                <input type="date" data-text-ex  class="ime-disabled" id="dummyDate" placeholder="日付" data-ng-model="ctrl.inputDate">
+            </div>
+            <div>
+                <input type="time" step="1" data-text-ex  class="ime-disabled" id="dummyTime" placeholder="時刻" data-ng-model="ctrl.inputTime">
+            </div>
+            <div>
+                <input type="month" data-text-ex  class="ime-disabled" id="dummyMonth" placeholder="年月" data-ng-model="ctrl.inputMonth">
+            </div>
+
+        </div>
+
+
+        <button data-ng-click="ctrl.inputCheck()">入力チェック</button>
+        <button data-ng-click="ctrl.reset()">リセット</button>
+    </div>
+
+</div>

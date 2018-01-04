@@ -1,0 +1,26 @@
+
+<div class="height-100percent" data-ng-controller="loginController as login">
+    <!-- ヘッダー -->
+    <header data-on-send-root="login.sendRootHeader(src)" data-title-only="true"></header>
+
+
+    <!-- メイン画面 -->
+    <div  class="container main-area" data-ng-cloak >
+        <p class="bg-danger" data-ng-show="login.isError">{{login.errorMsg}}</p>
+        <form>
+            <div class="row">
+                ユーザーID：<input type="text" data-ng-model="login.userId">※「test」でログインできます。
+            </div>
+            <div class="row">
+                パスワード：<input type="password" data-ng-model="login.password">
+            </div>
+
+            <!-- ボタン類 -->
+            <div class="form-group buttons-row">
+                <div class="col-sm-2 text-right">
+                    <button class="btn" data-ng-click="login.login()">ログイン</button>
+                </div>
+            </div>
+        </form>
+    </div>
+ </div>
