@@ -1,0 +1,83 @@
+using System;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace WebApi.Controllers
+{
+  /// <summary>
+  /// コントローラークラスのスーパークラス
+  /// </summary>
+  public class ControllerBase : Controller
+  {
+    #region クラス定数
+
+    /// <summary>
+    /// セッション用クッキー名
+    /// </summary>
+    public static readonly string SessionCookieName = "sid";
+
+
+    #endregion
+
+    #region インスタンス定数
+    /// <summary>
+    /// セッションキー：ユーザーID
+    /// </summary>
+    protected readonly string SessionKeyUserID = "userID";
+    #endregion
+
+    #region プロパティ
+    /// <summary>
+    /// セッション
+    /// </summary>      
+    protected ISession session
+    {
+      get
+      {
+        return HttpContext.Session;
+      }
+    }
+    #endregion
+
+    #region メソッド
+
+    /// <summary>
+    /// セッションキーの文字列を取得
+    /// </summary>
+    /// <param name="sessionKey">セッションキー</param>
+    /// <returns>キーがある場合は対応する文字列、ない場合はnull</returns>
+    protected string getSessionString(string sessionKey)
+    {
+      string result = session.GetString(sessionKey);
+
+      return result;
+    }
+
+    /// <summary>
+    /// ログインチェック
+    /// </summary>
+    /// <param name="userID">入力されたユーザーID</param>
+    /// <returns>ログイン結果</returns>
+    protected bool isLogin(string userID)
+    {
+      var loginUser = getSessionString(SessionKeyUserID);
+
+      if (loginUser == userID)
+      {
+        return true;
+      }
+
+      return false;
+    }
+
+    /// <summary>
+    /// セッションのリフレッシュ
+    /// </summary>
+    protected void refreshSession()
+    {
+      // セッション破棄
+      session.Clear();
+    }
+    #endregion
+  }
+}
