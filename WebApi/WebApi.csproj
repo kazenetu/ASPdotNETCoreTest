@@ -12,7 +12,9 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Antiforgery" Version="2.0.1" />
 
-    <ProjectReference Include="..\Commons\Commons.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+
+    <None Include="Resource/Test.db" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
