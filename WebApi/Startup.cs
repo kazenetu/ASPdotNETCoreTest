@@ -10,6 +10,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Http;
+using Domain.Repository.User;
+using Domain.Service.User;
+using Commons.ConfigModel;
 
 namespace WebApi
 {
@@ -29,6 +32,13 @@ namespace WebApi
 
       // トークン設定
       services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+
+      // DIの設定
+      services.AddScoped<IUserRepository, UserRepository>();
+      services.AddScoped<IUserService, UserService>();
+
+      // Configを専用Modelに設定
+      services.Configure<DatabaseConfigModel>(this.Configuration.GetSection("DB"));
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
