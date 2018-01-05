@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using Domain.Model;
 using Domain.Service.User;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApi.Controllers
 {
   [Route("api/user")]
-  public class UsersController : Controller
+  public class UsersController : ControllerBase
   {
     private readonly IUserService service;
 
@@ -49,7 +50,11 @@ namespace WebApi.Controllers
         var model = service.Login(userId, password);
         if (model != null)
         {
-          // TODO セッション設定
+          // セッション破棄
+          refreshSession();
+
+          // セッションキー設定
+          session.SetString(SessionKeyUserID,userId);
 
           serviceResult = true;
           data.Add("name", model.UserName);
@@ -83,7 +88,9 @@ namespace WebApi.Controllers
     public IActionResult LogoutPost([FromBody]Dictionary<string, object> param)
     {
 
-      //TODO セッション破棄
+      // セッション破棄
+      HttpContext.Response.Cookies.Delete(ControllerBase.SessionCookieName);
+      session.Clear();
 
       var result = new Dictionary<string, object>();
       result.Add("result", "OK");
