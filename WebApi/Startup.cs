@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Domain.Repository.User;
 using Domain.Service.User;
 using Commons.ConfigModel;
+using WebApi.Controllers;
 
 namespace WebApi
 {
@@ -39,6 +40,20 @@ namespace WebApi
 
       // Configを専用Modelに設定
       services.Configure<DatabaseConfigModel>(this.Configuration.GetSection("DB"));
+
+      // セッションの設定
+      // Adds a default in-memory implementation of IDistributedCache.
+      services.AddDistributedMemoryCache();
+
+      // session
+      services.AddSession(options =>
+      {
+          // Set a short timeout for easy testing.
+          // options.IdleTimeout = TimeSpan.FromSeconds(10);
+          // options.Cookie.HttpOnly = true;
+          
+          options.Cookie.Name = ControllerBase.SessionCookieName;
+      });
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +63,9 @@ namespace WebApi
       {
         app.UseDeveloperExceptionPage();
       }
+
+      // session有効化
+      app.UseSession();
 
       app.UseMvc();
 
