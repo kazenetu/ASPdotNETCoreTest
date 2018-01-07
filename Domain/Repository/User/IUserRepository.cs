@@ -32,8 +32,9 @@ namespace Domain.Repository.User
     /// ユーザーのページ分を取得する
     /// </summary>
     /// <param name="seachCondition">検索条件</param>
+    /// <param name="pageCount">1ページ当たりの係数</param>
     /// <returns>ユーザーのリスト</returns>
-    List<UserModel> GetUsers(UserSeachCondition seachCondition);
+    List<UserModel> GetUsers(UserSeachCondition seachCondition, int pageCount);
 
     /// <summary>
     /// ユーザーを取得する

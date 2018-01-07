@@ -85,17 +85,18 @@ namespace Domain.Repository.User
 
       // Param設定
       db.ClearParam();
-      if(!string.IsNullOrEmpty(seachCondition.SearchUserId)){
+      if (!string.IsNullOrEmpty(seachCondition.SearchUserId))
+      {
         sql.AppendLine("where ");
-        sql.AppendLine("  USER_ID like %@USER_ID%");
-        db.AddParam("@USER_ID", seachCondition.SearchUserId);
+        sql.AppendLine("  USER_ID like @USER_ID");
+        db.AddParam("@USER_ID", string.Format("%{0}%", seachCondition.SearchUserId));
       }
 
-      int recordCount = 0;
+      int recordCount = -1;
       var result = db.Fill(sql.ToString());
       if (result.Rows.Count > 0)
       {
-        recordCount = (int)result.Rows[0]["CNT"];
+        int.TryParse(result.Rows[0]["CNT"].ToString(), out recordCount);
       }
 
       // レコード件数を返す
@@ -106,10 +107,58 @@ namespace Domain.Repository.User
     /// ユーザーのページ分を取得する
     /// </summary>
     /// <param name="seachCondition">検索条件</param>
+    /// <param name="pageCount">1ページ当たりの係数</param>
     /// <returns>ユーザーのリスト</returns>
-    public List<UserModel> GetUsers(UserSeachCondition seachCondition)
+    public List<UserModel> GetUsers(UserSeachCondition seachCondition, int pageCount)
     {
-      return new List<UserModel>();
+      var sql = new StringBuilder();
+      sql.AppendLine("select * from MT_USER ");
+
+      // 検索条件
+      int pageIndex = seachCondition.PageIndex;
+      string searchUserId = seachCondition.SearchUserId;
+
+      // ソートキー
+      var sortKeys = new Dictionary<string, string>();
+      sortKeys.Add("ID", "USER_ID");
+      sortKeys.Add("NAME", "USER_NAME");
+      sortKeys.Add("REMOVE", "DEL_FLAG");
+
+      string sortKey = "USER_ID ";
+      if (sortKeys.ContainsKey(seachCondition.SortKey))
+      {
+        sortKey = sortKeys[seachCondition.SortKey] + " ";
+      }
+      if (!string.IsNullOrEmpty(seachCondition.SortType))
+      {
+        string tempType = seachCondition.SortType.ToUpper();
+
+        if (new string[] { "ASC", "DESC" }.Any((sortType) => { return sortType == tempType; }))
+        {
+          sortKey += tempType;
+        }
+      }
+
+      // パラメータの設定
+      db.ClearParam();
+      if (!string.IsNullOrEmpty(seachCondition.SearchUserId))
+      {
+        sql.AppendLine("where ");
+        sql.AppendLine("  USER_ID like @USER_ID");
+        db.AddParam("@USER_ID", string.Format("%{0}%", seachCondition.SearchUserId));
+      }
+      sql.AppendLine(string.Format(" ORDER BY {0}", sortKey));
+      sql.AppendLine(string.Format("LIMIT {0} OFFSET {1}", pageCount, pageIndex * pageCount));
+
+      // SQL発行
+      var result = new List<UserModel>();
+      var dbResult = db.Fill(sql.ToString());
+      foreach (DataRow row in dbResult.Rows)
+      {
+        result.Add(createUserModel(row));
+      }
+
+      return result;
     }
 
     /// <summary>
@@ -233,10 +282,13 @@ namespace Domain.Repository.User
       {
         password = src[columnName].ToString();
       }
-      columnName = "DEL_FLAGE";
+      columnName = "DEL_FLAG";
       if (columns.Contains(columnName))
       {
-        isDelete = (bool)src[columnName];
+        var tempValue=0;
+        if(int.TryParse(src[columnName].ToString(), out tempValue)){
+          isDelete = Convert.ToBoolean(tempValue);
+        }
       }
       columnName = "ENTRY_USER";
       if (columns.Contains(columnName))
@@ -261,7 +313,7 @@ namespace Domain.Repository.User
       columnName = "MOD_VERSION";
       if (columns.Contains(columnName))
       {
-        modifyVersion = (int)src[columnName];
+        int.TryParse(src[columnName].ToString(), out modifyVersion);
       }
 
       return new UserModel(userID, userName, password, isDelete,
