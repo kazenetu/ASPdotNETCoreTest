@@ -73,7 +73,7 @@ namespace Domain.Service.User
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <returns>成否</returns>
-    public bool append(UserModel userData)
+    public bool Append(UserModel userData)
     {
       return false;
     }
@@ -83,7 +83,7 @@ namespace Domain.Service.User
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <returns>成否</returns>
-    public bool update(UserModel userData)
+    public bool Update(UserModel userData)
     {
       return false;
     }
@@ -93,7 +93,7 @@ namespace Domain.Service.User
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <returns>成否</returns>
-    public bool remove(UserModel userData)
+    public bool Remove(UserModel userData)
     {
       return false;
     }
@@ -105,7 +105,7 @@ namespace Domain.Service.User
     /// <param name="password">現在のパスワード</param>
     /// <param name="newPassword">新しいパスワード</param>
     /// <returns>成否</returns>
-    public bool changePassword(string userID, string password, string newPassword)
+    public bool ChangePassword(string userID, string password, string newPassword)
     {
       return repository.changePassword(userID,password,newPassword);
     }
