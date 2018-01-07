@@ -39,7 +39,7 @@ namespace Domain.Service.User
     /// </summary>
     /// <param name="searchCondition">検索条件</param>
     /// <returns>ユーザー情報(検索できない場合はnull)</returns>
-    UserModel GetUser(UserSearchCondition searchCondition);
+    UserModel Find(UserSearchCondition searchCondition);
 
     /// <summary>
     /// ユーザーの登録
@@ -53,7 +53,7 @@ namespace Domain.Service.User
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <returns>成否</returns>
-    bool Update(UserModel userData);
+    bool Modify(UserModel userData);
 
     /// <summary>
     /// ユーザーの削除

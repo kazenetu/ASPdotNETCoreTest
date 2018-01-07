@@ -83,7 +83,7 @@ namespace Domain.Service.User
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <returns>成否</returns>
-    public bool Update(UserModel userData)
+    public bool Modify(UserModel userData)
     {
       return false;
     }
