@@ -93,7 +93,7 @@ namespace Domain.Repository.User
     /// </summary>
     /// <param name="userId">ユーザーID</param>
     /// <returns>ユーザー情報(検索できない場合はnull)</returns>
-    UserModel Find(string userId)
+    public UserModel Find(string userId)
     {
       return null;
     }
@@ -170,5 +170,6 @@ namespace Domain.Repository.User
 
       return false;
     }
+
   }
 }
