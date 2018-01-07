@@ -34,6 +34,7 @@ td
             <!-- ボタン類 -->
             <div class="form-group buttons-row">
                 <div class="pull-right">
+                        <!--
                     <form action="{{ctrl.csvAction}}" method="POST" style="float:left;padding-right:1em;">
                         <input type="hidden" name="json" value={{ctrl.json}}>
 
@@ -49,7 +50,8 @@ td
                         <input type="button" class="btn" value="PDF出力"
                             data-ng-click="ctrl.downloadCsv('api/user/downloadPDF')">
                     </form>
-                    <input type="button" class="btn" data-ng-click="ctrl.search(0)"  value="検索">
+                        -->
+                        <input type="button" class="btn" data-ng-click="ctrl.search(0)"  value="検索">
                 </div>
             </div>
 
@@ -78,19 +80,7 @@ td
                             on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
                     </th>
                     <th class="text-center" style="width:7em;">
-                        <listColumn title="Date" key="DATE"
-                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
-                            exist-record="{{ctrl.searchResult!==null}}"
-                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
-                    </th>
-                    <th class="text-center" style="width:7em;">
-                        <listColumn title="Time" key="TIME"
-                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
-                            exist-record="{{ctrl.searchResult!==null}}"
-                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
-                    </th>
-                    <th class="text-center" style="width:7em;">
-                        <listColumn title="TS" key="TS"
+                        <listColumn title="論理削除" key="REMOVE"
                             active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
                             exist-record="{{ctrl.searchResult!==null}}"
                             on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
@@ -101,27 +91,22 @@ td
                 </tr>
                 <tr  data-ng-repeat="result in ctrl.searchResult">
                     <td class="text-center">
-                        {{result.id}}
+                        {{result.userID}}
                     </td>
                     <td class="text-left">
-                        {{result.name}}
+                        {{result.userName}}
                     </td>
                     <td class="text-left">
                         {{result.password}}
                     </td>
-
-                    <td class="text-left">
-                        {{result.date | date:'yyyy/MM/dd' }}
-                    </td>
-                    <td class="text-left">
-                        {{result.time | date:'hh:mmm'}}
-                    </td>
-                    <td class="text-left">
-                        {{result.ts | date:'yyyy/MM/dd HH:mm:ss':'+0900'}}
+                    <td class="text-center">
+                        <input type="checkbox" data-ng-model="result.isDelete" disabled="disabled" />
                     </td>
 
                     <td class="text-center">
+                        <!--
                         <button class="btn btn-sm" data-ng-click="ctrl.edit(result)">編集</button>
+                        -->
                     </td>
                 </tr>
             </table>
