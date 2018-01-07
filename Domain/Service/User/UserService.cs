@@ -63,7 +63,7 @@ namespace Domain.Service.User
     /// </summary>
     /// <param name="searchCondition">検索条件</param>
     /// <returns>ユーザー情報(検索できない場合はnull)</returns>
-    public UserModel GetUser(UserSearchCondition searchCondition)
+    public UserModel Find(UserSearchCondition searchCondition)
     {
       return null;
     }
