@@ -52,7 +52,7 @@ namespace Domain.Repository.User
       var result = db.Fill(sql.ToString());
       if (result.Rows.Count > 0)
       {
-        model = new UserModel(userID, result.Rows[0]["USER_NAME"].ToString(), string.Empty);
+        model = new UserModel(userID, result.Rows[0]["USER_NAME"].ToString());
       }
 
       return model;
