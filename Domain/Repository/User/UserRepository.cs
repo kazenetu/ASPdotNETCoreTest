@@ -91,9 +91,9 @@ namespace Domain.Repository.User
     /// <summary>
     /// ユーザーを取得する
     /// </summary>
-    /// <param name="seachCondition">検索条件</param>
+    /// <param name="userId">ユーザーID</param>
     /// <returns>ユーザー情報(検索できない場合はnull)</returns>
-    public UserModel GetUser(UserSeachCondition seachCondition)
+    UserModel Find(string userId)
     {
       return null;
     }
