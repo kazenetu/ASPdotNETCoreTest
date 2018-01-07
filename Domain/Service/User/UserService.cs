@@ -55,7 +55,7 @@ namespace Domain.Service.User
     /// <returns>ユーザーのリスト</returns>
     public List<UserModel> GetUsers(UserSeachCondition seachCondition)
     {
-      return new List<UserModel>();
+      return repository.GetUsers(seachCondition,PageCount);
     }
 
     /// <summary>
