@@ -19,14 +19,14 @@ namespace Domain.Repository.User
     /// </summary>
     /// <param name="seachCondition">検索条件</param>
     /// <returns>ユーザーリスト</returns>
-    List<UserModel> GetAllUsers(UserSeachCondition seachCondition);
+    List<UserModel> GetAllUsers(UserSearchCondition seachCondition);
 
     /// <summary>
     /// 検索結果のレコード件数を取得する
     /// </summary>
     /// <param name="seachCondition">検索条件</param>
     /// <returns>レコード数</returns>
-    int GetRecordCount(UserSeachCondition seachCondition);
+    int GetRecordCount(UserSearchCondition seachCondition);
 
     /// <summary>
     /// ユーザーのページ分を取得する
@@ -34,7 +34,7 @@ namespace Domain.Repository.User
     /// <param name="seachCondition">検索条件</param>
     /// <param name="pageCount">1ページ当たりの係数</param>
     /// <returns>ユーザーのリスト</returns>
-    List<UserModel> GetUsers(UserSeachCondition seachCondition, int pageCount);
+    List<UserModel> GetUsers(UserSearchCondition seachCondition, int pageCount);
 
     /// <summary>
     /// ユーザーを取得する

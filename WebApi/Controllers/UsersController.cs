@@ -169,7 +169,7 @@ namespace WebApi.Controllers
         return BadRequest();
       }
 
-      var searchCondition = new UserSeachCondition();
+      var searchCondition = new UserSearchCondition();
       if(param.ContainsKey("requestData"))
       {
         var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
@@ -238,7 +238,7 @@ namespace WebApi.Controllers
         return BadRequest();
       }
 
-      var searchCondition = new UserSeachCondition();
+      var searchCondition = new UserSearchCondition();
       if(param.ContainsKey("requestData"))
       {
         var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;

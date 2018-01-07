@@ -65,7 +65,7 @@ namespace Domain.Repository.User
     /// </summary>
     /// <param name="seachCondition">検索条件</param>
     /// <returns>ユーザーリスト</returns>
-    public List<UserModel> GetAllUsers(UserSeachCondition seachCondition)
+    public List<UserModel> GetAllUsers(UserSearchCondition seachCondition)
     {
       return new List<UserModel>();
     }
@@ -75,7 +75,7 @@ namespace Domain.Repository.User
     /// </summary>
     /// <param name="seachCondition">検索条件</param>
     /// <returns>レコード数</returns>
-    public int GetRecordCount(UserSeachCondition seachCondition)
+    public int GetRecordCount(UserSearchCondition seachCondition)
     {
       var sql = new StringBuilder();
       sql.AppendLine("select");
@@ -109,7 +109,7 @@ namespace Domain.Repository.User
     /// <param name="seachCondition">検索条件</param>
     /// <param name="pageCount">1ページ当たりの係数</param>
     /// <returns>ユーザーのリスト</returns>
-    public List<UserModel> GetUsers(UserSeachCondition seachCondition, int pageCount)
+    public List<UserModel> GetUsers(UserSearchCondition seachCondition, int pageCount)
     {
       var sql = new StringBuilder();
       sql.AppendLine("select * from MT_USER ");

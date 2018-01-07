@@ -3,7 +3,7 @@ namespace Domain.Service.User
   /// <summary>
   /// 検索条件クラス
   /// </summary>
-  public class UserSeachCondition
+  public class UserSearchCondition
   {
 
     /// <summary>

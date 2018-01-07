@@ -31,9 +31,9 @@ namespace Domain.Service.User
     /// <summary>
     /// ユーザーリストを取得する
     /// </summary>
-    /// <param name="seachCondition">検索条件</param>
+    /// <param name="searchCondition">検索条件</param>
     /// <returns>ユーザーリスト</returns>
-    public List<UserModel> GetAllUsers(UserSeachCondition seachCondition)
+    public List<UserModel> GetAllUsers(UserSearchCondition searchCondition)
     {
       return new List<UserModel>();
     }
@@ -41,29 +41,29 @@ namespace Domain.Service.User
     /// <summary>
     /// 検索結果のページ総数を取得する
     /// </summary>
-    /// <param name="seachCondition">検索条件</param>
+    /// <param name="searchCondition">検索条件</param>
     /// <returns>ページ総数</returns>
-    public int GetPageCount(UserSeachCondition seachCondition)
+    public int GetPageCount(UserSearchCondition searchCondition)
     {
-      return getTotalPageCount(repository.GetRecordCount(seachCondition));
+      return getTotalPageCount(repository.GetRecordCount(searchCondition));
     }
 
     /// <summary>
     /// ユーザーのページ分を取得する
     /// </summary>
-    /// <param name="seachCondition">検索条件</param>
+    /// <param name="searchCondition">検索条件</param>
     /// <returns>ユーザーのリスト</returns>
-    public List<UserModel> GetUsers(UserSeachCondition seachCondition)
+    public List<UserModel> GetUsers(UserSearchCondition searchCondition)
     {
-      return repository.GetUsers(seachCondition,PageCount);
+      return repository.GetUsers(searchCondition,PageCount);
     }
 
     /// <summary>
     /// ユーザーを取得する
     /// </summary>
-    /// <param name="seachCondition">検索条件</param>
+    /// <param name="searchCondition">検索条件</param>
     /// <returns>ユーザー情報(検索できない場合はnull)</returns>
-    public UserModel GetUser(UserSeachCondition seachCondition)
+    public UserModel GetUser(UserSearchCondition searchCondition)
     {
       return null;
     }

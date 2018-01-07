@@ -16,30 +16,30 @@ namespace Domain.Service.User
     /// <summary>
     /// ユーザーリストを取得する
     /// </summary>
-    /// <param name="seachCondition">検索条件</param>
+    /// <param name="searchCondition">検索条件</param>
     /// <returns>ユーザーリスト</returns>
-    List<UserModel> GetAllUsers(UserSeachCondition seachCondition);
+    List<UserModel> GetAllUsers(UserSearchCondition searchCondition);
 
     /// <summary>
     /// 検索結果のページ総数を取得する
     /// </summary>
-    /// <param name="seachCondition">検索条件</param>
+    /// <param name="searchCondition">検索条件</param>
     /// <returns>ページ総数</returns>
-    int GetPageCount(UserSeachCondition seachCondition);
+    int GetPageCount(UserSearchCondition searchCondition);
 
     /// <summary>
     /// ユーザーのページ分を取得する
     /// </summary>
-    /// <param name="seachCondition">検索条件</param>
+    /// <param name="searchCondition">検索条件</param>
     /// <returns>ユーザーのリスト</returns>
-    List<UserModel> GetUsers(UserSeachCondition seachCondition);
+    List<UserModel> GetUsers(UserSearchCondition searchCondition);
 
     /// <summary>
     /// ユーザーを取得する
     /// </summary>
-    /// <param name="seachCondition">検索条件</param>
+    /// <param name="searchCondition">検索条件</param>
     /// <returns>ユーザー情報(検索できない場合はnull)</returns>
-    UserModel GetUser(UserSeachCondition seachCondition);
+    UserModel GetUser(UserSearchCondition searchCondition);
 
     /// <summary>
     /// ユーザーの登録
