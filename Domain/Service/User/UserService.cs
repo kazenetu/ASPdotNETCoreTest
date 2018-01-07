@@ -69,21 +69,11 @@ namespace Domain.Service.User
     }
 
     /// <summary>
-    /// ユーザーの登録
+    /// ユーザーの保存
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <returns>成否</returns>
-    public bool Append(UserModel userData)
-    {
-      return false;
-    }
-
-    /// <summary>
-    /// ユーザーの更新
-    /// </summary>
-    /// <param name="userData">ユーザーデータ</param>
-    /// <returns>成否</returns>
-    public bool Modify(UserModel userData)
+    public bool Save(UserModel userData)
     {
       return false;
     }

@@ -42,21 +42,14 @@ namespace Domain.Service.User
     UserModel Find(UserSearchCondition searchCondition);
 
     /// <summary>
-    /// ユーザーの登録
+    /// ユーザーの保存
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <returns>成否</returns>
-    bool Append(UserModel userData);
+    bool Save(UserModel userData);
 
     /// <summary>
-    /// ユーザーの更新
-    /// </summary>
-    /// <param name="userData">ユーザーデータ</param>
-    /// <returns>成否</returns>
-    bool Modify(UserModel userData);
-
-    /// <summary>
-    /// ユーザーの削除
+    /// ユーザーの論理削除
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <returns>成否</returns>
