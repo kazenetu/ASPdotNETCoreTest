@@ -135,7 +135,7 @@ namespace WebApi.Controllers
       var serviceResult = false;
       try
       {
-        serviceResult = service.changePassword(userId, password, newPassword);
+        serviceResult = service.ChangePassword(userId, password, newPassword);
       }
       catch//(Exception ex){
       {
