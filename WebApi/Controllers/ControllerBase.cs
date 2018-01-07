@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -58,8 +59,13 @@ namespace WebApi.Controllers
     /// </summary>
     /// <param name="userID">入力されたユーザーID</param>
     /// <returns>ログイン結果</returns>
-    protected bool isLogin(string userID)
+    protected bool isLogin(Dictionary<string, object> param)
     {
+      var paramNameUserId = "loginUserId";
+      if(!param.ContainsKey(paramNameUserId)){
+        return false;
+      }
+      var userID = param[paramNameUserId].ToString();
       var loginUser = getSessionString(SessionKeyUserID);
 
       if (loginUser == userID)

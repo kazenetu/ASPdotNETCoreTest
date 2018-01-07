@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Domain.Model;
 using Domain.Service.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
 
 namespace WebApi.Controllers
 {
@@ -14,6 +16,7 @@ namespace WebApi.Controllers
 
     private static string ErrorLoginNG  = "ログイン失敗";
     private static string ErrorPasswordNG  = "パスワード失敗";
+    private static string SearchResultZero = "検索結果ゼロ件";
 
     public UsersController(IUserService service)
     {
@@ -152,6 +155,144 @@ namespace WebApi.Controllers
         result.Add("errorMessage",ErrorPasswordNG);
       }
       result.Add("responseData", data);
+
+      return Json(result);
+    }
+
+    // POST api/user/totalpage
+    [HttpPost("totalpage")]
+    [AutoValidateAntiforgeryToken]
+    public IActionResult Totalpage([FromBody]Dictionary<string, object> param)
+    {
+      // ログインチェック
+      if(!isLogin(param)){
+        return BadRequest();
+      }
+
+      var searchCondition = new UserSeachCondition();
+      if(param.ContainsKey("requestData"))
+      {
+        var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
+        Newtonsoft.Json.Linq.JToken jsonToken = null;
+
+        var paramName=string.Empty;
+
+        // パラメータの設定
+        paramName = "searchUserId";
+        if (requestData.TryGetValue(paramName,out jsonToken))
+        {
+          searchCondition.SearchUserId = requestData[paramName].ToString();
+        }
+        paramName = "pageIndex";
+        if (requestData.TryGetValue(paramName,out jsonToken))
+        {
+          searchCondition.PageIndex = (int)requestData[paramName];
+        }
+        paramName = "sortKey";
+        if (requestData.TryGetValue(paramName,out jsonToken))
+        {
+          searchCondition.SortKey = requestData[paramName].ToString();
+        }
+        paramName = "sortType";
+        if (requestData.TryGetValue(paramName,out jsonToken))
+        {
+          searchCondition.SortType = requestData[paramName].ToString();
+        }
+      }
+
+      var serviceResult = 0;
+      try
+      {
+        serviceResult = service.GetPageCount(searchCondition);
+      }
+      catch(Exception ex)
+      {
+        var message = ex.Message;
+
+        //TODO :ログ出力
+        return BadRequest();
+      }
+
+      var result = new Dictionary<string, object>();
+      if (serviceResult >= 0)
+      {
+        result.Add("result", "OK");
+      }
+      else
+      {
+        result.Add("result", "NG");
+        result.Add("errorMessage",SearchResultZero);
+      }
+      result.Add("responseData", serviceResult);
+
+      return Json(result);
+    }
+
+    // POST api/user/page
+    [HttpPost("page")]
+    [AutoValidateAntiforgeryToken]
+    public IActionResult Page([FromBody]Dictionary<string, object> param)
+    {
+      // ログインチェック
+      if(!isLogin(param)){
+        return BadRequest();
+      }
+
+      var searchCondition = new UserSeachCondition();
+      if(param.ContainsKey("requestData"))
+      {
+        var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
+        Newtonsoft.Json.Linq.JToken jsonToken = null;
+
+        var paramName=string.Empty;
+
+        // パラメータの設定
+        paramName = "searchUserId";
+        if (requestData.TryGetValue(paramName,out jsonToken))
+        {
+          searchCondition.SearchUserId = requestData[paramName].ToString();
+        }
+        paramName = "pageIndex";
+        if (requestData.TryGetValue(paramName,out jsonToken))
+        {
+          searchCondition.PageIndex = (int)requestData[paramName];
+        }
+        paramName = "sortKey";
+        if (requestData.TryGetValue(paramName,out jsonToken))
+        {
+          searchCondition.SortKey = requestData[paramName].ToString();
+        }
+        paramName = "sortType";
+        if (requestData.TryGetValue(paramName,out jsonToken))
+        {
+          searchCondition.SortType = requestData[paramName].ToString();
+        }
+      }
+
+      var serviceResult = new List<UserModel>();
+      try
+      {
+        serviceResult.AddRange(service.GetUsers(searchCondition));
+      }
+      catch(Exception ex)
+      {
+        var message = ex.Message;
+
+        //TODO :ログ出力
+        return BadRequest();
+      }
+
+      var result = new Dictionary<string, object>();
+      if (serviceResult.Any())
+      {
+        result.Add("result", "OK");
+        result.Add("responseData", serviceResult);
+      }
+      else
+      {
+        result.Add("result", "NG");
+        result.Add("errorMessage",SearchResultZero);
+      }
 
       return Json(result);
     }
