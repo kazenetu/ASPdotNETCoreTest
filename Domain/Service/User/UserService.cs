@@ -4,7 +4,7 @@ using Domain.Repository.User;
 
 namespace Domain.Service.User
 {
-  public class UserService : IUserService
+  public class UserService :  ServiceBase,IUserService
   {
     private readonly IUserRepository repository;
 
@@ -43,9 +43,9 @@ namespace Domain.Service.User
     /// </summary>
     /// <param name="seachCondition">検索条件</param>
     /// <returns>ページ総数</returns>
-    public int GetUserPageCount(UserSeachCondition seachCondition)
+    public int GetPageCount(UserSeachCondition seachCondition)
     {
-      return 0;
+      return getTotalPageCount(repository.GetRecordCount(seachCondition));
     }
 
     /// <summary>

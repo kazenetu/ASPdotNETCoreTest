@@ -25,7 +25,7 @@ namespace Domain.Service.User
     /// </summary>
     /// <param name="seachCondition">検索条件</param>
     /// <returns>ページ総数</returns>
-    int GetUserPageCount(UserSeachCondition seachCondition);
+    int GetPageCount(UserSeachCondition seachCondition);
 
     /// <summary>
     /// ユーザーのページ分を取得する
