@@ -8,10 +8,6 @@ namespace Domain.Model
   [Serializable]
   public class UserModel
   {
-    #region プライベートフィールド
-
-    #endregion
-
     #region コンストラクタ
 
     /// <summary>
