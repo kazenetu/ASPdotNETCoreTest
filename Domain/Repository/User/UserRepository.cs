@@ -71,13 +71,35 @@ namespace Domain.Repository.User
     }
 
     /// <summary>
-    /// 検索結果のページ総数を取得する
+    /// 検索結果のレコード件数を取得する
     /// </summary>
     /// <param name="seachCondition">検索条件</param>
-    /// <returns>ページ総数</returns>
-    public int GetUserPageCount(UserSeachCondition seachCondition)
+    /// <returns>レコード数</returns>
+    public int GetRecordCount(UserSeachCondition seachCondition)
     {
-      return 0;
+      var sql = new StringBuilder();
+      sql.AppendLine("select");
+      sql.AppendLine("  cast(count(USER_ID) as int) CNT");
+      sql.AppendLine("from");
+      sql.AppendLine("  MT_USER");
+
+      // Param設定
+      db.ClearParam();
+      if(!string.IsNullOrEmpty(seachCondition.SearchUserId)){
+        sql.AppendLine("where ");
+        sql.AppendLine("  USER_ID like %@USER_ID%");
+        db.AddParam("@USER_ID", seachCondition.SearchUserId);
+      }
+
+      int recordCount = 0;
+      var result = db.Fill(sql.ToString());
+      if (result.Rows.Count > 0)
+      {
+        recordCount = (int)result.Rows[0]["CNT"];
+      }
+
+      // レコード件数を返す
+      return recordCount;
     }
 
     /// <summary>

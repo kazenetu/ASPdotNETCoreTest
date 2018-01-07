@@ -22,11 +22,11 @@ namespace Domain.Repository.User
     List<UserModel> GetAllUsers(UserSeachCondition seachCondition);
 
     /// <summary>
-    /// 検索結果のページ総数を取得する
+    /// 検索結果のレコード件数を取得する
     /// </summary>
     /// <param name="seachCondition">検索条件</param>
-    /// <returns>ページ総数</returns>
-    int GetUserPageCount(UserSeachCondition seachCondition);
+    /// <returns>レコード数</returns>
+    int GetRecordCount(UserSeachCondition seachCondition);
 
     /// <summary>
     /// ユーザーのページ分を取得する
