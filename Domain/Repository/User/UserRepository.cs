@@ -8,6 +8,7 @@ using Domain.Model;
 using Domain.Service.User;
 using Microsoft.Extensions.Options;
 using System;
+using System.Data;
 
 namespace Domain.Repository.User
 {
@@ -43,19 +44,20 @@ namespace Domain.Repository.User
       sql.AppendLine("  MT_USER");
       sql.AppendLine("where ");
       sql.AppendLine("  USER_ID = @USER_ID");
+      sql.AppendLine("  AND PASSWORD = @PASSWORD");
 
       // Param設定
       db.ClearParam();
       db.AddParam("@USER_ID", userID);
+      db.AddParam("@PASSWORD", password);
 
-      UserModel model = null;
       var result = db.Fill(sql.ToString());
       if (result.Rows.Count > 0)
       {
-        model = new UserModel(userID, result.Rows[0]["USER_NAME"].ToString());
+        return createUserModel(result.Rows[0]);
       }
 
-      return model;
+      return null;
     }
 
     /// <summary>
@@ -170,6 +172,81 @@ namespace Domain.Repository.User
 
       return false;
     }
+
+
+    #region プライベートメソッド
+
+    /// <summary>
+    /// UserModelの作成
+    /// </summary>
+    /// <param name="src">データ元のDataRow</param>
+    /// <returns>UserModelインスタンス</returns>
+    private UserModel createUserModel(DataRow src)
+    {
+      string userID = string.Empty;
+      string userName = string.Empty;
+      string password = string.Empty;
+      bool isDelete = false;
+      string entryUserId = string.Empty;
+      DateTimeOffset? entryDate = null;
+      string modifyUserId = string.Empty;
+      DateTimeOffset? modifyDate = null;
+      int modifyVersion = 1;
+
+      var columns = src.Table.Columns;
+      var columnName = string.Empty;
+
+      columnName = "USER_ID";
+      if (columns.Contains(columnName))
+      {
+        userID = src[columnName].ToString();
+      }
+      columnName = "USER_NAME";
+      if (columns.Contains(columnName))
+      {
+        userName = src[columnName].ToString();
+      }
+      columnName = "PASSWORD";
+      if (columns.Contains(columnName))
+      {
+        password = src[columnName].ToString();
+      }
+      columnName = "DEL_FLAGE";
+      if (columns.Contains(columnName))
+      {
+        isDelete = (bool)src[columnName];
+      }
+      columnName = "ENTRY_USER";
+      if (columns.Contains(columnName))
+      {
+        entryUserId = src[columnName].ToString();
+      }
+      columnName = "ENTRY_DATE";
+      if (columns.Contains(columnName))
+      {
+        entryDate = src[columnName] as DateTimeOffset?;
+      }
+      columnName = "MOD_USER";
+      if (columns.Contains(columnName))
+      {
+        modifyUserId = src[columnName].ToString();
+      }
+      columnName = "MOD_DATE";
+      if (columns.Contains(columnName))
+      {
+        modifyDate = src[columnName] as DateTimeOffset?;
+      }
+      columnName = "MOD_VERSION";
+      if (columns.Contains(columnName))
+      {
+        modifyVersion = (int)src[columnName];
+      }
+
+      return new UserModel(userID, userName, password, isDelete,
+                           entryUserId, entryDate,
+                           modifyUserId, modifyDate, modifyVersion);
+    }
+    #endregion
 
   }
 }
