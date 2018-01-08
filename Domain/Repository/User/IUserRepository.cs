@@ -48,21 +48,21 @@ namespace Domain.Repository.User
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <returns>成否</returns>
-    bool append(UserModel userData);
+    bool Append(UserModel userData);
 
     /// <summary>
     /// ユーザーの更新
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <returns>成否</returns>
-    bool update(UserModel userData);
+    bool Update(UserModel userData);
 
     /// <summary>
     /// ユーザーの削除
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <returns>成否</returns>
-    bool remove(UserModel userData);
+    bool Remove(UserModel userData);
 
     /// <summary>
     /// パスワード変更
@@ -71,6 +71,6 @@ namespace Domain.Repository.User
     /// <param name="password">現在のパスワード</param>
     /// <param name="newPassword">新しいパスワード</param>
     /// <returns>成否</returns>
-    bool changePassword(string userID, string password, string newPassword);
+    bool ChangePassword(string userID, string password, string newPassword);
     }
 }
