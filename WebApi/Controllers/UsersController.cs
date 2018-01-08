@@ -308,17 +308,34 @@ namespace WebApi.Controllers
         return BadRequest();
       }
 
-      // ログイン中のユーザーIDを取得
-      var userID = getLoginUserId(param);
-      if(userID == null)
+      var userId = string.Empty;
+
+      if(param.ContainsKey("requestData"))
       {
+        var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
+        Newtonsoft.Json.Linq.JToken jsonToken = null;
+
+        var paramName=string.Empty;
+
+        // パラメータの設定
+        paramName = "id";
+        if (requestData.TryGetValue(paramName,out jsonToken))
+        {
+          userId = requestData[paramName].ToString();
+        }
+      }
+
+      // 入力チェック
+      if(string.IsNullOrEmpty(userId))
+      {
+        //logger.LogError("Pram[{0}]が未設定", paramNameUserId);
         return BadRequest();
       }
 
       UserModel serviceResult = null;
       try
       {
-        serviceResult = service.Find(userID);
+        serviceResult = service.Find(userId);
       }
       catch(Exception ex)
       {
