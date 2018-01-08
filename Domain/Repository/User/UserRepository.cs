@@ -215,7 +215,7 @@ namespace Domain.Repository.User
       sql.AppendLine("  , @MOD_VERSION");
       sql.AppendLine(") ");
 
-      var proccesDateTime = DateTimeOffset.Now;
+      var proccesDateTime = DateTime.Now;
 
       // Param設定
       db.ClearParam();
@@ -264,7 +264,7 @@ namespace Domain.Repository.User
       sql.AppendLine("  USER_ID = @USER_ID");
       sql.AppendLine("  AND MOD_VERSION = @MOD_VERSION");
 
-      var proccesDateTime = DateTimeOffset.Now;
+      var proccesDateTime = DateTime.Now;
 
       // Param設定
       db.ClearParam();
@@ -368,9 +368,9 @@ namespace Domain.Repository.User
       string password = string.Empty;
       bool isDelete = false;
       string entryUserId = string.Empty;
-      DateTimeOffset? entryDate = null;
+      DateTime? entryDate = null;
       string modifyUserId = string.Empty;
-      DateTimeOffset? modifyDate = null;
+      DateTime? modifyDate = null;
       int modifyVersion = 1;
 
       var columns = src.Table.Columns;
@@ -408,7 +408,7 @@ namespace Domain.Repository.User
       columnName = "ENTRY_DATE";
       if (columns.Contains(columnName))
       {
-        entryDate = src[columnName] as DateTimeOffset?;
+        entryDate = src[columnName] as DateTime?;
       }
       columnName = "MOD_USER";
       if (columns.Contains(columnName))
@@ -418,7 +418,7 @@ namespace Domain.Repository.User
       columnName = "MOD_DATE";
       if (columns.Contains(columnName))
       {
-        modifyDate = src[columnName] as DateTimeOffset?;
+        modifyDate = src[columnName] as DateTime?;
       }
       columnName = "MOD_VERSION";
       if (columns.Contains(columnName))

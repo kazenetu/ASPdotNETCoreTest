@@ -17,8 +17,8 @@ namespace Domain.Model
     /// <param name="userName">ユーザー名</param>
     /// <param name="password">パスワード</param>
     public UserModel(string userID, string userName, string password = "", bool isDelete = false,
-                     string entryUserId = "", DateTimeOffset? entryDate = null,
-                     string modifyUserId = "", DateTimeOffset? modifyDate = null, int modifyVersion = 1)
+                     string entryUserId = "", DateTime? entryDate = null,
+                     string modifyUserId = "", DateTime? modifyDate = null, int modifyVersion = 1)
     {
       this.UserID = userID;
       this.UserName = userName;
@@ -68,7 +68,7 @@ namespace Domain.Model
     /// 登録日時
     /// </summary>
     /// <returns>登録日時またはnull</returns>
-    public DateTimeOffset? EntryDate { private set; get; }
+    public DateTime? EntryDate { private set; get; }
 
     /// <summary>
     /// 更新ユーザーID
@@ -80,7 +80,7 @@ namespace Domain.Model
     /// 更新日時
     /// </summary>
     /// <returns>更新日時またはnull</returns>
-    public DateTimeOffset? ModifyDate { private set; get; }
+    public DateTime? ModifyDate { private set; get; }
 
     /// <summary>
     /// 更新バージョン

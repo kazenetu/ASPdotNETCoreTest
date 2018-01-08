@@ -349,7 +349,55 @@ namespace WebApi.Controllers
       if (serviceResult != null)
       {
         result.Add("result", "OK");
-        result.Add("responseData", serviceResult);
+      }
+      else
+      {
+        result.Add("result", "NG");
+      }
+      result.Add("responseData", serviceResult);
+
+      return Json(result);
+    }
+
+    // POST api/user/insert
+    [HttpPost("insert")]
+    [AutoValidateAntiforgeryToken]
+    public IActionResult Insert([FromBody]Dictionary<string, object> param)
+    {
+      // ログインチェック
+      if(!isLogin(param)){
+        return BadRequest();
+      }
+
+      // model取得
+      var model = createModel(param);
+
+
+      // 入力チェック
+      if(string.IsNullOrEmpty(model.UserID))
+      {
+        //logger.LogError("Pram[{0}]が未設定", paramNameUserId);
+        return BadRequest();
+      }
+
+      var serviceResult = false;
+      try
+      {
+        serviceResult = service.Save(model, getLoginUserId(param));
+      }
+      catch(Exception ex)
+      {
+        var message = ex.Message;
+
+        //TODO :ログ出力
+        return BadRequest();
+      }
+
+      var result = new Dictionary<string, object>();
+      if (serviceResult)
+      {
+        result.Add("result", "OK");
+        result.Add("responseData", string.Empty);
       }
       else
       {
@@ -358,6 +406,107 @@ namespace WebApi.Controllers
       }
 
       return Json(result);
+    }
+
+    // POST api/user/update
+    [HttpPost("update")]
+    [AutoValidateAntiforgeryToken]
+    public IActionResult Update([FromBody]Dictionary<string, object> param)
+    {
+      // ログインチェック
+      if(!isLogin(param)){
+        return BadRequest();
+      }
+
+      // model取得
+      var model = createModel(param);
+
+
+      // 入力チェック
+      if(string.IsNullOrEmpty(model.UserID))
+      {
+        //logger.LogError("Pram[{0}]が未設定", paramNameUserId);
+        return BadRequest();
+      }
+
+      var serviceResult = false;
+      try
+      {
+        serviceResult = service.Save(model, getLoginUserId(param));
+      }
+      catch(Exception ex)
+      {
+        var message = ex.Message;
+
+        //TODO :ログ出力
+        return BadRequest();
+      }
+
+      var result = new Dictionary<string, object>();
+      if (serviceResult)
+      {
+        result.Add("result", "OK");
+        result.Add("responseData", null);
+      }
+      else
+      {
+        result.Add("result", "NG");
+        result.Add("errorMessage", ErrorNotFound);
+      }
+
+      return Json(result);
+    }
+
+    /// <summary>
+    /// Model生成
+    /// </summary>
+    /// <param name="param">入力情報</param>
+    private UserModel createModel(Dictionary<string, object> param)
+    {
+      var userId = string.Empty;
+      var userName = string.Empty;
+      var password = string.Empty;
+      var isDelete = false;
+      var version = 0;
+
+      if(param.ContainsKey("requestData"))
+      {
+        var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
+        Newtonsoft.Json.Linq.JToken jsonToken = null;
+
+        var paramName = string.Empty;
+
+        // パラメータの設定
+        paramName = "id";
+        if (requestData.TryGetValue(paramName,out jsonToken))
+        {
+          userId = requestData[paramName].ToString();
+        }
+        paramName = "name";
+        if (requestData.TryGetValue(paramName,out jsonToken))
+        {
+          userName = requestData[paramName].ToString();
+        }
+        paramName = "password";
+        if (requestData.TryGetValue(paramName,out jsonToken))
+        {
+          password = requestData[paramName].ToString();
+        }
+        paramName = "isDelete";
+        if (requestData.TryGetValue(paramName,out jsonToken))
+        {
+          bool.TryParse(requestData[paramName].ToString(), out isDelete);
+        }
+        paramName = "version";
+        if (requestData.TryGetValue(paramName,out jsonToken))
+        {
+          int.TryParse(requestData[paramName].ToString(), out version);
+        }
+      }
+
+      return new UserModel(userId, userName, password, isDelete,
+                           string.Empty, null, string.Empty, null, version);
+
     }
 
   }
