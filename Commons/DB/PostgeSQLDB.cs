@@ -171,7 +171,9 @@ namespace Commons.DB
             {
                 this.tran.Rollback();
             }
-            this.tran.Dispose();
+            if(this.tran != null){
+                this.tran.Dispose();
+            }
             this.conn.Close();
             this.conn.Dispose();
         }
