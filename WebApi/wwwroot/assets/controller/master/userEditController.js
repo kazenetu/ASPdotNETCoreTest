@@ -57,17 +57,10 @@ front.controller.UserEditController = function UserEditController($q, $location,
             settings.createMode = (values.userId === null);
         },
         setEditControls : function(values) {
-            ctrl.userName = values.name;
+            ctrl.userId = values.userID;
+            ctrl.userName = values.userName;
             ctrl.password = values.password;
-            if(values.date !== null){
-                ctrl.birthDay = new Date(values.date);
-            }
-            if(values.time !== null){
-                ctrl.time = new Date("1970/01/01 " + values.time);
-            }
-            if(values.ts !== null){
-                ctrl.ts = new Date(values.ts);
-            }
+            ctrl.isDelete = values.isDelete;
         },
         listPage : '/master/userlist',
 
@@ -121,9 +114,6 @@ front.controller.UserEditController = function UserEditController($q, $location,
         ctrl.errorUserId = '';
         ctrl.errorUserName = '';
         ctrl.errorPassword = '';
-        ctrl.errorBirthDay = "";
-        ctrl.errorTime = "";
-        ctrl.errorTs = "";
 
         // 新規作成モードのみのチェック
         if(settings.isCreateMode()){
@@ -143,12 +133,6 @@ front.controller.UserEditController = function UserEditController($q, $location,
         if(ctrl.userName === ''){
             ctrl.showError('E0013',['ユーザー名']);
             ctrl.errorUserName = 'has-error';
-            return false;
-        }
-
-        if(ctrl.birthDay === null){
-            ctrl.showError('E0013',['誕生日']);
-            ctrl.errorBirthDay = 'has-error';
             return false;
         }
 
