@@ -65,7 +65,7 @@ namespace Domain.Service.User
     /// <returns>ユーザー情報(検索できない場合はnull)</returns>
     public UserModel Find(string userID)
     {
-      return null;
+      return repository.Find(userID);
     }
 
     /// <summary>

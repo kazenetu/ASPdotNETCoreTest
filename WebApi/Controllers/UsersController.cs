@@ -17,6 +17,7 @@ namespace WebApi.Controllers
     private static string ErrorLoginNG  = "ログイン失敗";
     private static string ErrorPasswordNG  = "パスワード失敗";
     private static string SearchResultZero = "検索結果ゼロ件";
+    private static string ErrorNotFound = "データが見つかりません";
 
     public UsersController(IUserService service)
     {
@@ -292,6 +293,51 @@ namespace WebApi.Controllers
       {
         result.Add("result", "NG");
         result.Add("errorMessage",SearchResultZero);
+      }
+
+      return Json(result);
+    }
+
+    // POST api/user/find
+    [HttpPost("find")]
+    [AutoValidateAntiforgeryToken]
+    public IActionResult Find([FromBody]Dictionary<string, object> param)
+    {
+      // ログインチェック
+      if(!isLogin(param)){
+        return BadRequest();
+      }
+
+      // ログイン中のユーザーIDを取得
+      var userID = getLoginUserId(param);
+      if(userID == null)
+      {
+        return BadRequest();
+      }
+
+      UserModel serviceResult = null;
+      try
+      {
+        serviceResult = service.Find(userID);
+      }
+      catch(Exception ex)
+      {
+        var message = ex.Message;
+
+        //TODO :ログ出力
+        return BadRequest();
+      }
+
+      var result = new Dictionary<string, object>();
+      if (serviceResult != null)
+      {
+        result.Add("result", "OK");
+        result.Add("responseData", serviceResult);
+      }
+      else
+      {
+        result.Add("result", "NG");
+        result.Add("errorMessage", ErrorNotFound);
       }
 
       return Json(result);

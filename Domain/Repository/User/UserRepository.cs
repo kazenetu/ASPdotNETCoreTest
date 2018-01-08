@@ -168,6 +168,24 @@ namespace Domain.Repository.User
     /// <returns>ユーザー情報(検索できない場合はnull)</returns>
     public UserModel Find(string userId)
     {
+      var sql = new StringBuilder();
+      sql.AppendLine("select");
+      sql.AppendLine("  * ");
+      sql.AppendLine("from");
+      sql.AppendLine("  MT_USER");
+      sql.AppendLine("where ");
+      sql.AppendLine("  USER_ID = @USER_ID");
+
+      // Param設定
+      db.ClearParam();
+      db.AddParam("@USER_ID", userId);
+
+      var result = db.Fill(sql.ToString());
+      if (result.Rows.Count > 0)
+      {
+        return createUserModel(result.Rows[0]);
+      }
+
       return null;
     }
 
@@ -210,6 +228,14 @@ namespace Domain.Repository.User
     /// <returns>成否</returns>
     public bool changePassword(string userID, string password, string newPassword)
     {
+      // 変更対象のModelを取得する
+      var model = Find(userID);
+
+      // 取得できない場合はfalseを返す
+      if(model == null){
+        return false;
+      }
+
       var sql = new StringBuilder();
       sql.Append("update MT_USER set PASSWORD = @NEW_PASSWORD");
       sql.Append("  where");
