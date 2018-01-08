@@ -8,17 +8,14 @@ front.controller.UserEditController = function UserEditController($q, $location,
     ctrl.userId = "";
     ctrl.userName = "";
     ctrl.password = "";
-    ctrl.birthDay = null;
-    ctrl.time = null;
-    ctrl.ts = null;
+    ctrl.isDelete = "";
+    ctrl.version = 1;
 
     // 入力情報のエラークラス
     ctrl.errorUserId = "";
     ctrl.errorUserName = "";
     ctrl.errorPassword = "";
-    ctrl.errorBirthDay = "";
-    ctrl.errorTime = "";
-    ctrl.errorTs = "";
+    ctrl.errorDelete = "";
 
     /**
      * ページ設定
@@ -34,18 +31,13 @@ front.controller.UserEditController = function UserEditController($q, $location,
             };
         },
         getInsUpdRequestData : function() {
-            var timeString = null;
-            if(ctrl.time !== null){
-                timeString = ctrl.time.getTime();
-            }
 
             return {
-                id :ctrl.userId,
-                name :ctrl.userName,
-                date :ctrl.birthDay,
-                time :timeString,
-                ts :ctrl.ts,
-                password :ctrl.password
+                id : ctrl.userId,
+                name : ctrl.userName,
+                password : ctrl.password,
+                isDelete : ctrl.isDelete,
+                version : ctrl.version
             };
         },
         getDeleteRequestData : function() {
@@ -61,6 +53,7 @@ front.controller.UserEditController = function UserEditController($q, $location,
             ctrl.userName = values.userName;
             ctrl.password = values.password;
             ctrl.isDelete = values.isDelete;
+            ctrl.version = values.modifyVersion;
         },
         listPage : '/master/userlist',
 

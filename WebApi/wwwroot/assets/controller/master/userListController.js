@@ -94,7 +94,7 @@ front.controller.UserListController =  function UserListController($q,$location,
     ctrl.edit = function(result){
         // 主キーの連想配列を変更キーStorageに設定
         var values={
-                userId : result.id
+                userId : result.userID
         };
 
         storageService.setValue(storageService.keys.updateKeys,values);
