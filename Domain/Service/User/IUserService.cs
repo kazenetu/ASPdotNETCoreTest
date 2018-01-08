@@ -37,9 +37,9 @@ namespace Domain.Service.User
     /// <summary>
     /// ユーザーを取得する
     /// </summary>
-    /// <param name="searchCondition">検索条件</param>
+    /// <param name="userID">ユーザー名</param>
     /// <returns>ユーザー情報(検索できない場合はnull)</returns>
-    UserModel Find(UserSearchCondition searchCondition);
+    UserModel Find(string userID);
 
     /// <summary>
     /// ユーザーの保存
