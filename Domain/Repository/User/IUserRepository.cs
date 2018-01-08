@@ -47,22 +47,25 @@ namespace Domain.Repository.User
     /// ユーザーの登録
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
+    /// <param name="loginUserId">ログイン中のユーザーID</param>
     /// <returns>成否</returns>
-    bool Append(UserModel userData);
+    bool Append(UserModel userData, string loginUserId);
 
     /// <summary>
     /// ユーザーの更新
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
+    /// <param name="loginUserId">ログイン中のユーザーID</param>
     /// <returns>成否</returns>
-    bool Modify(UserModel userData);
+    bool Modify(UserModel userData, string loginUserId);
 
     /// <summary>
     /// ユーザーの削除
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
+    /// <param name="loginUserId">ログイン中のユーザーID</param>
     /// <returns>成否</returns>
-    bool Remove(UserModel userData);
+    bool Remove(UserModel userData, string loginUserId);
 
     /// <summary>
     /// パスワード変更

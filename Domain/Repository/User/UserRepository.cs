@@ -186,9 +186,60 @@ namespace Domain.Repository.User
     /// ユーザーの登録
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
+    /// <param name="loginUserId">ログイン中のユーザーID</param>
     /// <returns>成否</returns>
-    public bool Append(UserModel userData)
+    public bool Append(UserModel userData, string loginUserId)
     {
+      var sql = new StringBuilder();
+      sql.AppendLine("INSERT"); 
+      sql.AppendLine("INTO MT_USER( ");
+      sql.AppendLine("  USER_ID");
+      sql.AppendLine("  , USER_NAME");
+      sql.AppendLine("  , PASSWORD");
+      sql.AppendLine("  , DEL_FLAG");
+      sql.AppendLine("  , ENTRY_USER");
+      sql.AppendLine("  , ENTRY_DATE");
+      sql.AppendLine("  , MOD_USER");
+      sql.AppendLine("  , MOD_DATE");
+      sql.AppendLine("  , MOD_VERSION");
+      sql.AppendLine(") ");
+      sql.AppendLine("VALUES ( ");
+      sql.AppendLine("  @USER_ID");
+      sql.AppendLine("  , @USER_NAME");
+      sql.AppendLine("  , @PASSWORD");
+      sql.AppendLine("  , @DEL_FLAG");
+      sql.AppendLine("  , @ENTRY_USER");
+      sql.AppendLine("  , @ENTRY_DATE");
+      sql.AppendLine("  , @MOD_USER");
+      sql.AppendLine("  , @MOD_DATE");
+      sql.AppendLine("  , @MOD_VERSION");
+      sql.AppendLine(") ");
+
+      var proccesDateTime = DateTimeOffset.Now;
+
+      // Param設定
+      db.ClearParam();
+      db.AddParam("@USER_ID", userData.UserID);
+      db.AddParam("@USER_NAME", userData.UserName);
+      db.AddParam("@PASSWORD", userData.Password);
+      db.AddParam("@DEL_FLAG", userData.IsDelete);
+
+      db.AddParam("@ENTRY_USER", loginUserId);
+      db.AddParam("@ENTRY_DATE", proccesDateTime);
+      db.AddParam("@MOD_USER", loginUserId);
+      db.AddParam("@MOD_DATE", proccesDateTime);
+      db.AddParam("@MOD_VERSION", 1);
+
+      try
+      {
+        var resultCount = db.ExecuteNonQuery(sql.ToString());
+        return resultCount > 0;
+      }
+      catch
+      {
+        //Log出力
+      }
+
       return false;
     }
 
@@ -196,9 +247,48 @@ namespace Domain.Repository.User
     /// ユーザーの更新
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
+    /// <param name="loginUserId">ログイン中のユーザーID</param>
     /// <returns>成否</returns>
-    public bool Modify(UserModel userData)
+    public bool Modify(UserModel userData, string loginUserId)
     {
+      var sql = new StringBuilder();
+      sql.AppendLine("UPDATE MT_USER ");
+      sql.AppendLine("SET");
+      sql.AppendLine("  USER_NAME = @USER_NAME");
+      sql.AppendLine("  , PASSWORD = @PASSWORD");
+      sql.AppendLine("  , DEL_FLAG = @DEL_FLAG");
+      sql.AppendLine("  , MOD_USER = @MOD_USER");
+      sql.AppendLine("  , MOD_DATE = @MOD_DATE");
+      sql.AppendLine("  , MOD_VERSION = @NEW_MOD_VERSION ");
+      sql.AppendLine("WHERE");
+      sql.AppendLine("  USER_ID = @USER_ID");
+      sql.AppendLine("  AND MOD_VERSION = @MOD_VERSION");
+
+      var proccesDateTime = DateTimeOffset.Now;
+
+      // Param設定
+      db.ClearParam();
+      db.AddParam("@USER_NAME", userData.UserName);
+      db.AddParam("@PASSWORD", userData.Password);
+      db.AddParam("@DEL_FLAG", userData.IsDelete);
+      db.AddParam("@NEW_MOD_VERSION", userData.ModifyVersion + 1);
+
+      db.AddParam("@MOD_USER", loginUserId);
+      db.AddParam("@MOD_DATE", proccesDateTime);
+
+      db.AddParam("@USER_ID", userData.UserID);
+      db.AddParam("@MOD_VERSION", userData.ModifyVersion);
+
+      try
+      {
+        var resultCount = db.ExecuteNonQuery(sql.ToString());
+        return resultCount > 0;
+      }
+      catch
+      {
+        //Log出力
+      }
+
       return false;
     }
 
@@ -206,8 +296,9 @@ namespace Domain.Repository.User
     /// ユーザーの削除
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
+    /// <param name="loginUserId">ログイン中のユーザーID</param>
     /// <returns>成否</returns>
-    public bool Remove(UserModel userData)
+    public bool Remove(UserModel userData, string loginUserId)
     {
       return false;
     }
