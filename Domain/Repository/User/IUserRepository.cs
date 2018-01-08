@@ -4,8 +4,8 @@ using Domain.Service.User;
 
 namespace Domain.Repository.User
 {
-    public interface IUserRepository
-    {
+  public interface IUserRepository
+  {
     /// <summary>
     /// ログイン
     /// </summary>
@@ -72,5 +72,5 @@ namespace Domain.Repository.User
     /// <param name="newPassword">新しいパスワード</param>
     /// <returns>成否</returns>
     bool ChangePassword(string userID, string password, string newPassword);
-    }
+  }
 }

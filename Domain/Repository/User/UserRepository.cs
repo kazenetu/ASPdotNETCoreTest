@@ -15,7 +15,7 @@ namespace Domain.Repository.User
   /// <summary>
   /// ユーザーリポジトリ
   /// </summary>
-  public class UserRepository : IUserRepository
+  public class UserRepository : IUserRepository, IDisposable 
   {
     private IDatabase db;
 
@@ -232,7 +232,8 @@ namespace Domain.Repository.User
       var model = Find(userID);
 
       // 取得できない場合はfalseを返す
-      if(model == null){
+      if (model == null)
+      {
         return false;
       }
 
@@ -311,8 +312,9 @@ namespace Domain.Repository.User
       columnName = "DEL_FLAG";
       if (columns.Contains(columnName))
       {
-        var tempValue=0;
-        if(int.TryParse(src[columnName].ToString(), out tempValue)){
+        var tempValue = 0;
+        if (int.TryParse(src[columnName].ToString(), out tempValue))
+        {
           isDelete = Convert.ToBoolean(tempValue);
         }
       }
