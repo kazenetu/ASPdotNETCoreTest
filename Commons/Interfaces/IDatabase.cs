@@ -35,6 +35,11 @@ namespace Commons.Interfaces
     DataTable Fill(string sql);
 
     /// <summary>
+    /// トランザクション設定
+    /// </summary>
+    void BeginTransaction();
+
+    /// <summary>
     /// コミット
     /// </summary>
     void Commit();

@@ -46,8 +46,6 @@ namespace Commons.DB
     {
       this.conn = this.getConnection(connectionString);
       this.conn.Open();
-      this.tran = this.conn.BeginTransaction();
-      this.isTran = true;
 
       this.param = new Dictionary<string, object>();
     }
@@ -129,10 +127,24 @@ namespace Commons.DB
     }
 
     /// <summary>
+    /// トランザクション設定
+    /// </summary>
+    public void BeginTransaction()
+    {
+      this.tran = this.conn.BeginTransaction();
+      this.isTran = true;
+    }
+
+    /// <summary>
     /// コミット
     /// </summary>
     public void Commit()
     {
+      if (!this.isTran)
+      {
+        return;
+      }
+
       this.tran.Commit();
       this.isTran = false;
     }
@@ -142,6 +154,11 @@ namespace Commons.DB
     /// </summary>
     public void Rollback()
     {
+      if (!this.isTran)
+      {
+        return;
+      }
+
       this.tran.Rollback();
       this.isTran = false;
     }
