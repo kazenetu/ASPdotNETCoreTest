@@ -55,7 +55,7 @@ namespace Domain.Repository.User
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <returns>成否</returns>
-    bool Update(UserModel userData);
+    bool Modify(UserModel userData);
 
     /// <summary>
     /// ユーザーの削除
