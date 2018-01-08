@@ -45,15 +45,17 @@ namespace Domain.Service.User
     /// ユーザーの保存
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
+    /// <param name="loginUserId">ログイン中のユーザーID</param>
     /// <returns>成否</returns>
-    bool Save(UserModel userData);
+    bool Save(UserModel userData, string loginUserId);
 
     /// <summary>
     /// ユーザーの論理削除
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
+    /// <param name="loginUserId">ログイン中のユーザーID</param>
     /// <returns>成否</returns>
-    bool Remove(UserModel userData);
+    bool Remove(UserModel userData, string loginUserId);
 
     /// <summary>
     /// パスワード変更

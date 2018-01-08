@@ -72,18 +72,40 @@ namespace Domain.Service.User
     /// ユーザーの保存
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
+    /// <param name="loginUserId">ログイン中のユーザーID</param>
     /// <returns>成否</returns>
-    public bool Save(UserModel userData)
+    public bool Save(UserModel userData, string loginUserId)
     {
-      return false;
+      var result = false;
+
+      // トランザクション作成
+      repository.BeginTransaction();
+
+      // 処理実行
+      result = repository.Modify(userData,loginUserId);
+      if(!result)
+      {
+        result = repository.Append(userData,loginUserId);
+      }
+
+      // コミットまたはロールバック
+      if(result){
+        repository.Commit();
+      }
+      else{
+        repository.Rollback();
+      }
+
+      return result;
     }
 
     /// <summary>
     /// ユーザーの削除
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
+    /// <param name="loginUserId">ログイン中のユーザーID</param>
     /// <returns>成否</returns>
-    public bool Remove(UserModel userData)
+    public bool Remove(UserModel userData, string loginUserId)
     {
       return false;
     }
