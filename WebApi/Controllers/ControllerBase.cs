@@ -55,17 +55,28 @@ namespace WebApi.Controllers
     }
 
     /// <summary>
+    /// ログイン中のユーザーIDを取得
+    /// </summary>
+    /// <param name="param">入力情報</param>
+    /// <returns>ユーザーID</returns>
+    /// <remarks>取得できない場合はnull</remarks>
+    protected string getLoginUserId(Dictionary<string, object> param)
+    {
+      var paramNameUserId = "loginUserId";
+      if(!param.ContainsKey(paramNameUserId)){
+        return null;
+      }
+      return param[paramNameUserId].ToString();
+    }
+
+    /// <summary>
     /// ログインチェック
     /// </summary>
     /// <param name="userID">入力されたユーザーID</param>
     /// <returns>ログイン結果</returns>
     protected bool isLogin(Dictionary<string, object> param)
     {
-      var paramNameUserId = "loginUserId";
-      if(!param.ContainsKey(paramNameUserId)){
-        return false;
-      }
-      var userID = param[paramNameUserId].ToString();
+      var userID = getLoginUserId(param);
       var loginUser = getSessionString(SessionKeyUserID);
 
       if (loginUser == userID)
