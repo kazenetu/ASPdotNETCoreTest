@@ -97,7 +97,7 @@ namespace Domain.Service.User
     /// <returns>成否</returns>
     public bool ChangePassword(string userID, string password, string newPassword)
     {
-      return repository.changePassword(userID,password,newPassword);
+      return repository.ChangePassword(userID,password,newPassword);
     }
   }
 }
