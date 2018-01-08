@@ -97,7 +97,23 @@ namespace Domain.Service.User
     /// <returns>成否</returns>
     public bool ChangePassword(string userID, string password, string newPassword)
     {
-      return repository.ChangePassword(userID,password,newPassword);
+      var result = false;
+
+      // トランザクション作成
+      repository.BeginTransaction();
+
+      // 処理実行
+      result = repository.ChangePassword(userID,password,newPassword);
+
+      // コミットまたはロールバック
+      if(result){
+        repository.Commit();
+      }
+      else{
+        repository.Rollback();
+      }
+
+      return result;
     }
   }
 }

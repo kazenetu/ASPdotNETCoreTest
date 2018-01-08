@@ -4,7 +4,7 @@ using Domain.Service.User;
 
 namespace Domain.Repository.User
 {
-  public interface IUserRepository
+  public interface IUserRepository : IRepositoryBase
   {
     /// <summary>
     /// ログイン

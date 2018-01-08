@@ -15,18 +15,11 @@ namespace Domain.Repository.User
   /// <summary>
   /// ユーザーリポジトリ
   /// </summary>
-  public class UserRepository : IUserRepository, IDisposable 
+  public class UserRepository : RepositoryBase, IUserRepository 
   {
-    private IDatabase db;
-
-    public UserRepository(IOptions<DatabaseConfigModel> config)
+    public UserRepository(IOptions<DatabaseConfigModel> config) : base(config)
     {
-      db = DatabaseFactory.Create(config.Value);
-    }
 
-    public void Dispose()
-    {
-      db.Dispose();
     }
 
     /// <summary>
@@ -254,12 +247,10 @@ namespace Domain.Repository.User
         var updateCount = db.ExecuteNonQuery(sql.ToString());
         if (updateCount > 0)
         {
-          db.Commit();
           return true;
         }
         else
         {
-          db.Rollback();
           return false;
         }
       }
