@@ -20,6 +20,7 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
 
     <None Include="Resource/Test.db" CopyToOutputDirectory="PreserveNewest" />
+    <Content Update="nlog.config" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
