@@ -4,10 +4,18 @@ front.controller.LoginController = function LoginController($location, webApiSer
 
     var ctrl = this;
 
-    ctrl.id = "";
+    ctrl.userId = "";
     ctrl.password = "";
 
+    // 入力情報のエラークラス
+    ctrl.errorUserId = "";
+    ctrl.errorPassword = "";
+    
     ctrl.login = function() {
+        // 入力チェック
+        if(!validateInput()){
+            return;
+        }
 
         webApiService.post('api/user/login', {
             id : ctrl.userId,
@@ -22,6 +30,29 @@ front.controller.LoginController = function LoginController($location, webApiSer
                 $location.path('/main');
             }
         });
+    }
+
+        /**
+     * DB反映前の入力チェック
+     */
+    function validateInput(){
+        // エラーなし状態に設定
+        ctrl.hideError();
+        ctrl.errorUserId = '';
+        ctrl.errorPassword = '';
+
+        if(ctrl.userId === ''){
+            ctrl.showError('E0013',['ユーザーID']);
+            ctrl.errorUserId = 'has-error';
+            return false;
+        }
+
+        if(ctrl.password === ''){
+            ctrl.showError('E0013',['パスワード']);
+            ctrl.errorPassword = 'has-error';
+            return false;
+        }
+        return true;
     }
 
     /**

@@ -7,20 +7,33 @@
     <!-- メイン画面 -->
     <div  class="container main-area" data-ng-cloak >
         <p class="bg-danger" data-ng-show="login.isError">{{login.errorMsg}}</p>
-        <form>
-            <div class="row">
-                ユーザーID：<input type="text" data-ng-model="login.userId">※「test」でログインできます。
-            </div>
-            <div class="row">
-                パスワード：<input type="password" data-ng-model="login.password">
-            </div>
 
-            <!-- ボタン類 -->
-            <div class="form-group buttons-row">
-                <div class="col-sm-2 text-right">
-                    <button class="btn" data-ng-click="login.login()">ログイン</button>
+        <form class="form-horizontal">
+           
+            <div class="form-group {{login.errorUserId}}">
+                    <div class="col-sm-offset-2 col-sm-2 text-right">
+                            <label class="control-label text-right" for="userId">ユーザーID</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" id="userId" class="form-control" data-ng-model="login.userId">
+                        ※「test」でログインできます。
+                    </div>
                 </div>
-            </div>
-        </form>
+                <div class="form-group {{login.errorPassword}}">
+                    <div class="col-sm-offset-2 col-sm-2 text-right">
+                        <label class="control-label" for="password">パスワード</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="password" id="password" class="form-control" data-ng-model="login.password">
+                    </div>
+                </div>
+
+                <!-- ボタン類 -->
+                <div class="form-group buttons-row">
+                    <div class="text-center">
+                        <button class="btn" data-ng-click="login.login()">ログイン</button>
+                    </div>
+                </div>
+            </form>
     </div>
  </div>
