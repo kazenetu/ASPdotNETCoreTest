@@ -6,6 +6,7 @@ using Domain.Service.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace WebApi.Controllers
 {
@@ -14,14 +15,17 @@ namespace WebApi.Controllers
   {
     private readonly IUserService service;
 
+    private readonly ILogger logger;
+
     private static string ErrorLoginNG  = "ログイン失敗";
     private static string ErrorPasswordNG  = "パスワード失敗";
     private static string SearchResultZero = "検索結果ゼロ件";
     private static string ErrorNotFound = "データが見つかりません";
 
-    public UsersController(IUserService service)
+    public UsersController(IUserService service, ILogger<UsersController> logger)
     {
       this.service = service;
+      this.logger = logger;
     }
 
     // POST api/user/login
@@ -35,12 +39,12 @@ namespace WebApi.Controllers
       // 入力チェック
       if (!param.ContainsKey(paramNameUserId))
       {
-        //logger.LogError("Pram[{0}]が未設定", paramNameUserId);
+        logger.LogError("Pram[{0}]が未設定", paramNameUserId);
         return BadRequest();
       }
       if (!param.ContainsKey(paramNamePassword))
       {
-        //logger.LogError("Pram[{0}]が未設定", paramNamePassword);
+        logger.LogError("Pram[{0}]が未設定", paramNamePassword);
         return BadRequest();
       }
 
@@ -64,10 +68,9 @@ namespace WebApi.Controllers
           data.Add("name", model.UserName);
         }
       }
-      catch//(Exception ex){
+      catch(Exception ex)
       {
-
-        //TODO :ログ出力
+        logger.LogCritical("{0}", ex.Message);
         return BadRequest();
       }
 
@@ -114,17 +117,17 @@ namespace WebApi.Controllers
       // 入力チェック
       if (!param.ContainsKey(paramNameUserId))
       {
-        //logger.LogError("Pram[{0}]が未設定", paramNameUserId);
+        logger.LogError("Pram[{0}]が未設定", paramNameUserId);
         return BadRequest();
       }
       if (!param.ContainsKey(paramNamePassword))
       {
-        //logger.LogError("Pram[{0}]が未設定", paramNamePassword);
+        logger.LogError("Pram[{0}]が未設定", paramNamePassword);
         return BadRequest();
       }
       if (!param.ContainsKey(paramNameNewPassword))
       {
-        //logger.LogError("Pram[{0}]が未設定", paramNameNewPassword);
+        logger.LogError("Pram[{0}]が未設定", paramNameNewPassword);
         return BadRequest();
       }
 
@@ -138,10 +141,9 @@ namespace WebApi.Controllers
       {
         serviceResult = service.ChangePassword(userId, password, newPassword);
       }
-      catch//(Exception ex){
+      catch(Exception ex)
       {
-
-        //TODO :ログ出力
+        logger.LogCritical("{0}", ex.Message);
         return BadRequest();
       }
 
@@ -167,7 +169,7 @@ namespace WebApi.Controllers
     {
       // ログインチェック
       if(!isLogin(param)){
-        return BadRequest();
+        return Unauthorized();
       }
 
       var searchCondition = new UserSearchCondition();
@@ -208,9 +210,7 @@ namespace WebApi.Controllers
       }
       catch(Exception ex)
       {
-        var message = ex.Message;
-
-        //TODO :ログ出力
+        logger.LogCritical("[{0}", ex.Message);
         return BadRequest();
       }
 
@@ -236,7 +236,7 @@ namespace WebApi.Controllers
     {
       // ログインチェック
       if(!isLogin(param)){
-        return BadRequest();
+        return Unauthorized();
       }
 
       var searchCondition = new UserSearchCondition();
@@ -277,9 +277,7 @@ namespace WebApi.Controllers
       }
       catch(Exception ex)
       {
-        var message = ex.Message;
-
-        //TODO :ログ出力
+        logger.LogCritical("{0}", ex.Message);
         return BadRequest();
       }
 
@@ -305,7 +303,7 @@ namespace WebApi.Controllers
     {
       // ログインチェック
       if(!isLogin(param)){
-        return BadRequest();
+        return Unauthorized();
       }
 
       var userId = string.Empty;
@@ -328,7 +326,7 @@ namespace WebApi.Controllers
       // 入力チェック
       if(string.IsNullOrEmpty(userId))
       {
-        //logger.LogError("Pram[{0}]が未設定", paramNameUserId);
+        logger.LogError("Pram[{0}]が未設定", nameof(userId));
         return BadRequest();
       }
 
@@ -339,9 +337,7 @@ namespace WebApi.Controllers
       }
       catch(Exception ex)
       {
-        var message = ex.Message;
-
-        //TODO :ログ出力
+        logger.LogCritical("[{0}", ex.Message);
         return BadRequest();
       }
 
@@ -366,17 +362,16 @@ namespace WebApi.Controllers
     {
       // ログインチェック
       if(!isLogin(param)){
-        return BadRequest();
+        return Unauthorized();
       }
 
       // model取得
       var model = createModel(param);
 
-
       // 入力チェック
       if(string.IsNullOrEmpty(model.UserID))
       {
-        //logger.LogError("Pram[{0}]が未設定", paramNameUserId);
+        logger.LogError("Pram[{0}]が未設定", nameof(model.UserID));
         return BadRequest();
       }
 
@@ -387,9 +382,7 @@ namespace WebApi.Controllers
       }
       catch(Exception ex)
       {
-        var message = ex.Message;
-
-        //TODO :ログ出力
+        logger.LogCritical("[{0}", ex.Message);
         return BadRequest();
       }
 
@@ -415,17 +408,16 @@ namespace WebApi.Controllers
     {
       // ログインチェック
       if(!isLogin(param)){
-        return BadRequest();
+        return Unauthorized();
       }
 
       // model取得
       var model = createModel(param);
 
-
       // 入力チェック
       if(string.IsNullOrEmpty(model.UserID))
       {
-        //logger.LogError("Pram[{0}]が未設定", paramNameUserId);
+        logger.LogError("Pram[{0}]が未設定", nameof(model.UserID));
         return BadRequest();
       }
 
@@ -436,9 +428,7 @@ namespace WebApi.Controllers
       }
       catch(Exception ex)
       {
-        var message = ex.Message;
-
-        //TODO :ログ出力
+        logger.LogCritical("[{0}", ex.Message);
         return BadRequest();
       }
 
