@@ -1,4 +1,4 @@
-front.common.service.WebApiService = function WebApiService($resource, $location){
+front.common.service.WebApiService = function WebApiService($resource){
     this.baseUri = "";
 
     /**
@@ -17,7 +17,7 @@ front.common.service.WebApiService = function WebApiService($resource, $location
       result.$promise.then(function (response) {
           callFunction(response);
       }, function (response) {
-          $location.path('/');
+          window.location.href = '/';
       });
     };
 
@@ -30,7 +30,7 @@ front.common.service.WebApiService = function WebApiService($resource, $location
       result.$promise.then(function (response) {
           callFunction(response);
       }, function (response) {
-          $location.path('/');
+        window.location.href = '/';
       });
     };
 
@@ -43,7 +43,7 @@ front.common.service.WebApiService = function WebApiService($resource, $location
       result.$promise.then(function (response) {
           callFunction(response);
       }, function (response) {
-          $location.path('/');
+        window.location.href = '/';
       });
     };
 
@@ -56,7 +56,7 @@ front.common.service.WebApiService = function WebApiService($resource, $location
       result.$promise.then(function (response) {
           callFunction(response);
       }, function (response) {
-          $location.path('/');
+        window.location.href = '/';
       });
     };
 
