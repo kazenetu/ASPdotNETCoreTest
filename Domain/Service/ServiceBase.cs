@@ -14,7 +14,7 @@ namespace Domain.Service
 
     #endregion
 
-    #region クラス定数
+    #region クラスメソッド
 
     /// <summary>
     /// レコード数から総ページ数を取得
