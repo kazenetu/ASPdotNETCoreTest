@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Logging;
+using static Domain.Service.ServiceBase;
 
 namespace WebApi.Controllers
 {
@@ -35,6 +36,8 @@ namespace WebApi.Controllers
     private static string ErrorPasswordNG = "パスワード失敗";
     private static string SearchResultZero = "検索結果ゼロ件";
     private static string ErrorNotFound = "データが見つかりません";
+    private static string ErrorSave = "{0}が失敗しました";
+    private static string ErrorVersion = "ほかの人が更新しています。再検索してください";
     #endregion
 
     #region コンストラクタ
@@ -177,7 +180,7 @@ namespace WebApi.Controllers
       var newPassword = param[paramNameNewPassword].ToString();
 
       var data = new Dictionary<string, object>();
-      var serviceResult = false;
+      var serviceResult = UpdateResult.Error;
       try
       {
         serviceResult = service.ChangePassword(userId, password, newPassword);
@@ -189,7 +192,7 @@ namespace WebApi.Controllers
       }
 
       var result = new Dictionary<string, object>();
-      if (serviceResult)
+      if (serviceResult == UpdateResult.OK)
       {
         result.Add("result", "OK");
       }
@@ -408,6 +411,7 @@ namespace WebApi.Controllers
       else
       {
         result.Add("result", "NG");
+        result.Add("errorMessage", ErrorNotFound);
       }
       result.Add("responseData", serviceResult);
 
@@ -440,7 +444,7 @@ namespace WebApi.Controllers
         return BadRequest();
       }
 
-      var serviceResult = false;
+      var serviceResult = UpdateResult.Error;
       try
       {
         serviceResult = service.Save(model, getLoginUserId(param));
@@ -452,7 +456,7 @@ namespace WebApi.Controllers
       }
 
       var result = new Dictionary<string, object>();
-      if (serviceResult)
+      if (serviceResult == UpdateResult.OK)
       {
         result.Add("result", "OK");
         result.Add("responseData", string.Empty);
@@ -460,7 +464,7 @@ namespace WebApi.Controllers
       else
       {
         result.Add("result", "NG");
-        result.Add("errorMessage", ErrorNotFound);
+        result.Add("errorMessage", string.Format(ErrorSave,"登録"));
       }
 
       return Json(result);
@@ -492,7 +496,7 @@ namespace WebApi.Controllers
         return BadRequest();
       }
 
-      var serviceResult = false;
+      var serviceResult = UpdateResult.Error;
       try
       {
         serviceResult = service.Save(model, getLoginUserId(param));
@@ -504,7 +508,7 @@ namespace WebApi.Controllers
       }
 
       var result = new Dictionary<string, object>();
-      if (serviceResult)
+      if (serviceResult == UpdateResult.OK)
       {
         result.Add("result", "OK");
         result.Add("responseData", null);
@@ -512,7 +516,12 @@ namespace WebApi.Controllers
       else
       {
         result.Add("result", "NG");
-        result.Add("errorMessage", ErrorNotFound);
+        if(serviceResult == UpdateResult.ErrorVaersion){
+          result.Add("errorMessage", ErrorVersion);
+        }
+        else{
+          result.Add("errorMessage", string.Format(ErrorSave,"更新"));
+        }
       }
 
       return Json(result);

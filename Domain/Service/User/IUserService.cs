@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Domain.Model;
+using static Domain.Service.ServiceBase;
 
 namespace Domain.Service.User
 {
@@ -47,7 +48,7 @@ namespace Domain.Service.User
     /// <param name="userData">ユーザーデータ</param>
     /// <param name="loginUserId">ログイン中のユーザーID</param>
     /// <returns>成否</returns>
-    bool Save(UserModel userData, string loginUserId);
+    UpdateResult Save(UserModel userData, string loginUserId);
 
     /// <summary>
     /// ユーザーの論理削除
@@ -55,7 +56,7 @@ namespace Domain.Service.User
     /// <param name="userData">ユーザーデータ</param>
     /// <param name="loginUserId">ログイン中のユーザーID</param>
     /// <returns>成否</returns>
-    bool Remove(UserModel userData, string loginUserId);
+    UpdateResult Remove(UserModel userData, string loginUserId);
 
     /// <summary>
     /// パスワード変更
@@ -64,6 +65,6 @@ namespace Domain.Service.User
     /// <param name="password">現在のパスワード</param>
     /// <param name="newPassword">新しいパスワード</param>
     /// <returns>成否</returns>
-    bool ChangePassword(string userID, string password, string newPassword);
+    UpdateResult ChangePassword(string userID, string password, string newPassword);
   }
 }

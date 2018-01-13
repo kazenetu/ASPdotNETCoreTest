@@ -74,24 +74,33 @@ namespace Domain.Service.User
     /// <param name="userData">ユーザーデータ</param>
     /// <param name="loginUserId">ログイン中のユーザーID</param>
     /// <returns>成否</returns>
-    public bool Save(UserModel userData, string loginUserId)
+    public UpdateResult Save(UserModel userData, string loginUserId)
     {
-      var result = false;
+      var result = UpdateResult.Error;
 
       // トランザクション作成
       repository.BeginTransaction();
 
       // 処理実行
-      result = repository.Modify(userData, loginUserId);
-      if (!result)
+      var dbResult = false;
+      var latestData = Find(userData.UserID);
+      if(latestData == null)
       {
-        result = repository.Append(userData, loginUserId);
+        dbResult = repository.Append(userData, loginUserId);
+      }
+      else
+      {
+        result = UpdateResult.ErrorVaersion;
+        if(userData.EqualsVersion(latestData.ModifyVersion)){
+          dbResult = repository.Modify(userData, loginUserId);
+        }
       }
 
       // コミットまたはロールバック
-      if (result)
+      if (dbResult)
       {
         repository.Commit();
+        result = UpdateResult.OK;
       }
       else
       {
@@ -107,9 +116,9 @@ namespace Domain.Service.User
     /// <param name="userData">ユーザーデータ</param>
     /// <param name="loginUserId">ログイン中のユーザーID</param>
     /// <returns>成否</returns>
-    public bool Remove(UserModel userData, string loginUserId)
+    public UpdateResult Remove(UserModel userData, string loginUserId)
     {
-      return false;
+      return UpdateResult.Error;
     }
 
     /// <summary>
@@ -119,20 +128,21 @@ namespace Domain.Service.User
     /// <param name="password">現在のパスワード</param>
     /// <param name="newPassword">新しいパスワード</param>
     /// <returns>成否</returns>
-    public bool ChangePassword(string userID, string password, string newPassword)
+    public UpdateResult ChangePassword(string userID, string password, string newPassword)
     {
-      var result = false;
+      var result = UpdateResult.Error;
 
       // トランザクション作成
       repository.BeginTransaction();
 
       // 処理実行
-      result = repository.ChangePassword(userID, password, newPassword);
+      var dbResult = repository.ChangePassword(userID, password, newPassword);
 
       // コミットまたはロールバック
-      if (result)
+      if (dbResult)
       {
         repository.Commit();
+        result = UpdateResult.OK;
       }
       else
       {
