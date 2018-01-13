@@ -31,8 +31,8 @@ namespace WebApi.Controllers
     #endregion
 
     #region プライベート定数フィールド
-    private static string ErrorLoginNG  = "ログイン失敗";
-    private static string ErrorPasswordNG  = "パスワード失敗";
+    private static string ErrorLoginNG = "ログイン失敗";
+    private static string ErrorPasswordNG = "パスワード失敗";
     private static string SearchResultZero = "検索結果ゼロ件";
     private static string ErrorNotFound = "データが見つかりません";
     #endregion
@@ -93,13 +93,13 @@ namespace WebApi.Controllers
           refreshSession();
 
           // セッションキー設定
-          session.SetString(SessionKeyUserID,userId);
+          session.SetString(SessionKeyUserID, userId);
 
           serviceResult = true;
           data.Add("name", model.UserName);
         }
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         logger.LogCritical("{0}", ex.Message);
         return BadRequest();
@@ -113,7 +113,7 @@ namespace WebApi.Controllers
       else
       {
         result.Add("result", "NG");
-        result.Add("errorMessage",ErrorLoginNG);
+        result.Add("errorMessage", ErrorLoginNG);
       }
       result.Add("responseData", data);
 
@@ -182,7 +182,7 @@ namespace WebApi.Controllers
       {
         serviceResult = service.ChangePassword(userId, password, newPassword);
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         logger.LogCritical("{0}", ex.Message);
         return BadRequest();
@@ -196,7 +196,7 @@ namespace WebApi.Controllers
       else
       {
         result.Add("result", "NG");
-        result.Add("errorMessage",ErrorPasswordNG);
+        result.Add("errorMessage", ErrorPasswordNG);
       }
       result.Add("responseData", data);
 
@@ -214,36 +214,37 @@ namespace WebApi.Controllers
     public IActionResult Totalpage([FromBody]Dictionary<string, object> param)
     {
       // ログインチェック
-      if(!isLogin(param)){
+      if (!isLogin(param))
+      {
         return Unauthorized();
       }
 
       var searchCondition = new UserSearchCondition();
-      if(param.ContainsKey("requestData"))
+      if (param.ContainsKey("requestData"))
       {
         var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
         Newtonsoft.Json.Linq.JToken jsonToken = null;
 
-        var paramName=string.Empty;
+        var paramName = string.Empty;
 
         // パラメータの設定
         paramName = "searchUserId";
-        if (requestData.TryGetValue(paramName,out jsonToken))
+        if (requestData.TryGetValue(paramName, out jsonToken))
         {
           searchCondition.SearchUserId = requestData[paramName].ToString();
         }
         paramName = "pageIndex";
-        if (requestData.TryGetValue(paramName,out jsonToken))
+        if (requestData.TryGetValue(paramName, out jsonToken))
         {
           searchCondition.PageIndex = (int)requestData[paramName];
         }
         paramName = "sortKey";
-        if (requestData.TryGetValue(paramName,out jsonToken))
+        if (requestData.TryGetValue(paramName, out jsonToken))
         {
           searchCondition.SortKey = requestData[paramName].ToString();
         }
         paramName = "sortType";
-        if (requestData.TryGetValue(paramName,out jsonToken))
+        if (requestData.TryGetValue(paramName, out jsonToken))
         {
           searchCondition.SortType = requestData[paramName].ToString();
         }
@@ -254,7 +255,7 @@ namespace WebApi.Controllers
       {
         serviceResult = service.GetPageCount(searchCondition);
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         logger.LogCritical("[{0}", ex.Message);
         return BadRequest();
@@ -268,7 +269,7 @@ namespace WebApi.Controllers
       else
       {
         result.Add("result", "NG");
-        result.Add("errorMessage",SearchResultZero);
+        result.Add("errorMessage", SearchResultZero);
       }
       result.Add("responseData", serviceResult);
 
@@ -286,36 +287,37 @@ namespace WebApi.Controllers
     public IActionResult Page([FromBody]Dictionary<string, object> param)
     {
       // ログインチェック
-      if(!isLogin(param)){
+      if (!isLogin(param))
+      {
         return Unauthorized();
       }
 
       var searchCondition = new UserSearchCondition();
-      if(param.ContainsKey("requestData"))
+      if (param.ContainsKey("requestData"))
       {
         var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
         Newtonsoft.Json.Linq.JToken jsonToken = null;
 
-        var paramName=string.Empty;
+        var paramName = string.Empty;
 
         // パラメータの設定
         paramName = "searchUserId";
-        if (requestData.TryGetValue(paramName,out jsonToken))
+        if (requestData.TryGetValue(paramName, out jsonToken))
         {
           searchCondition.SearchUserId = requestData[paramName].ToString();
         }
         paramName = "pageIndex";
-        if (requestData.TryGetValue(paramName,out jsonToken))
+        if (requestData.TryGetValue(paramName, out jsonToken))
         {
           searchCondition.PageIndex = (int)requestData[paramName];
         }
         paramName = "sortKey";
-        if (requestData.TryGetValue(paramName,out jsonToken))
+        if (requestData.TryGetValue(paramName, out jsonToken))
         {
           searchCondition.SortKey = requestData[paramName].ToString();
         }
         paramName = "sortType";
-        if (requestData.TryGetValue(paramName,out jsonToken))
+        if (requestData.TryGetValue(paramName, out jsonToken))
         {
           searchCondition.SortType = requestData[paramName].ToString();
         }
@@ -326,7 +328,7 @@ namespace WebApi.Controllers
       {
         serviceResult.AddRange(service.GetUsers(searchCondition));
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         logger.LogCritical("{0}", ex.Message);
         return BadRequest();
@@ -341,7 +343,7 @@ namespace WebApi.Controllers
       else
       {
         result.Add("result", "NG");
-        result.Add("errorMessage",SearchResultZero);
+        result.Add("errorMessage", SearchResultZero);
       }
 
       return Json(result);
@@ -358,29 +360,30 @@ namespace WebApi.Controllers
     public IActionResult Find([FromBody]Dictionary<string, object> param)
     {
       // ログインチェック
-      if(!isLogin(param)){
+      if (!isLogin(param))
+      {
         return Unauthorized();
       }
 
       var userId = string.Empty;
 
-      if(param.ContainsKey("requestData"))
+      if (param.ContainsKey("requestData"))
       {
         var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
         Newtonsoft.Json.Linq.JToken jsonToken = null;
 
-        var paramName=string.Empty;
+        var paramName = string.Empty;
 
         // パラメータの設定
         paramName = "id";
-        if (requestData.TryGetValue(paramName,out jsonToken))
+        if (requestData.TryGetValue(paramName, out jsonToken))
         {
           userId = requestData[paramName].ToString();
         }
       }
 
       // 入力チェック
-      if(string.IsNullOrEmpty(userId))
+      if (string.IsNullOrEmpty(userId))
       {
         logger.LogError("Pram[{0}]が未設定", nameof(userId));
         return BadRequest();
@@ -391,7 +394,7 @@ namespace WebApi.Controllers
       {
         serviceResult = service.Find(userId);
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         logger.LogCritical("[{0}", ex.Message);
         return BadRequest();
@@ -422,7 +425,8 @@ namespace WebApi.Controllers
     public IActionResult Insert([FromBody]Dictionary<string, object> param)
     {
       // ログインチェック
-      if(!isLogin(param)){
+      if (!isLogin(param))
+      {
         return Unauthorized();
       }
 
@@ -430,7 +434,7 @@ namespace WebApi.Controllers
       var model = createModel(param);
 
       // 入力チェック
-      if(string.IsNullOrEmpty(model.UserID))
+      if (string.IsNullOrEmpty(model.UserID))
       {
         logger.LogError("Pram[{0}]が未設定", nameof(model.UserID));
         return BadRequest();
@@ -441,7 +445,7 @@ namespace WebApi.Controllers
       {
         serviceResult = service.Save(model, getLoginUserId(param));
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         logger.LogCritical("[{0}", ex.Message);
         return BadRequest();
@@ -473,7 +477,8 @@ namespace WebApi.Controllers
     public IActionResult Update([FromBody]Dictionary<string, object> param)
     {
       // ログインチェック
-      if(!isLogin(param)){
+      if (!isLogin(param))
+      {
         return Unauthorized();
       }
 
@@ -481,7 +486,7 @@ namespace WebApi.Controllers
       var model = createModel(param);
 
       // 入力チェック
-      if(string.IsNullOrEmpty(model.UserID))
+      if (string.IsNullOrEmpty(model.UserID))
       {
         logger.LogError("Pram[{0}]が未設定", nameof(model.UserID));
         return BadRequest();
@@ -492,7 +497,7 @@ namespace WebApi.Controllers
       {
         serviceResult = service.Save(model, getLoginUserId(param));
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         logger.LogCritical("[{0}", ex.Message);
         return BadRequest();
@@ -529,7 +534,7 @@ namespace WebApi.Controllers
       var isDelete = false;
       var version = 0;
 
-      if(param.ContainsKey("requestData"))
+      if (param.ContainsKey("requestData"))
       {
         var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
         Newtonsoft.Json.Linq.JToken jsonToken = null;
@@ -538,27 +543,27 @@ namespace WebApi.Controllers
 
         // パラメータの設定
         paramName = "id";
-        if (requestData.TryGetValue(paramName,out jsonToken))
+        if (requestData.TryGetValue(paramName, out jsonToken))
         {
           userId = requestData[paramName].ToString();
         }
         paramName = "name";
-        if (requestData.TryGetValue(paramName,out jsonToken))
+        if (requestData.TryGetValue(paramName, out jsonToken))
         {
           userName = requestData[paramName].ToString();
         }
         paramName = "password";
-        if (requestData.TryGetValue(paramName,out jsonToken))
+        if (requestData.TryGetValue(paramName, out jsonToken))
         {
           password = requestData[paramName].ToString();
         }
         paramName = "isDelete";
-        if (requestData.TryGetValue(paramName,out jsonToken))
+        if (requestData.TryGetValue(paramName, out jsonToken))
         {
           bool.TryParse(requestData[paramName].ToString(), out isDelete);
         }
         paramName = "version";
-        if (requestData.TryGetValue(paramName,out jsonToken))
+        if (requestData.TryGetValue(paramName, out jsonToken))
         {
           int.TryParse(requestData[paramName].ToString(), out version);
         }
