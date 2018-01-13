@@ -62,7 +62,7 @@ namespace WebApi.Controllers
     /// <remarks>POST api/user/login</remarks>
     [HttpPost("login")]
     [AutoValidateAntiforgeryToken]
-    public IActionResult LoginPost([FromBody]Dictionary<string, object> param)
+    public IActionResult Login([FromBody]Dictionary<string, object> param)
     {
       var paramNameUserId = "id";
       var paramNamePassword = "password";
@@ -128,7 +128,7 @@ namespace WebApi.Controllers
     /// <remarks>POST api/user/logout</remarks>
     [HttpPost("logout")]
     [AutoValidateAntiforgeryToken]
-    public IActionResult LogoutPost([FromBody]Dictionary<string, object> param)
+    public IActionResult Logout([FromBody]Dictionary<string, object> param)
     {
 
       // セッション破棄
@@ -149,7 +149,7 @@ namespace WebApi.Controllers
     /// <remarks>POST api/user/passwordChange</remarks>
     [HttpPost("passwordChange")]
     [AutoValidateAntiforgeryToken]
-    public IActionResult PasswordChangePost([FromBody]Dictionary<string, object> param)
+    public IActionResult PasswordChange([FromBody]Dictionary<string, object> param)
     {
       var paramNameUserId = "id";
       var paramNamePassword = "password";
