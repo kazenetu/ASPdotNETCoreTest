@@ -177,8 +177,14 @@ front.controller.UserEditController = function UserEditController($q, $location,
                 loginUserId : userService.getId(),
                 requestData : settings.getFindRequestData()
             }, function(response) {
-                // 取得結果をコントロールに設定
-                settings.setEditControls(response.responseData);
+                if (response.result !== 'OK') {
+                    ctrl.showError(response.errorMessage);
+                } else {
+                    ctrl.hideError();
+                    
+                    // 取得結果をコントロールに設定
+                    settings.setEditControls(response.responseData);
+                }
             });
         }
     }
