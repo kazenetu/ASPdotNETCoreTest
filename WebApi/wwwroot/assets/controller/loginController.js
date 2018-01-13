@@ -10,17 +10,17 @@ front.controller.LoginController = function LoginController($location, webApiSer
     // 入力情報のエラークラス
     ctrl.errorUserId = "";
     ctrl.errorPassword = "";
-    
-    ctrl.login = function() {
+
+    ctrl.login = function () {
         // 入力チェック
-        if(!validateInput()){
+        if (!validateInput()) {
             return;
         }
 
         webApiService.post('api/user/login', {
-            id : ctrl.userId,
-            password : ctrl.password
-        }, function(response) {
+            id: ctrl.userId,
+            password: ctrl.password
+        }, function (response) {
             if (response.result !== "OK") {
                 ctrl.showError(response.errorMessage);
             } else {
@@ -32,23 +32,23 @@ front.controller.LoginController = function LoginController($location, webApiSer
         });
     }
 
-        /**
-     * DB反映前の入力チェック
-     */
-    function validateInput(){
+    /**
+ * DB反映前の入力チェック
+ */
+    function validateInput() {
         // エラーなし状態に設定
         ctrl.hideError();
         ctrl.errorUserId = '';
         ctrl.errorPassword = '';
 
-        if(ctrl.userId === ''){
-            ctrl.showError('E0013',['ユーザーID']);
+        if (ctrl.userId === '') {
+            ctrl.showError('E0013', ['ユーザーID']);
             ctrl.errorUserId = 'has-error';
             return false;
         }
 
-        if(ctrl.password === ''){
-            ctrl.showError('E0013',['パスワード']);
+        if (ctrl.password === '') {
+            ctrl.showError('E0013', ['パスワード']);
             ctrl.errorPassword = 'has-error';
             return false;
         }
@@ -58,11 +58,11 @@ front.controller.LoginController = function LoginController($location, webApiSer
     /**
      * ページ初期化処理
      */
-    ctrl.init = function() {
+    ctrl.init = function () {
         webApiService.post('api/user/logout', {
-            id : ctrl.userId,
-            password : ctrl.password
-        }, function(response) {
+            id: ctrl.userId,
+            password: ctrl.password
+        }, function (response) {
         });
     }
 

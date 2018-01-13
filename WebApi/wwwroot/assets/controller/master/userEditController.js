@@ -1,4 +1,4 @@
-front.controller.UserEditController = function UserEditController($q, $location, webApiService, userService,storageService) {
+front.controller.UserEditController = function UserEditController($q, $location, webApiService, userService, storageService) {
     front.common.utils.extendController(this, front.common.controller.PageBase);
     this.setTitle('ユーザー編集');
 
@@ -21,44 +21,44 @@ front.controller.UserEditController = function UserEditController($q, $location,
      * ページ設定
      */
     var settings = {
-        findApiUrl : 'api/user/find',
-        insertApiUrl : 'api/user/insert',
-        updateApiUrl : 'api/user/update',
-        deleteApiUrl : 'api/user/delete',
-        getFindRequestData : function() {
+        findApiUrl: 'api/user/find',
+        insertApiUrl: 'api/user/insert',
+        updateApiUrl: 'api/user/update',
+        deleteApiUrl: 'api/user/delete',
+        getFindRequestData: function () {
             return {
-                id : ctrl.userId
+                id: ctrl.userId
             };
         },
-        getInsUpdRequestData : function() {
+        getInsUpdRequestData: function () {
 
             return {
-                id : ctrl.userId,
-                name : ctrl.userName,
-                password : ctrl.password,
-                isDelete : ctrl.isDelete,
-                version : ctrl.version
+                id: ctrl.userId,
+                name: ctrl.userName,
+                password: ctrl.password,
+                isDelete: ctrl.isDelete,
+                version: ctrl.version
             };
         },
-        getDeleteRequestData : function() {
+        getDeleteRequestData: function () {
             return {
-                    id :ctrl.userId
+                id: ctrl.userId
             };
         },
-        setCreateMode : function(values) {
+        setCreateMode: function (values) {
             settings.createMode = (values.userId === null);
         },
-        setEditControls : function(values) {
+        setEditControls: function (values) {
             ctrl.userId = values.userID;
             ctrl.userName = values.userName;
             ctrl.password = values.password;
             ctrl.isDelete = values.isDelete;
             ctrl.version = values.modifyVersion;
         },
-        listPage : '/master/userlist',
+        listPage: '/master/userlist',
 
-        createMode : false,
-        isCreateMode : function() {
+        createMode: false,
+        isCreateMode: function () {
             return settings.createMode;
         }
     };
@@ -71,26 +71,26 @@ front.controller.UserEditController = function UserEditController($q, $location,
     /**
      * キーカラム重複チェック
      */
-    ctrl.duplicateUserId = function(){
+    ctrl.duplicateUserId = function () {
         // ユーザーIDの重複アイコンは「なし」
         ctrl.userIdIcon = ctrl.ICONS.NONE;
 
         // 新規作成時のみチェックする
-        if(settings.isCreateMode()){
-            if(ctrl.userId === undefined || ctrl.userId === '' || !/[\s\w-]/g.test(ctrl.userId)){
+        if (settings.isCreateMode()) {
+            if (ctrl.userId === undefined || ctrl.userId === '' || !/[\s\w-]/g.test(ctrl.userId)) {
                 return;
             }
 
             // データ取得
             webApiService.post(settings.findApiUrl, {
-                loginUserId : userService.getId(),
-                requestData : settings.getFindRequestData()
-            }, function(response) {
-                if(response.responseData === null){
+                loginUserId: userService.getId(),
+                requestData: settings.getFindRequestData()
+            }, function (response) {
+                if (response.responseData === null) {
                     // レコードがなければOKアイコン
                     ctrl.userIdIcon = ctrl.ICONS.OK;
                     ctrl.errorUserId = '';
-                }else{
+                } else {
                     //レコードがあればNGアイコン
                     ctrl.userIdIcon = ctrl.ICONS.NG;
                 }
@@ -101,7 +101,7 @@ front.controller.UserEditController = function UserEditController($q, $location,
     /**
      * DB反映前の入力チェック
      */
-    function validateInput(){
+    function validateInput() {
         // エラーなし状態に設定
         ctrl.hideError();
         ctrl.errorUserId = '';
@@ -109,28 +109,28 @@ front.controller.UserEditController = function UserEditController($q, $location,
         ctrl.errorPassword = '';
 
         // 新規作成モードのみのチェック
-        if(settings.isCreateMode()){
-            if(ctrl.userId === ''){
-                ctrl.showError('E0013',['ユーザーID']);
+        if (settings.isCreateMode()) {
+            if (ctrl.userId === '') {
+                ctrl.showError('E0013', ['ユーザーID']);
                 ctrl.errorUserId = 'has-error';
                 return false;
             }
             // ユーザーID重複アイコンがNGの場合はエラー
-            if(ctrl.userIdIcon === ctrl.ICONS.NG){
+            if (ctrl.userIdIcon === ctrl.ICONS.NG) {
                 ctrl.showError('ユーザーIDはすでに登録されています');
                 ctrl.errorUserId = 'has-error';
                 return false;
             }
         }
 
-        if(ctrl.userName === ''){
-            ctrl.showError('E0013',['ユーザー名']);
+        if (ctrl.userName === '') {
+            ctrl.showError('E0013', ['ユーザー名']);
             ctrl.errorUserName = 'has-error';
             return false;
         }
 
-        if(ctrl.password === ''){
-            ctrl.showError('E0013',['パスワード']);
+        if (ctrl.password === '') {
+            ctrl.showError('E0013', ['パスワード']);
             ctrl.errorPassword = 'has-error';
             return false;
         }
@@ -142,7 +142,7 @@ front.controller.UserEditController = function UserEditController($q, $location,
      * キー重複チェック用列挙体
      */
     ctrl.ICONS = {
-        NONE:'none',
+        NONE: 'none',
         OK: 'glyphicon-ok',
         NG: 'glyphicon-remove',
     };
@@ -155,33 +155,33 @@ front.controller.UserEditController = function UserEditController($q, $location,
     /**
      * 初期化イベント
      */
-    ctrl.init = function(){
+    ctrl.init = function () {
         // 検索画面から取得したキー情報を設定
-        var values= storageService.getValue(storageService.keys.updateKeys);
+        var values = storageService.getValue(storageService.keys.updateKeys);
 
         // 新規作成モードか否かの設定
         settings.setCreateMode(values);
 
         // 新規作成モードか否かによって表示内容を変更
-        if(settings.isCreateMode()){
+        if (settings.isCreateMode()) {
             // 新規作成
             ctrl.commmitButtonName = '登録';
 
-        }else{
+        } else {
             // 更新
             ctrl.commmitButtonName = '更新';
             ctrl.userId = values.userId;
 
             // データ取得
             webApiService.post(settings.findApiUrl, {
-                loginUserId : userService.getId(),
-                requestData : settings.getFindRequestData()
-            }, function(response) {
+                loginUserId: userService.getId(),
+                requestData: settings.getFindRequestData()
+            }, function (response) {
                 if (response.result !== 'OK') {
                     ctrl.showError(response.errorMessage);
                 } else {
                     ctrl.hideError();
-                    
+
                     // 取得結果をコントロールに設定
                     settings.setEditControls(response.responseData);
                 }
@@ -192,53 +192,53 @@ front.controller.UserEditController = function UserEditController($q, $location,
     /**
      * 登録または更新イベント
      */
-    ctrl.insertOrUpdate = function(){
+    ctrl.insertOrUpdate = function () {
         // 入力チェック
-        if(!validateInput()){
+        if (!validateInput()) {
             return;
         }
 
         var confirmMessageId = 'I0002';
         var resultMessageId = 'I0004';
-        if(settings.isCreateMode()){
+        if (settings.isCreateMode()) {
             confirmMessageId = 'I0001';
             resultMessageId = 'I0003';
         }
 
         var d = $q.defer();
         d.promise
-        .then(ctrl.showConfirm($q,ctrl.commmitButtonName + 'の確認',
-                confirmMessageId, ctrl.commmitButtonName +'する'))
-        .then(function(){
-            var deferrred = $q.defer();
+            .then(ctrl.showConfirm($q, ctrl.commmitButtonName + 'の確認',
+                confirmMessageId, ctrl.commmitButtonName + 'する'))
+            .then(function () {
+                var deferrred = $q.defer();
 
-            var apiUrl = settings.updateApiUrl;
-            if(settings.isCreateMode()){
-                apiUrl = settings.insertApiUrl;
-            }
-
-            // データ更新
-            webApiService.post(apiUrl, {
-                loginUserId: userService.getId(),
-                requestData : settings.getInsUpdRequestData()
-            }, function(response) {
-                if (response.result !== 'OK') {
-                    ctrl.showError(response.errorMessage);
-                } else {
-                    ctrl.hideError();
-
-                    deferrred.resolve();
+                var apiUrl = settings.updateApiUrl;
+                if (settings.isCreateMode()) {
+                    apiUrl = settings.insertApiUrl;
                 }
-            });
 
-            return deferrred.promise;
-        })
-        .then(ctrl.showMsgDialog($q,ctrl.commmitButtonName + 'の報告',
+                // データ更新
+                webApiService.post(apiUrl, {
+                    loginUserId: userService.getId(),
+                    requestData: settings.getInsUpdRequestData()
+                }, function (response) {
+                    if (response.result !== 'OK') {
+                        ctrl.showError(response.errorMessage);
+                    } else {
+                        ctrl.hideError();
+
+                        deferrred.resolve();
+                    }
+                });
+
+                return deferrred.promise;
+            })
+            .then(ctrl.showMsgDialog($q, ctrl.commmitButtonName + 'の報告',
                 resultMessageId, '確認'))
-        .then(function(){
-            $location.path(settings.listPage);
-            storageService.clearValue(storageService.keys.updateKeys);
-        });
+            .then(function () {
+                $location.path(settings.listPage);
+                storageService.clearValue(storageService.keys.updateKeys);
+            });
         // 発火
         d.resolve();
     }
@@ -246,34 +246,34 @@ front.controller.UserEditController = function UserEditController($q, $location,
     /**
      * 削除イベント
      */
-    ctrl.delete = function(){
+    ctrl.delete = function () {
         var d = $q.defer();
         d.promise
-        .then(ctrl.showConfirm($q,'削除の確認','削除しますか','削除する'))
-        .then(function(){
-            var deferrred = $q.defer();
+            .then(ctrl.showConfirm($q, '削除の確認', '削除しますか', '削除する'))
+            .then(function () {
+                var deferrred = $q.defer();
 
-            // データ削除
-            webApiService.post(settings.deleteApiUrl, {
-                loginUserId: userService.getId(),
-                requestData : settings.getDeleteRequestData()
-            }, function(response) {
-                if (response.result !== 'OK') {
-                    ctrl.showError(response.errorMessage);
-                } else {
-                    ctrl.hideError();
+                // データ削除
+                webApiService.post(settings.deleteApiUrl, {
+                    loginUserId: userService.getId(),
+                    requestData: settings.getDeleteRequestData()
+                }, function (response) {
+                    if (response.result !== 'OK') {
+                        ctrl.showError(response.errorMessage);
+                    } else {
+                        ctrl.hideError();
 
-                    deferrred.resolve();
-                }
+                        deferrred.resolve();
+                    }
+                });
+
+                return deferrred.promise;
+            })
+            .then(ctrl.showMsgDialog($q, '削除の報告', '削除しました', '確認'))
+            .then(function () {
+                $location.path(settings.listPage);
+                storageService.clearValue(storageService.keys.updateKeys);
             });
-
-            return deferrred.promise;
-        })
-        .then(ctrl.showMsgDialog($q,'削除の報告','削除しました', '確認'))
-        .then(function(){
-            $location.path(settings.listPage);
-            storageService.clearValue(storageService.keys.updateKeys);
-        });
         // 発火
         d.resolve();
     }
@@ -281,7 +281,7 @@ front.controller.UserEditController = function UserEditController($q, $location,
     /**
      * 戻るイベント
      */
-    ctrl.cancel = function(){
+    ctrl.cancel = function () {
         $location.path(settings.listPage);
         storageService.clearValue(storageService.keys.updateKeys);
     }
@@ -289,7 +289,7 @@ front.controller.UserEditController = function UserEditController($q, $location,
     /**
      * 新規モードか否か
      */
-    ctrl.isCreateMode = function() {
+    ctrl.isCreateMode = function () {
         return settings.isCreateMode();
     }
 }

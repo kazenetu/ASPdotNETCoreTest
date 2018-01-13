@@ -4,12 +4,12 @@ front.controller.PasswordChangeController = function PasswordChangeController($l
 
     var ctrl = this;
 
-    ctrl.passwordChange = function() {
+    ctrl.passwordChange = function () {
         webApiService.post('api/user/passwordChange', {
-            id : userService.getId(),
-            password : ctrl.password,
-            newPassword : ctrl.newPassword
-        }, function(response) {
+            id: userService.getId(),
+            password: ctrl.password,
+            newPassword: ctrl.newPassword
+        }, function (response) {
             if (response.result !== 'OK') {
                 ctrl.showError(response.errorMessage);
             } else {
@@ -19,7 +19,7 @@ front.controller.PasswordChangeController = function PasswordChangeController($l
         });
     }
 
-    ctrl.cancel = function(){
+    ctrl.cancel = function () {
         $location.path('/main');
     }
 
