@@ -10,25 +10,56 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApi.Controllers
 {
+  /// <summary>
+  /// ユーザー系コントローラークラス
+  /// </summary>
   [Route("api/user")]
   public class UsersController : ControllerBase
   {
+    #region プライベートフィールド
+
+    /// <summary>
+    /// サービスインスタンス
+    /// </summary>
     private readonly IUserService service;
 
+    /// <summary>
+    /// ログインスタンス
+    /// </summary>
     private readonly ILogger logger;
 
+    #endregion
+
+    #region プライベート定数フィールド
     private static string ErrorLoginNG  = "ログイン失敗";
     private static string ErrorPasswordNG  = "パスワード失敗";
     private static string SearchResultZero = "検索結果ゼロ件";
     private static string ErrorNotFound = "データが見つかりません";
+    #endregion
 
+    #region コンストラクタ
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="service">サービスインスタンス</param>
+    /// <param name="logger">ログインスタンス</param>
     public UsersController(IUserService service, ILogger<UsersController> logger)
     {
       this.service = service;
       this.logger = logger;
     }
 
-    // POST api/user/login
+    #endregion
+
+    #region パブリックメソッド
+
+    /// <summary>
+    /// ログイン
+    /// </summary>
+    /// <param name="param">入力情報</param>
+    /// <returns>結果(json)</returns>
+    /// <remarks>POST api/user/login</remarks>
     [HttpPost("login")]
     [AutoValidateAntiforgeryToken]
     public IActionResult LoginPost([FromBody]Dictionary<string, object> param)
@@ -89,7 +120,12 @@ namespace WebApi.Controllers
       return Json(result);
     }
 
-    // POST api/user/logout
+    /// <summary>
+    /// ログアウト
+    /// </summary>
+    /// <param name="param">入力情報</param>
+    /// <returns>結果(json)</returns>
+    /// <remarks>POST api/user/logout</remarks>
     [HttpPost("logout")]
     [AutoValidateAntiforgeryToken]
     public IActionResult LogoutPost([FromBody]Dictionary<string, object> param)
@@ -105,7 +141,12 @@ namespace WebApi.Controllers
       return Json(result);
     }
 
-    // POST api/user/passwordChange
+    /// <summary>
+    /// パスワード変更
+    /// </summary>
+    /// <param name="param">入力情報</param>
+    /// <returns>結果(json)</returns>
+    /// <remarks>POST api/user/passwordChange</remarks>
     [HttpPost("passwordChange")]
     [AutoValidateAntiforgeryToken]
     public IActionResult PasswordChangePost([FromBody]Dictionary<string, object> param)
@@ -162,7 +203,12 @@ namespace WebApi.Controllers
       return Json(result);
     }
 
-    // POST api/user/totalpage
+    /// <summary>
+    /// 検索：ページ数取得
+    /// </summary>
+    /// <param name="param">入力情報</param>
+    /// <returns>結果(json)</returns>
+    /// <remarks>POST api/user/totalpage</remarks>
     [HttpPost("totalpage")]
     [AutoValidateAntiforgeryToken]
     public IActionResult Totalpage([FromBody]Dictionary<string, object> param)
@@ -229,7 +275,12 @@ namespace WebApi.Controllers
       return Json(result);
     }
 
-    // POST api/user/page
+    /// <summary>
+    /// 検索：対象ページのレコード取得
+    /// </summary>
+    /// <param name="param">入力情報</param>
+    /// <returns>結果(json)</returns>
+    /// <remarks>POST api/user/page</remarks>
     [HttpPost("page")]
     [AutoValidateAntiforgeryToken]
     public IActionResult Page([FromBody]Dictionary<string, object> param)
@@ -296,7 +347,12 @@ namespace WebApi.Controllers
       return Json(result);
     }
 
-    // POST api/user/find
+    /// <summary>
+    /// 対象マスタを取得
+    /// </summary>
+    /// <param name="param">入力情報</param>
+    /// <returns>結果(json)</returns>
+    /// <remarks>POST api/user/find</remarks>
     [HttpPost("find")]
     [AutoValidateAntiforgeryToken]
     public IActionResult Find([FromBody]Dictionary<string, object> param)
@@ -355,7 +411,12 @@ namespace WebApi.Controllers
       return Json(result);
     }
 
-    // POST api/user/insert
+    /// <summary>
+    /// 登録
+    /// </summary>
+    /// <param name="param">入力情報</param>
+    /// <returns>結果(json)</returns>
+    /// <remarks>POST api/user/insert</remarks>
     [HttpPost("insert")]
     [AutoValidateAntiforgeryToken]
     public IActionResult Insert([FromBody]Dictionary<string, object> param)
@@ -401,7 +462,12 @@ namespace WebApi.Controllers
       return Json(result);
     }
 
-    // POST api/user/update
+    /// <summary>
+    /// 更新
+    /// </summary>
+    /// <param name="param">入力情報</param>
+    /// <returns>結果(json)</returns>
+    /// <remarks>POST api/user/update</remarks>
     [HttpPost("update")]
     [AutoValidateAntiforgeryToken]
     public IActionResult Update([FromBody]Dictionary<string, object> param)
@@ -446,6 +512,10 @@ namespace WebApi.Controllers
 
       return Json(result);
     }
+
+    #endregion
+
+    #region プライベートメソッド
 
     /// <summary>
     /// Model生成
@@ -498,6 +568,7 @@ namespace WebApi.Controllers
                            string.Empty, null, string.Empty, null, version);
 
     }
+    #endregion
 
   }
 }
