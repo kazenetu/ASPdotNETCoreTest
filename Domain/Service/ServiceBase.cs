@@ -12,6 +12,27 @@ namespace Domain.Service
     /// </summary>
     protected const int PageCount = 20;
 
+    /// <summary>
+    /// 更新結果
+    /// </summary>
+    public enum UpdateResult
+    {
+      /// <summary>
+      /// 成功
+      /// </summary>
+      OK,
+
+      /// <summary>
+      /// 失敗：バージョン違い(排他エラー)
+      /// </summary>
+      ErrorVaersion,
+
+      /// <summary>
+      /// 失敗
+      /// </summary>
+      Error
+    };
+
     #endregion
 
     #region クラスメソッド
