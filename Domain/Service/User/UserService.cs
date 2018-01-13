@@ -4,7 +4,7 @@ using Domain.Repository.User;
 
 namespace Domain.Service.User
 {
-  public class UserService :  ServiceBase,IUserService
+  public class UserService : ServiceBase, IUserService
   {
     private readonly IUserRepository repository;
 
@@ -55,7 +55,7 @@ namespace Domain.Service.User
     /// <returns>ユーザーのリスト</returns>
     public List<UserModel> GetUsers(UserSearchCondition searchCondition)
     {
-      return repository.GetUsers(searchCondition,PageCount);
+      return repository.GetUsers(searchCondition, PageCount);
     }
 
     /// <summary>
@@ -82,17 +82,19 @@ namespace Domain.Service.User
       repository.BeginTransaction();
 
       // 処理実行
-      result = repository.Modify(userData,loginUserId);
-      if(!result)
+      result = repository.Modify(userData, loginUserId);
+      if (!result)
       {
-        result = repository.Append(userData,loginUserId);
+        result = repository.Append(userData, loginUserId);
       }
 
       // コミットまたはロールバック
-      if(result){
+      if (result)
+      {
         repository.Commit();
       }
-      else{
+      else
+      {
         repository.Rollback();
       }
 
@@ -125,13 +127,15 @@ namespace Domain.Service.User
       repository.BeginTransaction();
 
       // 処理実行
-      result = repository.ChangePassword(userID,password,newPassword);
+      result = repository.ChangePassword(userID, password, newPassword);
 
       // コミットまたはロールバック
-      if(result){
+      if (result)
+      {
         repository.Commit();
       }
-      else{
+      else
+      {
         repository.Rollback();
       }
 
