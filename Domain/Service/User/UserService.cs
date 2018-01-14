@@ -111,17 +111,6 @@ namespace Domain.Service.User
     }
 
     /// <summary>
-    /// ユーザーの削除
-    /// </summary>
-    /// <param name="userData">ユーザーデータ</param>
-    /// <param name="loginUserId">ログイン中のユーザーID</param>
-    /// <returns>成否</returns>
-    public UpdateResult Remove(UserModel userData, string loginUserId)
-    {
-      return UpdateResult.Error;
-    }
-
-    /// <summary>
     /// パスワード変更
     /// </summary>
     /// <param name="userID">ユーザーID</param>

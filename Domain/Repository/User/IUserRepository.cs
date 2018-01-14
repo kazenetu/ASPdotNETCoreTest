@@ -60,14 +60,6 @@ namespace Domain.Repository.User
     bool Modify(UserModel userData, string loginUserId);
 
     /// <summary>
-    /// ユーザーの削除
-    /// </summary>
-    /// <param name="userData">ユーザーデータ</param>
-    /// <param name="loginUserId">ログイン中のユーザーID</param>
-    /// <returns>成否</returns>
-    bool Remove(UserModel userData, string loginUserId);
-
-    /// <summary>
     /// パスワード変更
     /// </summary>
     /// <param name="userID">ユーザーID</param>

@@ -51,14 +51,6 @@ namespace Domain.Service.User
     UpdateResult Save(UserModel userData, string loginUserId);
 
     /// <summary>
-    /// ユーザーの論理削除
-    /// </summary>
-    /// <param name="userData">ユーザーデータ</param>
-    /// <param name="loginUserId">ログイン中のユーザーID</param>
-    /// <returns>成否</returns>
-    UpdateResult Remove(UserModel userData, string loginUserId);
-
-    /// <summary>
     /// パスワード変更
     /// </summary>
     /// <param name="userID">ユーザーID</param>

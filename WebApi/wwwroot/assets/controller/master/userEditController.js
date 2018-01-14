@@ -244,41 +244,6 @@ front.controller.UserEditController = function UserEditController($q, $location,
     }
 
     /**
-     * 削除イベント
-     */
-    ctrl.delete = function () {
-        var d = $q.defer();
-        d.promise
-            .then(ctrl.showConfirm($q, '削除の確認', '削除しますか', '削除する'))
-            .then(function () {
-                var deferrred = $q.defer();
-
-                // データ削除
-                webApiService.post(settings.deleteApiUrl, {
-                    loginUserId: userService.getId(),
-                    requestData: settings.getDeleteRequestData()
-                }, function (response) {
-                    if (response.result !== 'OK') {
-                        ctrl.showError(response.errorMessage);
-                    } else {
-                        ctrl.hideError();
-
-                        deferrred.resolve();
-                    }
-                });
-
-                return deferrred.promise;
-            })
-            .then(ctrl.showMsgDialog($q, '削除の報告', '削除しました', '確認'))
-            .then(function () {
-                $location.path(settings.listPage);
-                storageService.clearValue(storageService.keys.updateKeys);
-            });
-        // 発火
-        d.resolve();
-    }
-
-    /**
      * 戻るイベント
      */
     ctrl.cancel = function () {
