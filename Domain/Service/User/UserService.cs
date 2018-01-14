@@ -35,7 +35,7 @@ namespace Domain.Service.User
     /// <returns>ユーザーリスト</returns>
     public List<UserModel> GetAllUsers(UserSearchCondition searchCondition)
     {
-      return new List<UserModel>();
+      return repository.GetAllUsers(searchCondition);
     }
 
     /// <summary>
