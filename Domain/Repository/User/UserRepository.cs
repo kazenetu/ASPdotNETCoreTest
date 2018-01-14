@@ -60,7 +60,44 @@ namespace Domain.Repository.User
     /// <returns>ユーザーリスト</returns>
     public List<UserModel> GetAllUsers(UserSearchCondition seachCondition)
     {
-      return new List<UserModel>();
+      var sql = new StringBuilder();
+      sql.AppendLine("SELECT");
+      sql.AppendLine("  MT_USER.USER_ID");
+      sql.AppendLine("  , MT_USER.USER_NAME");
+      sql.AppendLine("  , MT_USER.PASSWORD");
+      sql.AppendLine("  , MT_USER.DEL_FLAG");
+      sql.AppendLine("  , ENTRY_USER_INFO.USER_NAME ENTRY_USER");
+      sql.AppendLine("  , MT_USER.ENTRY_DATE");
+      sql.AppendLine("  , MOD_USER_NFO.USER_NAME MOD_USER");
+      sql.AppendLine("  , MT_USER.MOD_DATE");
+      sql.AppendLine("  , MT_USER.MOD_VERSION ");
+      sql.AppendLine("FROM");
+      sql.AppendLine("  MT_USER ");
+      sql.AppendLine("  LEFT JOIN MT_USER ENTRY_USER_INFO ");
+      sql.AppendLine("    ON ENTRY_USER_INFO.USER_ID = MT_USER.ENTRY_USER");
+      sql.AppendLine("  LEFT JOIN MT_USER MOD_USER_NFO ");
+      sql.AppendLine("    ON MOD_USER_NFO.USER_ID = MT_USER.MOD_USER");
+
+      // パラメータの設定
+      db.ClearParam();
+      if (!string.IsNullOrEmpty(seachCondition.SearchUserId))
+      {
+        sql.AppendLine("where ");
+        sql.AppendLine("  MT_USER.USER_ID like @USER_ID");
+        db.AddParam("@USER_ID", string.Format("%{0}%", seachCondition.SearchUserId));
+      }
+      sql.AppendLine("ORDER BY");
+      sql.AppendLine("  MT_USER.USER_ID");
+
+      // SQL発行
+      var result = new List<UserModel>();
+      var dbResult = db.Fill(sql.ToString());
+      foreach (DataRow row in dbResult.Rows)
+      {
+        result.Add(createUserModel(row));
+      }
+
+      return result;
     }
 
     /// <summary>
