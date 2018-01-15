@@ -34,7 +34,6 @@ td
             <!-- ボタン類 -->
             <div class="form-group buttons-row">
                 <div class="pull-right">
-                        <!--
                     <form action="{{ctrl.csvAction}}" method="POST" style="float:left;padding-right:1em;">
                         <input type="hidden" name="json" value={{ctrl.json}}>
 
@@ -42,15 +41,17 @@ td
 
                         <input type="button" class="btn" value="CSV出力"
                             data-ng-click="ctrl.downloadCsv('api/user/download')">
-                        <input type="button" class="btn" value="ヘッダー付CSV出力"
+
+                        <!--
+                            <input type="button" class="btn" value="ヘッダー付CSV出力"
                             data-ng-click="ctrl.downloadCsv('api/user/downloadHeaderCSV')">
+
                         <input type="button" class="btn" value="CSV出力ストリーム版"
                             data-ng-click="ctrl.downloadCsv('api/user/downloadCSV')">
-
                         <input type="button" class="btn" value="PDF出力"
                             data-ng-click="ctrl.downloadCsv('api/user/downloadPDF')">
-                    </form>
                         -->
+                    </form>
                         <input type="button" class="btn" data-ng-click="ctrl.search(0)"  value="検索">
                 </div>
             </div>

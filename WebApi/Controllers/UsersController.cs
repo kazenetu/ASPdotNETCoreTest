@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Logging;
 using static Domain.Service.ServiceBase;
+using Newtonsoft.Json;
+using System.Runtime.Serialization.Json;
+using System.Web;
 
 namespace WebApi.Controllers
 {
@@ -298,32 +301,9 @@ namespace WebApi.Controllers
       var searchCondition = new UserSearchCondition();
       if (param.ContainsKey("requestData"))
       {
-        var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
-        Newtonsoft.Json.Linq.JToken jsonToken = null;
-
-        var paramName = string.Empty;
-
         // パラメータの設定
-        paramName = "searchUserId";
-        if (requestData.TryGetValue(paramName, out jsonToken))
-        {
-          searchCondition.SearchUserId = requestData[paramName].ToString();
-        }
-        paramName = "pageIndex";
-        if (requestData.TryGetValue(paramName, out jsonToken))
-        {
-          searchCondition.PageIndex = (int)requestData[paramName];
-        }
-        paramName = "sortKey";
-        if (requestData.TryGetValue(paramName, out jsonToken))
-        {
-          searchCondition.SortKey = requestData[paramName].ToString();
-        }
-        paramName = "sortType";
-        if (requestData.TryGetValue(paramName, out jsonToken))
-        {
-          searchCondition.SortType = requestData[paramName].ToString();
-        }
+        var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
+         searchCondition = getUserSearchCondition(requestData);
       }
 
       var serviceResult = new List<UserModel>();
@@ -527,9 +507,90 @@ namespace WebApi.Controllers
       return Json(result);
     }
 
+    /// <summary>
+    /// CSVダウンロード
+    /// </summary>
+    /// <param name="param">入力情報</param>
+    /// <returns>結果(json)</returns>
+    /// <remarks>POST api/user/download</remarks>
+    [HttpPost("download")]
+    //[AutoValidateAntiforgeryToken]
+    public ContentResult Download(string json)
+    {
+      var csvData = new System.Text.StringBuilder();
+
+       // サンプルのファイル名
+      string fileName = string.Format("テスト_{0:yyyyMMddHHmmss}.csv", DateTime.Now);
+      fileName = HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8);
+
+      // ファイル名に設定
+      Response.Headers.Add("Content-Disposition", "attachment; filename=" + fileName);
+
+      try
+      {
+        if(!string.IsNullOrEmpty(json))
+        {
+          var param =  Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string,object>>(json);
+          if(param.ContainsKey("requestData"))
+          {
+            var requestData = Newtonsoft.Json.JsonConvert.DeserializeObject<UserSearchCondition>(param["requestData"].ToString());
+            var models = service.GetAllUsers(requestData);
+            foreach(var model in models )
+            {
+              csvData.AppendLine(model.GetCSV());
+            }
+          }
+        }
+      }
+      catch (Exception ex)
+      {
+        logger.LogCritical("{0}", ex.Message);
+        return Content(string.Empty, "text/csv");
+      }
+
+      return Content(csvData.ToString(), "text/csv");
+    }
+
     #endregion
 
     #region プライベートメソッド
+
+    /// <summary>
+    /// リクエストから条件入力インスタンスを取得
+    /// </summary>
+    /// <param name="src">リクエスト</param>
+    /// <returns>条件入力インスタンス</returns>
+    private UserSearchCondition getUserSearchCondition( Newtonsoft.Json.Linq.JObject src){
+      var searchCondition = new UserSearchCondition();
+
+        Newtonsoft.Json.Linq.JToken jsonToken = null;
+
+        var paramName = string.Empty;
+
+        // パラメータの設定
+        paramName = "searchUserId";
+        if (src.TryGetValue(paramName, out jsonToken))
+        {
+          searchCondition.SearchUserId = src[paramName].ToString();
+        }
+        paramName = "pageIndex";
+        if (src.TryGetValue(paramName, out jsonToken))
+        {
+          searchCondition.PageIndex = (int)src[paramName];
+        }
+        paramName = "sortKey";
+        if (src.TryGetValue(paramName, out jsonToken))
+        {
+          searchCondition.SortKey = src[paramName].ToString();
+        }
+        paramName = "sortType";
+        if (src.TryGetValue(paramName, out jsonToken))
+        {
+          searchCondition.SortType = src[paramName].ToString();
+        }
+
+      return searchCondition;
+    }
 
     /// <summary>
     /// Model生成
