@@ -97,7 +97,8 @@ namespace Domain.Model
     /// </summary>
     /// <param name="vesion">比較対象バージョン</param>
     /// <returns>バージョンが一致する場合はtrue</returns>
-    public bool EqualsVersion(int vesion){
+    public bool EqualsVersion(int vesion)
+    {
       return ModifyVersion == vesion;
     }
     #endregion
