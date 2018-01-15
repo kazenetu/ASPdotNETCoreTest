@@ -45,7 +45,7 @@ front.controller.UserListController = function UserListController($q, $location,
 
     ctrl.json = '';
     ctrl.csvAction = '';
-    ctrl.downloadCsv = function (webApiUri) {
+    ctrl.downloadCsvOld = function (webApiUri) {
         // 入力チェック
         if (!ctrl.validateInput()) {
             return false;
@@ -88,6 +88,55 @@ front.controller.UserListController = function UserListController($q, $location,
         d.resolve();
     }
 
+    ctrl.downloadCsv = function (webApiUri) {
+        // 入力チェック
+        if (!ctrl.validateInput()) {
+            return false;
+        }
+
+        var params = {
+            loginUserId: userService.getId(),
+            requestData: getRequestData(0)
+        };
+
+        var d = $q.defer();
+        d.promise
+            .then(function () {
+                var deferrred = $q.defer();
+
+                // CSVデータ取得
+                webApiService.post(webApiUri, params,
+                    function (response) {
+                        ctrl.hideError();
+                        if (response.result === 'NG') {
+                            ctrl.showError(response.errorMessage);
+                            return;
+                        }
+
+                        // CSVファイル作成
+                        var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+                        var content = response.responseData.csv;
+                        var fileName = decodeURIComponent(response.responseData.filename);
+                        var blob = new Blob([ bom, content ], { "type" : "text/csv" });
+        
+                        if (window.navigator.msSaveBlob) { 
+                            window.navigator.msSaveBlob(blob, fileName); 
+        
+                            // msSaveOrOpenBlobの場合はファイルを保存せずに開ける
+                            window.navigator.msSaveOrOpenBlob(blob, fileName); 
+                        } else {
+                            $('#downloadHref').attr('href', window.URL.createObjectURL(blob));
+                            $('#downloadHref').attr('download', fileName);
+                            setTimeout(function () {
+                                $('#downloadHref')[0].click();
+                            }, 0);
+                        }
+                    });
+            });
+        // 発火
+        d.resolve();
+    }
+    
     /**
      * 一覧編集ボタンクリック
      */

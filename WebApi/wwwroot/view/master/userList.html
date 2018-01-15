@@ -36,11 +36,14 @@ td
                 <div class="pull-right">
                     <form action="{{ctrl.csvAction}}" method="POST" style="float:left;padding-right:1em;">
                         <input type="hidden" name="json" value={{ctrl.json}}>
+                        <a href="" id="downloadHref" style="display:none;"></a>
 
                         <input type="submit" id="csv" style="display: none;">
 
-                        <input type="button" class="btn" value="CSV出力"
+                        <input type="button" class="btn" value="CSV出力(サーバー出力)"
                             data-ng-click="ctrl.downloadCsv('api/user/download')">
+                        <input type="button" class="btn" value="CSV出力(JS出力)"
+                        data-ng-click="ctrl.downloadCsv('api/user/download')">
 
                         <!--
                             <input type="button" class="btn" value="ヘッダー付CSV出力"

@@ -513,7 +513,7 @@ namespace WebApi.Controllers
     /// <param name="json">入力情報のJSOｎデータ</param>
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/download</remarks>
-    [HttpPost("download")]
+    [HttpPost("old_download")]
     //[AutoValidateAntiforgeryToken]
     public ActionResult Download(string json)
     {
@@ -559,6 +559,71 @@ namespace WebApi.Controllers
       Response.Headers.Add("Content-Disposition", "attachment; filename=" + fileName);
 
       return Content(csvData.ToString(), "text/csv");
+    }
+
+    /// <summary>
+    /// CSVダウンロード：JSで作成
+    /// </summary>
+    /// <param name="param">入力情報</param>
+    /// <returns>結果(json)</returns>
+    /// <remarks>POST api/user/download</remarks>
+    [HttpPost("download")]
+    [AutoValidateAntiforgeryToken]
+    public IActionResult DownloadJS([FromBody]Dictionary<string, object> param)
+    {
+      // ログインチェック
+      if (!isLogin(param))
+      {
+        return Unauthorized();
+      }
+
+      var searchCondition = new UserSearchCondition();
+      if (param.ContainsKey("requestData"))
+      {
+        // パラメータの設定
+        var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
+         searchCondition = getUserSearchCondition(requestData);
+      }
+
+      var csvData = new System.Text.StringBuilder();
+
+      try
+      {
+        // データ取得とCSV文字列取得
+        var models = service.GetAllUsers(searchCondition);
+        foreach (var model in models)
+        {
+          csvData.AppendLine(model.GetCSV());
+        }
+      }
+      catch (Exception ex)
+      {
+        logger.LogCritical("{0}", ex.Message);
+        return BadRequest();
+      }
+
+      var result = new Dictionary<string, object>();
+      if (csvData.Length > 0)
+      {
+        result.Add("result", "OK");
+
+        var data = new Dictionary<string,string>();
+        data.Add("csv",csvData.ToString());
+
+        // サンプルのファイル名
+        string fileName = string.Format("テスト_{0:yyyyMMddHHmmss}.csv", DateTime.Now);
+        fileName = HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8);
+        data.Add("filename",fileName);
+
+        result.Add("responseData", data);
+      }
+      else
+      {
+        result.Add("result", "NG");
+        result.Add("errorMessage", SearchResultZero);
+      }
+
+      return Json(result);
     }
 
     #endregion
