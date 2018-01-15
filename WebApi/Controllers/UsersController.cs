@@ -510,7 +510,7 @@ namespace WebApi.Controllers
     /// <summary>
     /// CSVダウンロード
     /// </summary>
-    /// <param name="param">入力情報</param>
+    /// <param name="json">入力情報のJSOｎデータ</param>
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/download</remarks>
     [HttpPost("download")]
