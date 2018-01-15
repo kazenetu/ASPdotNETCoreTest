@@ -45,7 +45,7 @@ front.controller.UserListController = function UserListController($q, $location,
 
     ctrl.json = '';
     ctrl.csvAction = '';
-    ctrl.downloadCsvOld = function (webApiUri) {
+    ctrl.downloadCsv = function (webApiUri) {
         // 入力チェック
         if (!ctrl.validateInput()) {
             return false;
@@ -88,7 +88,7 @@ front.controller.UserListController = function UserListController($q, $location,
         d.resolve();
     }
 
-    ctrl.downloadCsv = function (webApiUri) {
+    ctrl.downloadCsvJS = function (webApiUri) {
         // 入力チェック
         if (!ctrl.validateInput()) {
             return false;

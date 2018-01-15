@@ -513,8 +513,7 @@ namespace WebApi.Controllers
     /// <param name="json">入力情報のJSOｎデータ</param>
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/download</remarks>
-    [HttpPost("old_download")]
-    //[AutoValidateAntiforgeryToken]
+    [HttpPost("download")]
     public ActionResult Download(string json)
     {
       var csvData = new System.Text.StringBuilder();
@@ -567,7 +566,7 @@ namespace WebApi.Controllers
     /// <param name="param">入力情報</param>
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/download</remarks>
-    [HttpPost("download")]
+    [HttpPost("downloadJS")]
     [AutoValidateAntiforgeryToken]
     public IActionResult DownloadJS([FromBody]Dictionary<string, object> param)
     {
