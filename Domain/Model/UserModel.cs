@@ -6,7 +6,7 @@ namespace Domain.Model
   /// ユーザーモデル
   /// </summary>
   [Serializable]
-  public class UserModel
+  public class UserModel : ModelBase
   {
     #region コンストラクタ
 
