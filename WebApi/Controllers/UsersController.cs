@@ -515,27 +515,30 @@ namespace WebApi.Controllers
     /// <remarks>POST api/user/download</remarks>
     [HttpPost("download")]
     //[AutoValidateAntiforgeryToken]
-    public ContentResult Download(string json)
+    public ActionResult Download(string json)
     {
       var csvData = new System.Text.StringBuilder();
 
-       // サンプルのファイル名
-      string fileName = string.Format("テスト_{0:yyyyMMddHHmmss}.csv", DateTime.Now);
-      fileName = HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8);
-
-      // ファイル名に設定
-      Response.Headers.Add("Content-Disposition", "attachment; filename=" + fileName);
-
       try
       {
-        if(!string.IsNullOrEmpty(json))
+        if (!string.IsNullOrEmpty(json))
         {
-          var param =  Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string,object>>(json);
-          if(param.ContainsKey("requestData"))
+          var param = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+
+          // ログインチェック
+          if (!isLogin(param))
+          {
+            return LocalRedirect("/");
+          }
+
+          // 検索条件の存在確認
+          if (param.ContainsKey("requestData"))
           {
             var requestData = Newtonsoft.Json.JsonConvert.DeserializeObject<UserSearchCondition>(param["requestData"].ToString());
+
+            // データ取得とCSV文字列取得
             var models = service.GetAllUsers(requestData);
-            foreach(var model in models )
+            foreach (var model in models)
             {
               csvData.AppendLine(model.GetCSV());
             }
@@ -545,8 +548,15 @@ namespace WebApi.Controllers
       catch (Exception ex)
       {
         logger.LogCritical("{0}", ex.Message);
-        return Content(string.Empty, "text/csv");
+        return LocalRedirect("/");
       }
+
+      // サンプルのファイル名
+      string fileName = string.Format("テスト_{0:yyyyMMddHHmmss}.csv", DateTime.Now);
+      fileName = HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8);
+
+      // ファイル名を設定
+      Response.Headers.Add("Content-Disposition", "attachment; filename=" + fileName);
 
       return Content(csvData.ToString(), "text/csv");
     }
