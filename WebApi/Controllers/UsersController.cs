@@ -561,6 +561,61 @@ namespace WebApi.Controllers
     }
 
     /// <summary>
+    /// ヘッダー付CSVダウンロード
+    /// </summary>
+    /// <param name="json">入力情報のJSOｎデータ</param>
+    /// <returns>結果(json)</returns>
+    /// <remarks>POST api/user/download</remarks>
+    [HttpPost("downloadHeaderCSV")]
+    public ActionResult DownloadHeaderCSV(string json)
+    {
+      var csvData = new System.Text.StringBuilder();
+
+      try
+      {
+        if (!string.IsNullOrEmpty(json))
+        {
+          var param = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+
+          // ログインチェック
+          if (!isLogin(param))
+          {
+            return LocalRedirect("/");
+          }
+
+          // 検索条件の存在確認
+          if (param.ContainsKey("requestData"))
+          {
+            var requestData = Newtonsoft.Json.JsonConvert.DeserializeObject<UserSearchCondition>(param["requestData"].ToString());
+
+            // データ取得とCSV文字列取得
+            var isFirstRecord = true;
+            var models = service.GetAllUsers(requestData);
+            foreach (var model in models)
+            {
+              csvData.AppendLine(model.GetCSV(isFirstRecord));
+              isFirstRecord = false;
+            }
+          }
+        }
+      }
+      catch (Exception ex)
+      {
+        logger.LogCritical("{0}", ex.Message);
+        return LocalRedirect("/");
+      }
+
+      // サンプルのファイル名
+      string fileName = string.Format("テスト_{0:yyyyMMddHHmmss}.csv", DateTime.Now);
+      fileName = HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8);
+
+      // ファイル名を設定
+      Response.Headers.Add("Content-Disposition", "attachment; filename=" + fileName);
+
+      return Content(csvData.ToString(), "text/csv");
+    }
+
+    /// <summary>
     /// CSVダウンロード：JSで作成
     /// </summary>
     /// <param name="param">入力情報</param>
