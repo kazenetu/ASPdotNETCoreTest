@@ -42,7 +42,8 @@
 
                 <div class="form-group {{ctrl.errorPassword}}">
                     <div class="col-sm-2">
-                        <label class="control-label" for="password">パスワード</label>
+                        <label class="control-label" for="password" data-ng-hide="ctrl.isCreateMode()">パスワード再設定</label>
+                        <label class="control-label" for="password" data-ng-show="ctrl.isCreateMode()">パスワード</label>
                     </div>
                     <div class="col-sm-2">
                         <input type="text" id = "password" maxlength="10"

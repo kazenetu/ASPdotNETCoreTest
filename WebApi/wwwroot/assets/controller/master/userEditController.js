@@ -51,7 +51,7 @@ front.controller.UserEditController = function UserEditController($q, $location,
         setEditControls: function (values) {
             ctrl.userId = values.userID;
             ctrl.userName = values.userName;
-            ctrl.password = values.password;
+            ctrl.password = '';
             ctrl.isDelete = values.isDelete;
             ctrl.version = values.modifyVersion;
         },
@@ -121,17 +121,18 @@ front.controller.UserEditController = function UserEditController($q, $location,
                 ctrl.errorUserId = 'has-error';
                 return false;
             }
+
+            // パスワードが入力されていない場合はエラー
+            if (ctrl.password === '') {
+                ctrl.showError('E0013', ['パスワード']);
+                ctrl.errorPassword = 'has-error';
+                return false;
+            }
         }
 
         if (ctrl.userName === '') {
             ctrl.showError('E0013', ['ユーザー名']);
             ctrl.errorUserName = 'has-error';
-            return false;
-        }
-
-        if (ctrl.password === '') {
-            ctrl.showError('E0013', ['パスワード']);
-            ctrl.errorPassword = 'has-error';
             return false;
         }
 
