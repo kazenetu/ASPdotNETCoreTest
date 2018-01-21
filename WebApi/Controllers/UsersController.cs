@@ -443,6 +443,11 @@ namespace WebApi.Controllers
         logger.LogError("Pram[{0}]が未設定", nameof(model.UserID));
         return BadRequest();
       }
+      if (string.IsNullOrEmpty(model.Password))
+      {
+        logger.LogError("Pram[{0}]が未設定", nameof(model.Password));
+        return BadRequest();
+      }
 
       var serviceResult = UpdateResult.Error;
       try
@@ -510,8 +515,18 @@ namespace WebApi.Controllers
         var dbModel = service.Find(model.UserID);
         if (dbModel != null && dbModel.EntryDate.HasValue)
         {
-          // パスワードのハッシュ取得
-          var passwordHash = HashUtility.Create(dbModel.UserID, dbModel.Password, dbModel.EntryDate.Value);
+          var passwordHash = string.Empty;
+
+          // パスワードが設定されていない場合はDBの値を設定する
+          if(string.IsNullOrEmpty(model.Password))
+          {
+            passwordHash  = dbModel.Password;
+          }
+          else
+          {
+            // パスワードのハッシュ取得
+            passwordHash = HashUtility.Create(dbModel.UserID, model.Password, dbModel.EntryDate.Value);
+          }
 
           // データ更新
           serviceResult = service.Save(model, getLoginUserId(param), passwordHash);
