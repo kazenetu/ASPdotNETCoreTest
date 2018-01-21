@@ -11,3 +11,6 @@
   □パッケージ決定  
    [DinkToPdf https://www.nuget.org/packages/DinkToPdf/](https://www.nuget.org/packages/DinkToPdf/)
  
+ ## 参考URL
+ 1.  パスワードのハッシュ化
+     1. [パスワードのハッシュ:Microsoft](https://docs.microsoft.com/ja-jp/aspnet/core/security/data-protection/consumer-apis/password-hashing)
