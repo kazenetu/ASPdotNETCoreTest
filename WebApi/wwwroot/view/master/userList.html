@@ -80,12 +80,6 @@ td
                             on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
 
                     </th>
-                    <th class="text-center" style="width:10em;">
-                        <listColumn title="パスワード" key="PASSWORD"
-                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
-                            exist-record="{{ctrl.searchResult!==null}}"
-                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
-                    </th>
                     <th class="text-center" style="width:7em;">
                         <listColumn title="論理削除" key="REMOVE"
                             active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
@@ -102,9 +96,6 @@ td
                     </td>
                     <td class="text-left">
                         {{result.userName}}
-                    </td>
-                    <td class="text-left">
-                        {{result.password}}
                     </td>
                     <td class="text-center">
                         <input type="checkbox" data-ng-model="result.isDelete" disabled="disabled" />
