@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Domain.Model;
 using static Domain.Service.ServiceBase;
@@ -47,8 +48,10 @@ namespace Domain.Service.User
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <param name="loginUserId">ログイン中のユーザーID</param>
+    /// <param name="passwordHash">パスワードハッシュ</param>
+    /// <param name="entryDate">登録日時(未設定時null)</param>
     /// <returns>成否</returns>
-    UpdateResult Save(UserModel userData, string loginUserId);
+    UpdateResult Save(UserModel userData, string loginUserId, string passwordHash, DateTime? entryDate = null);
 
     /// <summary>
     /// パスワード変更

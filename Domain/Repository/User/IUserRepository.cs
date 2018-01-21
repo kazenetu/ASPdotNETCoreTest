@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Domain.Model;
 using Domain.Service.User;
@@ -48,16 +49,19 @@ namespace Domain.Repository.User
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <param name="loginUserId">ログイン中のユーザーID</param>
+    /// <param name="passwordHash">パスワードハッシュ</param>
+    /// <param name="entryDate">登録日時</param>
     /// <returns>成否</returns>
-    bool Append(UserModel userData, string loginUserId);
+    bool Append(UserModel userData, string loginUserId, string passwordHash, DateTime entryDate);
 
     /// <summary>
     /// ユーザーの更新
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <param name="loginUserId">ログイン中のユーザーID</param>
+    /// <param name="passwordHash">パスワードハッシュ</param>
     /// <returns>成否</returns>
-    bool Modify(UserModel userData, string loginUserId);
+    bool Modify(UserModel userData, string loginUserId, string passwordHash);
 
     /// <summary>
     /// パスワード変更

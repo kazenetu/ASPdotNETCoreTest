@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Domain.Model;
 using Domain.Repository.User;
@@ -71,10 +72,10 @@ namespace Domain.Service.User
     /// <summary>
     /// ユーザーの保存
     /// </summary>
-    /// <param name="userData">ユーザーデータ</param>
-    /// <param name="loginUserId">ログイン中のユーザーID</param>
+    /// <param name="passwordHash">パスワードハッシュ</param>
+    /// <param name="entryDate">登録日時(未設定時null)</param>
     /// <returns>成否</returns>
-    public UpdateResult Save(UserModel userData, string loginUserId)
+    public UpdateResult Save(UserModel userData, string loginUserId, string passwordHash, DateTime? entryDate = null)
     {
       var result = UpdateResult.Error;
 
@@ -86,13 +87,16 @@ namespace Domain.Service.User
       var latestData = Find(userData.UserID);
       if(latestData == null)
       {
-        dbResult = repository.Append(userData, loginUserId);
+        if(entryDate.HasValue)
+        {
+          dbResult = repository.Append(userData, loginUserId, passwordHash, entryDate.Value);
+        }
       }
       else
       {
         result = UpdateResult.ErrorVaersion;
         if(userData.EqualsVersion(latestData.ModifyVersion)){
-          dbResult = repository.Modify(userData, loginUserId);
+          dbResult = repository.Modify(userData, loginUserId, passwordHash);
         }
       }
 

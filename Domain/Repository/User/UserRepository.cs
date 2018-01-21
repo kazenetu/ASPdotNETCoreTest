@@ -224,8 +224,10 @@ namespace Domain.Repository.User
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <param name="loginUserId">ログイン中のユーザーID</param>
+    /// <param name="passwordHash">パスワードハッシュ</param>
+    /// <param name="entryDate">登録日時</param>
     /// <returns>成否</returns>
-    public bool Append(UserModel userData, string loginUserId)
+    public bool Append(UserModel userData, string loginUserId, string passwordHash, DateTime entryDate)
     {
       var sql = new StringBuilder();
       sql.AppendLine("INSERT"); 
@@ -252,13 +254,13 @@ namespace Domain.Repository.User
       sql.AppendLine("  , @MOD_VERSION");
       sql.AppendLine(") ");
 
-      var proccesDateTime = DateTime.Now;
+      var proccesDateTime = entryDate;
 
       // Param設定
       db.ClearParam();
       db.AddParam("@USER_ID", userData.UserID);
       db.AddParam("@USER_NAME", userData.UserName);
-      db.AddParam("@PASSWORD", userData.Password);
+      db.AddParam("@PASSWORD", passwordHash);
       db.AddParam("@DEL_FLAG", userData.IsDelete);
 
       db.AddParam("@ENTRY_USER", loginUserId);
@@ -285,8 +287,9 @@ namespace Domain.Repository.User
     /// </summary>
     /// <param name="userData">ユーザーデータ</param>
     /// <param name="loginUserId">ログイン中のユーザーID</param>
+    /// <param name="passwordHash">パスワードハッシュ</param>
     /// <returns>成否</returns>
-    public bool Modify(UserModel userData, string loginUserId)
+    public bool Modify(UserModel userData, string loginUserId, string passwordHash)
     {
       var sql = new StringBuilder();
       sql.AppendLine("UPDATE MT_USER ");
@@ -306,7 +309,7 @@ namespace Domain.Repository.User
       // Param設定
       db.ClearParam();
       db.AddParam("@USER_NAME", userData.UserName);
-      db.AddParam("@PASSWORD", userData.Password);
+      db.AddParam("@PASSWORD", passwordHash);
       db.AddParam("@DEL_FLAG", userData.IsDelete);
       db.AddParam("@NEW_MOD_VERSION", userData.ModifyVersion + 1);
 
@@ -432,9 +435,13 @@ namespace Domain.Repository.User
         entryUserId = src[columnName].ToString();
       }
       columnName = "ENTRY_DATE";
-      if (columns.Contains(columnName))
+      if (columns.Contains(columnName) && src[columnName] != null)
       {
-        entryDate = src[columnName] as DateTime?;
+        DateTime entryDateValue;
+        if(DateTime.TryParse(src[columnName].ToString(),out entryDateValue))
+        {
+          entryDate = entryDateValue;
+        }
       }
       columnName = "MOD_USER";
       if (columns.Contains(columnName))
@@ -444,7 +451,11 @@ namespace Domain.Repository.User
       columnName = "MOD_DATE";
       if (columns.Contains(columnName))
       {
-        modifyDate = src[columnName] as DateTime?;
+        DateTime modifyDateValue;
+        if(DateTime.TryParse(src[columnName].ToString(),out modifyDateValue))
+        {
+          modifyDate = modifyDateValue;
+        }
       }
       columnName = "MOD_VERSION";
       if (columns.Contains(columnName))

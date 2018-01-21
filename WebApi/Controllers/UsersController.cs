@@ -11,6 +11,7 @@ using static Domain.Service.ServiceBase;
 using Newtonsoft.Json;
 using System.Runtime.Serialization.Json;
 using System.Web;
+using WebApi.Utilities;
 
 namespace WebApi.Controllers
 {
@@ -92,8 +93,17 @@ namespace WebApi.Controllers
       var serviceResult = false;
       try
       {
-        var model = service.Login(userId, password);
-        if (model != null)
+        var passwordHash = string.Empty;
+
+        var model = service.Find(userId);
+        if (model != null && model.EntryDate.HasValue)
+        {
+          // パスワードのハッシュ取得
+          passwordHash = HashUtility.Create(model.UserID,password,model.EntryDate.Value);
+        }
+
+        // ログインチェック
+        if (service.Login(userId, passwordHash) != null)
         {
           // セッション破棄
           refreshSession();
@@ -186,7 +196,17 @@ namespace WebApi.Controllers
       var serviceResult = UpdateResult.Error;
       try
       {
-        serviceResult = service.ChangePassword(userId, password, newPassword);
+        var model = service.Find(userId);
+        if (model != null && model.EntryDate.HasValue)
+        {
+          // パスワードのハッシュ取得
+          var passwordHash = HashUtility.Create(model.UserID, password, model.EntryDate.Value);
+          var newPasswordHash = HashUtility.Create(model.UserID, newPassword, model.EntryDate.Value);
+
+          // パスワード変更
+          serviceResult = service.ChangePassword(userId, passwordHash, newPasswordHash);
+        }
+        
       }
       catch (Exception ex)
       {
@@ -427,7 +447,14 @@ namespace WebApi.Controllers
       var serviceResult = UpdateResult.Error;
       try
       {
-        serviceResult = service.Save(model, getLoginUserId(param));
+        // 現在時刻を設定
+        var entryDate = DateTime.Now;
+
+        // パスワードのハッシュ取得
+        var passwordHash = HashUtility.Create(model.UserID, model.Password, entryDate);
+        
+        // データ保存
+        serviceResult = service.Save(model, getLoginUserId(param), passwordHash, entryDate);
       }
       catch (Exception ex)
       {
@@ -479,7 +506,17 @@ namespace WebApi.Controllers
       var serviceResult = UpdateResult.Error;
       try
       {
-        serviceResult = service.Save(model, getLoginUserId(param));
+        // 更新前のレコード取得
+        var dbModel = service.Find(model.UserID);
+        if (dbModel != null && dbModel.EntryDate.HasValue)
+        {
+          // パスワードのハッシュ取得
+          var passwordHash = HashUtility.Create(dbModel.UserID, dbModel.Password, dbModel.EntryDate.Value);
+
+          // データ更新
+          serviceResult = service.Save(model, getLoginUserId(param), passwordHash);
+        }
+
       }
       catch (Exception ex)
       {
