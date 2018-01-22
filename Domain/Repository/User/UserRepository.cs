@@ -94,7 +94,7 @@ namespace Domain.Repository.User
       var dbResult = db.Fill(sql.ToString());
       foreach (DataRow row in dbResult.Rows)
       {
-        result.Add(createUserModel(row));
+        result.Add(createUserModel(row, false));
       }
 
       return result;
@@ -185,7 +185,7 @@ namespace Domain.Repository.User
       var dbResult = db.Fill(sql.ToString());
       foreach (DataRow row in dbResult.Rows)
       {
-        result.Add(createUserModel(row));
+        result.Add(createUserModel(row, false));
       }
 
       return result;
@@ -389,8 +389,9 @@ namespace Domain.Repository.User
     /// UserModelの作成
     /// </summary>
     /// <param name="src">データ元のDataRow</param>
+    /// <param name="setPassword">パスワードを設定するか否か</param>
     /// <returns>UserModelインスタンス</returns>
-    private UserModel createUserModel(DataRow src)
+    private UserModel createUserModel(DataRow src, bool setPassword = true)
     {
       string userID = string.Empty;
       string userName = string.Empty;
@@ -418,7 +419,10 @@ namespace Domain.Repository.User
       columnName = "PASSWORD";
       if (columns.Contains(columnName))
       {
-        password = src[columnName].ToString();
+        if(setPassword)
+        {
+          password = src[columnName].ToString();
+        }
       }
       columnName = "DEL_FLAG";
       if (columns.Contains(columnName))
