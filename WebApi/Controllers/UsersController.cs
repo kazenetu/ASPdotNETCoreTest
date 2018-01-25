@@ -604,7 +604,7 @@ namespace WebApi.Controllers
             var models = service.GetAllUsers(requestData);
             foreach (var model in models)
             {
-              csvData.AppendLine(model.GetCSV());
+              csvData.AppendLine(model.GetCSV(getDownloadColumnUserModel()));
             }
           }
         }
@@ -658,7 +658,7 @@ namespace WebApi.Controllers
             var models = service.GetAllUsers(requestData);
             foreach (var model in models)
             {
-              csvData.AppendLine(model.GetCSV(isFirstRecord));
+              csvData.AppendLine(model.GetCSV(isFirstRecord, getDownloadColumnUserModel()));
               isFirstRecord = false;
             }
           }
@@ -904,6 +904,25 @@ namespace WebApi.Controllers
       return new UserModel(userId, userName, password, isDelete,
                            string.Empty, null, string.Empty, null, version);
 
+    }
+
+    /// <summary>
+    /// ダウンロード用カラム名を取得
+    /// </summary>
+    /// <returns>物理カラム名と論理カラム名のリスト</returns>
+    private Dictionary<string, string> getDownloadColumnUserModel()
+    {
+      var result = new Dictionary<string, string>();
+
+      // ダミーインスタンス作成
+      var model = new UserModel(string.Empty, string.Empty);
+
+      // カラム名設定
+      result.Add(nameof(model.UserID), "ユーザーID");
+      result.Add(nameof(model.UserName), "ユーザー名");
+      result.Add(nameof(model.IsDelete), "削除");
+
+      return result;
     }
     #endregion
 
