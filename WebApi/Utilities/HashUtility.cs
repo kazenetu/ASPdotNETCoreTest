@@ -13,12 +13,6 @@ namespace WebApi.Utilities
     /// <summary>
     /// ハッシュ作成
     /// </summary>
-    /// <param name="password">平文のパスワード</param>
-    /// <returns>ハッシュとソルト</returns>
-
-    /// <summary>
-    /// ハッシュ作成
-    /// </summary>
     /// <param name="userId">ユーザーID(ソルト用)</param>
     /// <param name="password">平文パスワード</param>
     /// <param name="createDate">データ作成日時(ソルト用)</param>
