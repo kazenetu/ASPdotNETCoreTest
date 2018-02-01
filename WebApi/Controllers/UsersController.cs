@@ -602,10 +602,12 @@ namespace WebApi.Controllers
 
             // データ取得とCSV文字列取得
             var models = service.GetAllUsers(requestData);
+            var generator = new CSVGenerator<UserModel>();
             foreach (var model in models)
             {
-              csvData.AppendLine(model.GetCSV(getDownloadColumnUserModel()));
+              generator.Add(model);
             }
+            csvData.AppendLine(generator.GetCSV(getDownloadColumnUserModel()));
           }
         }
       }
@@ -654,13 +656,13 @@ namespace WebApi.Controllers
             var requestData = Newtonsoft.Json.JsonConvert.DeserializeObject<UserSearchCondition>(param["requestData"].ToString());
 
             // データ取得とCSV文字列取得
-            var isFirstRecord = true;
             var models = service.GetAllUsers(requestData);
+            var generator = new CSVGenerator<UserModel>();
             foreach (var model in models)
             {
-              csvData.AppendLine(model.GetCSV(isFirstRecord, getDownloadColumnUserModel()));
-              isFirstRecord = false;
+              generator.Add(model);
             }
+            csvData.AppendLine(generator.GetCSV(true, getDownloadColumnUserModel()));
           }
         }
       }
@@ -710,10 +712,12 @@ namespace WebApi.Controllers
       {
         // データ取得とCSV文字列取得
         var models = service.GetAllUsers(searchCondition);
+        var generator = new CSVGenerator<UserModel>();
         foreach (var model in models)
         {
-          csvData.AppendLine(model.GetCSV());
+          generator.Add(model);
         }
+        csvData.AppendLine(generator.GetCSV( getDownloadColumnUserModel()));
       }
       catch (Exception ex)
       {
@@ -774,13 +778,13 @@ namespace WebApi.Controllers
       try
       {
         // データ取得とCSV文字列取得
-        var isFirstRecord = true;
         var models = service.GetAllUsers(searchCondition);
+        var generator = new CSVGenerator<UserModel>();
         foreach (var model in models)
         {
-          csvData.AppendLine(model.GetCSV(isFirstRecord));
-          isFirstRecord = false;
+          generator.Add(model);
         }
+        csvData.AppendLine(generator.GetCSV(true, getDownloadColumnUserModel()));
       }
       catch (Exception ex)
       {
