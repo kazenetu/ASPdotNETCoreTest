@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using Domain.Service.User;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using WebApi.Utilities;
 
 namespace WebApi.Controllers
 {
@@ -20,8 +27,6 @@ namespace WebApi.Controllers
 
     #region プライベート定数フィールド
     private static string ErrorLoginNG = "ログイン失敗";
-    private static string ErrorPasswordNG = "パスワード失敗";
-    private static string SearchResultZero = "検索結果ゼロ件";
     #endregion
 
     #region コンストラクタ
@@ -81,7 +86,7 @@ namespace WebApi.Controllers
         if (model != null && model.EntryDate.HasValue)
         {
           // パスワードのハッシュ取得
-          passwordHash = HashUtility.Create(model.UserID,password,model.EntryDate.Value);
+          passwordHash = HashUtility.Create(model.UserID, password, model.EntryDate.Value);
         }
 
         // ログインチェック
