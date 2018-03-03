@@ -79,7 +79,7 @@ front.common.component.HeaderController = function HeaderController($location, u
      */
     ctrl.logout = function() {
         // ユーザーデータ取得
-        webApiService.post('api/user/logout', {
+        webApiService.post('api/account/logout', {
         }, function(response) {
             userService.clear();
             storageService.clearAllValues();

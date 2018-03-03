@@ -17,7 +17,7 @@ front.controller.LoginController = function LoginController($location, webApiSer
             return;
         }
 
-        webApiService.post('api/user/login', {
+        webApiService.post('api/account/login', {
             id: ctrl.userId,
             password: ctrl.password
         }, function (response) {
@@ -59,7 +59,7 @@ front.controller.LoginController = function LoginController($location, webApiSer
      * ページ初期化処理
      */
     ctrl.init = function () {
-        webApiService.post('api/user/logout', {
+        webApiService.post('api/account/logout', {
             id: ctrl.userId,
             password: ctrl.password
         }, function (response) {
