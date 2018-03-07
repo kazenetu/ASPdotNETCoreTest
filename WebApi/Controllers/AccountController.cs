@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using WebApi.Utilities;
+using static Domain.Service.ServiceBase;
 
 namespace WebApi.Controllers
 {
@@ -27,6 +28,7 @@ namespace WebApi.Controllers
 
     #region プライベート定数フィールド
     private static string ErrorLoginNG = "ログイン失敗";
+    private static string ErrorPasswordNG = "パスワード失敗";
     #endregion
 
     #region コンストラクタ
@@ -140,6 +142,81 @@ namespace WebApi.Controllers
 
       var result = new Dictionary<string, object>();
       result.Add("result", "OK");
+
+      return Json(result);
+    }
+    #endregion
+
+    #region パスワード変更
+    
+    /// <summary>
+    /// パスワード変更
+    /// </summary>
+    /// <param name="param">入力情報</param>
+    /// <returns>結果(json)</returns>
+    /// <remarks>POST api/user/passwordChange</remarks>
+    [HttpPost("passwordChange")]
+    [AutoValidateAntiforgeryToken]
+    public IActionResult PasswordChange([FromBody]Dictionary<string, object> param)
+    {
+      var paramNameUserId = "id";
+      var paramNamePassword = "password";
+      var paramNameNewPassword = "newPassword";
+
+      // 入力チェック
+      if (!param.ContainsKey(paramNameUserId))
+      {
+        logger.LogError("Pram[{0}]が未設定", paramNameUserId);
+        return BadRequest();
+      }
+      if (!param.ContainsKey(paramNamePassword))
+      {
+        logger.LogError("Pram[{0}]が未設定", paramNamePassword);
+        return BadRequest();
+      }
+      if (!param.ContainsKey(paramNameNewPassword))
+      {
+        logger.LogError("Pram[{0}]が未設定", paramNameNewPassword);
+        return BadRequest();
+      }
+
+      var userId = param[paramNameUserId].ToString();
+      var password = param[paramNamePassword].ToString();
+      var newPassword = param[paramNameNewPassword].ToString();
+
+      var data = new Dictionary<string, object>();
+      var serviceResult = UpdateResult.Error;
+      try
+      {
+        var model = service.Find(userId);
+        if (model != null && model.EntryDate.HasValue)
+        {
+          // パスワードのハッシュ取得
+          var passwordHash = HashUtility.Create(model.UserID, password, model.EntryDate.Value);
+          var newPasswordHash = HashUtility.Create(model.UserID, newPassword, model.EntryDate.Value);
+
+          // パスワード変更
+          serviceResult = service.ChangePassword(userId, passwordHash, newPasswordHash);
+        }
+        
+      }
+      catch (Exception ex)
+      {
+        logger.LogCritical("{0}", ex.Message);
+        return BadRequest();
+      }
+
+      var result = new Dictionary<string, object>();
+      if (serviceResult == UpdateResult.OK)
+      {
+        result.Add("result", "OK");
+      }
+      else
+      {
+        result.Add("result", "NG");
+        result.Add("errorMessage", ErrorPasswordNG);
+      }
+      result.Add("responseData", data);
 
       return Json(result);
     }
