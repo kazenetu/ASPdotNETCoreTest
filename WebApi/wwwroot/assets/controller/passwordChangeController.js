@@ -5,7 +5,7 @@ front.controller.PasswordChangeController = function PasswordChangeController($l
     var ctrl = this;
 
     ctrl.passwordChange = function () {
-        webApiService.post('api/user/passwordChange', {
+        webApiService.post('api/account/passwordChange', {
             id: userService.getId(),
             password: ctrl.password,
             newPassword: ctrl.newPassword
