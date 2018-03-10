@@ -155,7 +155,7 @@ namespace WebApi.Controllers
       {
         // パラメータの設定
         var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
-         searchCondition = getUserSearchCondition(requestData);
+        searchCondition = getUserSearchCondition(requestData);
       }
 
       var serviceResult = new List<UserModel>();
@@ -250,7 +250,7 @@ namespace WebApi.Controllers
       return Json(result);
     }
 
-#endregion
+    #endregion
 
     #region 更新系
 
@@ -293,7 +293,7 @@ namespace WebApi.Controllers
 
         // パスワードのハッシュ取得
         var passwordHash = HashUtility.Create(model.UserID, model.Password, entryDate);
-        
+
         // データ保存
         serviceResult = service.Save(model, getLoginUserId(param), passwordHash, entryDate);
       }
@@ -312,7 +312,7 @@ namespace WebApi.Controllers
       else
       {
         result.Add("result", "NG");
-        result.Add("errorMessage", string.Format(ErrorSave,"登録"));
+        result.Add("errorMessage", string.Format(ErrorSave, "登録"));
       }
 
       return Json(result);
@@ -354,9 +354,9 @@ namespace WebApi.Controllers
           var passwordHash = string.Empty;
 
           // パスワードが設定されていない場合はDBの値を設定する
-          if(string.IsNullOrEmpty(model.Password))
+          if (string.IsNullOrEmpty(model.Password))
           {
-            passwordHash  = dbModel.Password;
+            passwordHash = dbModel.Password;
           }
           else
           {
@@ -384,18 +384,20 @@ namespace WebApi.Controllers
       else
       {
         result.Add("result", "NG");
-        if(serviceResult == UpdateResult.ErrorVaersion){
+        if (serviceResult == UpdateResult.ErrorVaersion)
+        {
           result.Add("errorMessage", ErrorVersion);
         }
-        else{
-          result.Add("errorMessage", string.Format(ErrorSave,"更新"));
+        else
+        {
+          result.Add("errorMessage", string.Format(ErrorSave, "更新"));
         }
       }
 
       return Json(result);
     }
 
-#endregion
+    #endregion
 
     #region  CSVダウンロード系
 
@@ -530,7 +532,7 @@ namespace WebApi.Controllers
       {
         // パラメータの設定
         var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
-         searchCondition = getUserSearchCondition(requestData);
+        searchCondition = getUserSearchCondition(requestData);
       }
 
       var csvData = new System.Text.StringBuilder();
@@ -544,7 +546,7 @@ namespace WebApi.Controllers
         {
           generator.Add(model);
         }
-        csvData.AppendLine(generator.GetCSV( getDownloadColumnUserModel()));
+        csvData.AppendLine(generator.GetCSV(getDownloadColumnUserModel()));
       }
       catch (Exception ex)
       {
@@ -557,13 +559,13 @@ namespace WebApi.Controllers
       {
         result.Add("result", "OK");
 
-        var data = new Dictionary<string,string>();
-        data.Add("csv",csvData.ToString());
+        var data = new Dictionary<string, string>();
+        data.Add("csv", csvData.ToString());
 
         // サンプルのファイル名
         string fileName = string.Format("テスト_{0:yyyyMMddHHmmss}.csv", DateTime.Now);
         fileName = HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8);
-        data.Add("filename",fileName);
+        data.Add("filename", fileName);
 
         result.Add("responseData", data);
       }
@@ -597,7 +599,7 @@ namespace WebApi.Controllers
       {
         // パラメータの設定
         var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
-         searchCondition = getUserSearchCondition(requestData);
+        searchCondition = getUserSearchCondition(requestData);
       }
 
       var csvData = new System.Text.StringBuilder();
@@ -624,13 +626,13 @@ namespace WebApi.Controllers
       {
         result.Add("result", "OK");
 
-        var data = new Dictionary<string,string>();
-        data.Add("csv",csvData.ToString());
+        var data = new Dictionary<string, string>();
+        data.Add("csv", csvData.ToString());
 
         // サンプルのファイル名
         string fileName = string.Format("テスト_{0:yyyyMMddHHmmss}.csv", DateTime.Now);
         fileName = HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8);
-        data.Add("filename",fileName);
+        data.Add("filename", fileName);
 
         result.Add("responseData", data);
       }
@@ -653,34 +655,35 @@ namespace WebApi.Controllers
     /// </summary>
     /// <param name="src">リクエスト</param>
     /// <returns>条件入力インスタンス</returns>
-    private UserSearchCondition getUserSearchCondition( Newtonsoft.Json.Linq.JObject src){
+    private UserSearchCondition getUserSearchCondition(Newtonsoft.Json.Linq.JObject src)
+    {
       var searchCondition = new UserSearchCondition();
 
-        Newtonsoft.Json.Linq.JToken jsonToken = null;
+      Newtonsoft.Json.Linq.JToken jsonToken = null;
 
-        var paramName = string.Empty;
+      var paramName = string.Empty;
 
-        // パラメータの設定
-        paramName = "searchUserId";
-        if (src.TryGetValue(paramName, out jsonToken))
-        {
-          searchCondition.SearchUserId = src[paramName].ToString();
-        }
-        paramName = "pageIndex";
-        if (src.TryGetValue(paramName, out jsonToken))
-        {
-          searchCondition.PageIndex = (int)src[paramName];
-        }
-        paramName = "sortKey";
-        if (src.TryGetValue(paramName, out jsonToken))
-        {
-          searchCondition.SortKey = src[paramName].ToString();
-        }
-        paramName = "sortType";
-        if (src.TryGetValue(paramName, out jsonToken))
-        {
-          searchCondition.SortType = src[paramName].ToString();
-        }
+      // パラメータの設定
+      paramName = "searchUserId";
+      if (src.TryGetValue(paramName, out jsonToken))
+      {
+        searchCondition.SearchUserId = src[paramName].ToString();
+      }
+      paramName = "pageIndex";
+      if (src.TryGetValue(paramName, out jsonToken))
+      {
+        searchCondition.PageIndex = (int)src[paramName];
+      }
+      paramName = "sortKey";
+      if (src.TryGetValue(paramName, out jsonToken))
+      {
+        searchCondition.SortKey = src[paramName].ToString();
+      }
+      paramName = "sortType";
+      if (src.TryGetValue(paramName, out jsonToken))
+      {
+        searchCondition.SortType = src[paramName].ToString();
+      }
 
       return searchCondition;
     }
