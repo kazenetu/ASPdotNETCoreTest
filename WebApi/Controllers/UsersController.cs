@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Runtime.Serialization.Json;
 using System.Web;
 using WebApi.Utilities;
+using WebApi.DTO;
 
 namespace WebApi.Controllers
 {
@@ -119,19 +120,16 @@ namespace WebApi.Controllers
         return BadRequest();
       }
 
-      var result = new Dictionary<string, object>();
-      if (serviceResult >= 0)
-      {
-        result.Add("result", "OK");
-      }
-      else
-      {
-        result.Add("result", "NG");
-        result.Add("errorMessage", SearchResultZero);
-      }
-      result.Add("responseData", serviceResult);
+      var status = ResponseDTO.Results.OK;
+      var message = string.Empty;
 
-      return Json(result);
+      if (serviceResult < 0)
+      {
+        status = ResponseDTO.Results.NG;
+        message = SearchResultZero;
+      }
+
+      return Json(new ResponseDTO(status, message, serviceResult));
     }
 
     /// <summary>
@@ -169,19 +167,15 @@ namespace WebApi.Controllers
         return BadRequest();
       }
 
-      var result = new Dictionary<string, object>();
-      if (serviceResult.Any())
+      var status = ResponseDTO.Results.OK;
+      var message = string.Empty;
+      if (!serviceResult.Any())
       {
-        result.Add("result", "OK");
-        result.Add("responseData", serviceResult);
+        status = ResponseDTO.Results.NG;
+        message =  SearchResultZero;
       }
-      else
-      {
-        result.Add("result", "NG");
-        result.Add("errorMessage", SearchResultZero);
-      }
-
-      return Json(result);
+      
+      return Json(new ResponseDTO(status, message, serviceResult));
     }
 
     /// <summary>
@@ -235,19 +229,16 @@ namespace WebApi.Controllers
         return BadRequest();
       }
 
-      var result = new Dictionary<string, object>();
-      if (serviceResult != null)
-      {
-        result.Add("result", "OK");
-      }
-      else
-      {
-        result.Add("result", "NG");
-        result.Add("errorMessage", ErrorNotFound);
-      }
-      result.Add("responseData", serviceResult);
+      var status = ResponseDTO.Results.OK;
+      var message = string.Empty;
 
-      return Json(result);
+      if (serviceResult == null)
+      {
+        status = ResponseDTO.Results.NG;
+        message = ErrorNotFound;
+      }
+
+      return Json(new ResponseDTO(status, message, serviceResult));
     }
 
     #endregion
@@ -303,19 +294,16 @@ namespace WebApi.Controllers
         return BadRequest();
       }
 
-      var result = new Dictionary<string, object>();
-      if (serviceResult == UpdateResult.OK)
+      var status = ResponseDTO.Results.OK;
+      var message = string.Empty;
+
+      if (serviceResult != UpdateResult.OK)
       {
-        result.Add("result", "OK");
-        result.Add("responseData", string.Empty);
-      }
-      else
-      {
-        result.Add("result", "NG");
-        result.Add("errorMessage", string.Format(ErrorSave, "登録"));
+        status = ResponseDTO.Results.NG;
+        message = string.Format(ErrorSave, "登録");
       }
 
-      return Json(result);
+      return Json(new ResponseDTO(status, message, serviceResult));
     }
 
     /// <summary>
@@ -375,26 +363,24 @@ namespace WebApi.Controllers
         return BadRequest();
       }
 
-      var result = new Dictionary<string, object>();
-      if (serviceResult == UpdateResult.OK)
+      var status = ResponseDTO.Results.OK;
+      var message = string.Empty;
+
+      if (serviceResult != UpdateResult.OK)
       {
-        result.Add("result", "OK");
-        result.Add("responseData", null);
-      }
-      else
-      {
-        result.Add("result", "NG");
+        status = ResponseDTO.Results.NG;
+
         if (serviceResult == UpdateResult.ErrorVaersion)
         {
-          result.Add("errorMessage", ErrorVersion);
+          message = ErrorVersion;
         }
         else
         {
-          result.Add("errorMessage", string.Format(ErrorSave, "更新"));
+          message = string.Format(ErrorSave, "更新");
         }
       }
 
-      return Json(result);
+      return Json(new ResponseDTO(status, message, null));
     }
 
     #endregion
@@ -554,28 +540,26 @@ namespace WebApi.Controllers
         return BadRequest();
       }
 
-      var result = new Dictionary<string, object>();
+      var status = ResponseDTO.Results.OK;
+      var message = string.Empty;
+      var data = new Dictionary<string, string>();
+
       if (csvData.Length > 0)
       {
-        result.Add("result", "OK");
-
-        var data = new Dictionary<string, string>();
         data.Add("csv", csvData.ToString());
 
         // サンプルのファイル名
         string fileName = string.Format("テスト_{0:yyyyMMddHHmmss}.csv", DateTime.Now);
         fileName = HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8);
         data.Add("filename", fileName);
-
-        result.Add("responseData", data);
       }
       else
       {
-        result.Add("result", "NG");
-        result.Add("errorMessage", SearchResultZero);
+        status = ResponseDTO.Results.NG;
+        message = SearchResultZero;
       }
 
-      return Json(result);
+      return Json(new ResponseDTO(status, message, data));
     }
 
     /// <summary>
@@ -621,28 +605,26 @@ namespace WebApi.Controllers
         return BadRequest();
       }
 
-      var result = new Dictionary<string, object>();
+      var status = ResponseDTO.Results.OK;
+      var message = string.Empty;
+      var data = new Dictionary<string, string>();
+
       if (csvData.Length > 0)
       {
-        result.Add("result", "OK");
-
-        var data = new Dictionary<string, string>();
         data.Add("csv", csvData.ToString());
 
         // サンプルのファイル名
         string fileName = string.Format("テスト_{0:yyyyMMddHHmmss}.csv", DateTime.Now);
         fileName = HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8);
         data.Add("filename", fileName);
-
-        result.Add("responseData", data);
       }
       else
       {
-        result.Add("result", "NG");
-        result.Add("errorMessage", SearchResultZero);
+        status = ResponseDTO.Results.NG;
+        message = SearchResultZero;
       }
 
-      return Json(result);
+      return Json(new ResponseDTO(status, message, data));
     }
     #endregion
 
