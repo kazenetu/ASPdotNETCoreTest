@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using WebApi.Utilities;
 using static Domain.Service.ServiceBase;
+using WebApi.DTO;
 
 namespace WebApi.Controllers
 {
@@ -110,17 +111,15 @@ namespace WebApi.Controllers
         return BadRequest();
       }
 
-      var result = new Dictionary<string, object>();
+      ResponseDTO result = null;
       if (serviceResult)
       {
-        result.Add("result", "OK");
+        result = new ResponseDTO(ResponseDTO.Results.OK, string.Empty, data);
       }
       else
       {
-        result.Add("result", "NG");
-        result.Add("errorMessage", ErrorLoginNG);
+        result = new ResponseDTO(ResponseDTO.Results.NG, ErrorLoginNG);
       }
-      result.Add("responseData", data);
 
       return Json(result);
     }
@@ -140,15 +139,14 @@ namespace WebApi.Controllers
       HttpContext.Response.Cookies.Delete(ControllerBase.SessionCookieName);
       session.Clear();
 
-      var result = new Dictionary<string, object>();
-      result.Add("result", "OK");
+      ResponseDTO result = new ResponseDTO(ResponseDTO.Results.OK, string.Empty, null);
 
       return Json(result);
     }
     #endregion
 
     #region パスワード変更
-    
+
     /// <summary>
     /// パスワード変更
     /// </summary>
@@ -198,7 +196,7 @@ namespace WebApi.Controllers
           // パスワード変更
           serviceResult = service.ChangePassword(userId, passwordHash, newPasswordHash);
         }
-        
+
       }
       catch (Exception ex)
       {
@@ -206,17 +204,15 @@ namespace WebApi.Controllers
         return BadRequest();
       }
 
-      var result = new Dictionary<string, object>();
+      ResponseDTO result = null;
       if (serviceResult == UpdateResult.OK)
       {
-        result.Add("result", "OK");
+        result = new ResponseDTO(ResponseDTO.Results.OK, string.Empty, data);
       }
       else
       {
-        result.Add("result", "NG");
-        result.Add("errorMessage", ErrorPasswordNG);
+        result = new ResponseDTO(ResponseDTO.Results.NG, ErrorPasswordNG);
       }
-      result.Add("responseData", data);
 
       return Json(result);
     }
