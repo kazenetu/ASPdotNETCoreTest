@@ -172,9 +172,9 @@ namespace WebApi.Controllers
       if (!serviceResult.Any())
       {
         status = ResponseDTO.Results.NG;
-        message =  SearchResultZero;
+        message = SearchResultZero;
       }
-      
+
       return Json(new ResponseDTO(status, message, serviceResult));
     }
 
