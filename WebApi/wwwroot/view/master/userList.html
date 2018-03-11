@@ -1,10 +1,9 @@
 <style type="text/css">
-td
-{
-    padding-top:0.25em;
-    padding-bottom:0.25em;
-    vertical-align: middle;
-}
+    td {
+        padding-top: 0.25em;
+        padding-bottom: 0.25em;
+        vertical-align: middle;
+    }
 </style>
 
 <div class="height-100percent" data-ng-init="ctrl.init()" data-ng-controller="userListController as ctrl">
@@ -12,17 +11,17 @@ td
     <header data-on-send-root="ctrl.sendRootHeader(src)"></header>
 
     <!-- メイン画面 -->
-    <div  class="container main-area" data-ng-cloak >
+    <div class="container main-area" data-ng-cloak>
         <!-- ボタン類 -->
         <div class="form-group buttons-row">
-            <input type="button" class="btn" data-ng-click="ctrl.back()"  value="戻る">
+            <input type="button" class="btn" data-ng-click="ctrl.back()" value="戻る">
             <div class="pull-right">
-                <input type="button" class="btn" data-ng-click="ctrl.create()"  value="新規作成">
+                <input type="button" class="btn" data-ng-click="ctrl.create()" value="新規作成">
             </div>
         </div>
         <hr>
 
-        <div class="scroll-area">
+        <div style="height: 80%;">
             <!-- 検索条件 -->
             <form class="form-inline">
                 <div class="form-group {{ctrl.errorSearchUserId}}">
@@ -40,74 +39,57 @@ td
 
                         <input type="submit" id="csv" style="display: none;">
 
-                        <input type="button" class="btn" value="CSV出力(サーバー出力)"
-                            data-ng-click="ctrl.downloadCsv('api/user/download')">
-                        <input type="button" class="btn" value="CSV出力(JS出力)"
-                            data-ng-click="ctrl.downloadCsvJS('api/user/downloadJS')">
+                        <input type="button" class="btn" value="CSV出力(サーバー出力)" data-ng-click="ctrl.downloadCsv('api/user/download')">
+                        <input type="button" class="btn" value="CSV出力(JS出力)" data-ng-click="ctrl.downloadCsvJS('api/user/downloadJS')">
 
-                        <input type="button" class="btn" value="ヘッダー付CSV出力(サーバー出力)"
-                            data-ng-click="ctrl.downloadCsv('api/user/downloadHeaderCSV')">
-                        <input type="button" class="btn" value="ヘッダー付CSV出力(JS出力)"
-                            data-ng-click="ctrl.downloadCsvJS('api/user/downloadHeaderCSVJS')">
+                        <input type="button" class="btn" value="ヘッダー付CSV出力(サーバー出力)" data-ng-click="ctrl.downloadCsv('api/user/downloadHeaderCSV')">
+                        <input type="button" class="btn" value="ヘッダー付CSV出力(JS出力)" data-ng-click="ctrl.downloadCsvJS('api/user/downloadHeaderCSVJS')">
 
-                        <!--
-
-                        <input type="button" class="btn" value="CSV出力ストリーム版"
-                            data-ng-click="ctrl.downloadCsv('api/user/downloadCSV')">
-                        <input type="button" class="btn" value="PDF出力"
-                            data-ng-click="ctrl.downloadCsv('api/user/downloadPDF')">
-                        -->
                     </form>
-                        <input type="button" class="btn" data-ng-click="ctrl.search(0)"  value="検索">
+                    <input type="button" class="btn" data-ng-click="ctrl.search(0)" value="検索">
                 </div>
             </div>
 
             <!-- 検索結果 -->
             <pager total-page={{ctrl.totalPage}} on-paging="ctrl.paging(pageIndex,sender)" on-send-root="ctrl.sendRoot(src)" />
 
-            <table class="table table-bordered">
-                <tr class="success">
-                    <th class="text-center" style="width:10em;">
-                        <listColumn title="ID" key="ID"
-                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
-                            exist-record="{{ctrl.searchResult!==null}}"
-                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
-                    </th>
-                    <th class="text-center" style="width:30em;">
-                        <listColumn title="名前" key="NAME"
-                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
-                            exist-record="{{ctrl.searchResult!==null}}"
-                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+            <div class="scroll-area">
+                <table class="table table-bordered">
+                    <tr class="success">
+                        <th class="text-center" style="width:10em;">
+                            <listColumn title="ID" key="ID" active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}" exist-record="{{ctrl.searchResult!==null}}"
+                                on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+                        </th>
+                        <th class="text-center" style="width:30em;">
+                            <listColumn title="名前" key="NAME" active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}" exist-record="{{ctrl.searchResult!==null}}"
+                                on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
 
-                    </th>
-                    <th class="text-center" style="width:7em;">
-                        <listColumn title="論理削除" key="REMOVE"
-                            active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}"
-                            exist-record="{{ctrl.searchResult!==null}}"
-                            on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
-                    </th>
-                    <th class="text-center" style="width:5em;">
-                        変更
-                    </th>
-                </tr>
-                <tr  data-ng-repeat="result in ctrl.searchResult">
-                    <td class="text-center">
-                        {{result.userID}}
-                    </td>
-                    <td class="text-left">
-                        {{result.userName}}
-                    </td>
-                    <td class="text-center">
-                        <input type="checkbox" data-ng-model="result.isDelete" disabled="disabled" />
-                    </td>
+                        </th>
+                        <th class="text-center" style="width:7em;">
+                            <listColumn title="論理削除" key="REMOVE" active-key="{{ctrl.sortKey}}" sort-type="{{ctrl.sortType}}" exist-record="{{ctrl.searchResult!==null}}"
+                                on-send-root="ctrl.sendColumn(src)" on-click="ctrl.clickColumn(sortKey,sortType)" />
+                        </th>
+                        <th class="text-center" style="width:5em;">
+                            変更
+                        </th>
+                    </tr>
+                    <tr data-ng-repeat="result in ctrl.searchResult">
+                        <td class="text-center">
+                            {{result.userID}}
+                        </td>
+                        <td class="text-left">
+                            {{result.userName}}
+                        </td>
+                        <td class="text-center">
+                            <input type="checkbox" data-ng-model="result.isDelete" disabled="disabled" />
+                        </td>
 
-                    <td class="text-center">
-                        <button class="btn btn-sm" data-ng-click="ctrl.edit(result)">編集</button>
-                    </td>
-                </tr>
-            </table>
-
-            <pager total-page={{ctrl.totalPage}} on-paging="ctrl.paging(pageIndex,sender)" on-send-root="ctrl.sendRoot(src)" />
+                        <td class="text-center">
+                            <button class="btn btn-sm" data-ng-click="ctrl.edit(result)">編集</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </div>
