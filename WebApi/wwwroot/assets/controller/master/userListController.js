@@ -117,13 +117,13 @@ front.controller.UserListController = function UserListController($q, $location,
                         var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
                         var content = response.responseData.csv;
                         var fileName = decodeURIComponent(response.responseData.filename);
-                        var blob = new Blob([ bom, content ], { "type" : "text/csv" });
-        
-                        if (window.navigator.msSaveBlob) { 
-                            window.navigator.msSaveBlob(blob, fileName); 
-        
+                        var blob = new Blob([bom, content], { "type": "text/csv" });
+
+                        if (window.navigator.msSaveBlob) {
+                            window.navigator.msSaveBlob(blob, fileName);
+
                             // msSaveOrOpenBlobの場合はファイルを保存せずに開ける
-                            window.navigator.msSaveOrOpenBlob(blob, fileName); 
+                            window.navigator.msSaveOrOpenBlob(blob, fileName);
                         } else {
                             $('#downloadHref').attr('href', window.URL.createObjectURL(blob));
                             $('#downloadHref').attr('download', fileName);
@@ -136,7 +136,7 @@ front.controller.UserListController = function UserListController($q, $location,
         // 発火
         d.resolve();
     }
-    
+
     /**
      * 一覧編集ボタンクリック
      */
@@ -206,8 +206,17 @@ front.controller.UserListController = function UserListController($q, $location,
      * ページ初期化処理
      */
     ctrl.init = function () {
-        // 検索条件Storageから検索結果を再実行
-        getConditions();
+        setTimeout(function () {
+            var headerTop = $(".fixed-header.clone").position().top;
+            var recordTop = $(".scroll-area>.fixed-header").position().top;
+
+            var marginTop = parseInt($(".scroll-area>.fixed-header").css("margin-top"));
+            marginTop = (headerTop - recordTop);
+            $(".scroll-area>.fixed-header").css("margin-top", marginTop);
+
+            // 検索条件Storageから検索結果を再実行
+            getConditions();
+        }, 0);
     }
 
     /**
