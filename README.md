@@ -6,9 +6,9 @@
 - [ ] CSV出力対象カラムの設定機能
 - [X] CSVダウンロード
 - [ ] ファイルアップロード  
-  □容量制限の確認  
+  - [ ] 容量制限の確認  
 - [ ] PDFダウンロード  
-  □パッケージ決定  
+  - [ ] パッケージ決定  
    [DinkToPdf https://www.nuget.org/packages/DinkToPdf/](https://www.nuget.org/packages/DinkToPdf/)
  
  ## 参考URL
