@@ -9,7 +9,8 @@
   - [ ] 容量制限の確認  
 - [ ] PDFダウンロード  
   - [ ] パッケージ決定  
-   [DinkToPdf https://www.nuget.org/packages/DinkToPdf/](https://www.nuget.org/packages/DinkToPdf/)
+    - [DinkToPdf https://www.nuget.org/packages/DinkToPdf/](https://www.nuget.org/packages/DinkToPdf/)
+    - [Windowsで始める仮想サーバー その5 「ASP.NET CoreでPDF出力」](https://github.com/kazenetu/blog-reports/tree/master/reports/20-dotnetTestCentOS5)
  
  ## 参考URL
  1.  パスワードのハッシュ化
