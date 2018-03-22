@@ -7,6 +7,7 @@
 - [X] CSVダウンロード
 - [ ] ファイルアップロード  
   - [ ] 容量制限の確認  
+    [kazenetu/dotNETCoreTest：ファイルアップロードの例](https://github.com/kazenetu/dotNETCoreTest/blob/master/WebApp/WebApiSample/Controllers/UsersController.cs#L198-L256)
 - [ ] PDFダウンロード  
   - [ ] パッケージ決定  
     - [DinkToPdf https://www.nuget.org/packages/DinkToPdf/](https://www.nuget.org/packages/DinkToPdf/)
