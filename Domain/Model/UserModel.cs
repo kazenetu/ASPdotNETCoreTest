@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Domain.Model
 {
@@ -101,6 +102,51 @@ namespace Domain.Model
     {
       return ModifyVersion == vesion;
     }
+
+    /// <summary>
+    /// Model生成
+    /// </summary>
+    /// <param name="param">入力情報</param>
+    public static UserModel Create(Dictionary<string, object> param)
+    {
+      var userId = string.Empty;
+      var userName = string.Empty;
+      var password = string.Empty;
+      var isDelete = false;
+      var version = 0;
+
+      var paramName = string.Empty;
+      paramName = "id";
+      if (param.ContainsKey(paramName))
+      {
+        userId = param[paramName].ToString();
+      }
+      paramName = "name";
+      if (param.ContainsKey(paramName))
+      {
+        userName = param[paramName].ToString();
+      }
+      paramName = "password";
+      if (param.ContainsKey(paramName))
+      {
+        password = param[paramName].ToString();
+      }
+      paramName = "isDelete";
+      if (param.ContainsKey(paramName))
+      {
+        bool.TryParse(param[paramName].ToString(), out isDelete);
+      }
+      paramName = "version";
+      if (param.ContainsKey(paramName))
+      {
+        int.TryParse(param[paramName].ToString(), out version);
+      }
+
+      return new UserModel(userId, userName, password, isDelete,
+                           string.Empty, null, string.Empty, null, version);
+
+    }
+
     #endregion
   }
 }
