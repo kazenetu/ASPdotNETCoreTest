@@ -107,7 +107,7 @@ namespace Domain.Model
     /// Model生成
     /// </summary>
     /// <param name="param">入力情報</param>
-    public static UserModel Create(Dictionary<string, string> param)
+    public static UserModel Create(Dictionary<string, object> param)
     {
       var userId = string.Empty;
       var userName = string.Empty;
@@ -119,27 +119,27 @@ namespace Domain.Model
       paramName = "id";
       if (param.ContainsKey(paramName))
       {
-        userId = param[paramName];
+        userId = param[paramName].ToString();
       }
       paramName = "name";
       if (param.ContainsKey(paramName))
       {
-        userName = param[paramName];
+        userName = param[paramName].ToString();
       }
       paramName = "password";
       if (param.ContainsKey(paramName))
       {
-        password = param[paramName];
+        password = param[paramName].ToString();
       }
       paramName = "isDelete";
       if (param.ContainsKey(paramName))
       {
-        bool.TryParse(param[paramName], out isDelete);
+        bool.TryParse(param[paramName].ToString(), out isDelete);
       }
       paramName = "version";
       if (param.ContainsKey(paramName))
       {
-        int.TryParse(param[paramName], out version);
+        int.TryParse(param[paramName].ToString(), out version);
       }
 
       return new UserModel(userId, userName, password, isDelete,
