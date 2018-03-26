@@ -676,50 +676,14 @@ namespace WebApi.Controllers
     /// <param name="param">入力情報</param>
     private UserModel createModel(Dictionary<string, object> param)
     {
-      var userId = string.Empty;
-      var userName = string.Empty;
-      var password = string.Empty;
-      var isDelete = false;
-      var version = 0;
-
       if (param.ContainsKey("requestData"))
       {
         var requestData = param["requestData"] as Newtonsoft.Json.Linq.JObject;
-        Newtonsoft.Json.Linq.JToken jsonToken = null;
-
-        var paramName = string.Empty;
-
-        // パラメータの設定
-        paramName = "id";
-        if (requestData.TryGetValue(paramName, out jsonToken))
-        {
-          userId = requestData[paramName].ToString();
-        }
-        paramName = "name";
-        if (requestData.TryGetValue(paramName, out jsonToken))
-        {
-          userName = requestData[paramName].ToString();
-        }
-        paramName = "password";
-        if (requestData.TryGetValue(paramName, out jsonToken))
-        {
-          password = requestData[paramName].ToString();
-        }
-        paramName = "isDelete";
-        if (requestData.TryGetValue(paramName, out jsonToken))
-        {
-          bool.TryParse(requestData[paramName].ToString(), out isDelete);
-        }
-        paramName = "version";
-        if (requestData.TryGetValue(paramName, out jsonToken))
-        {
-          int.TryParse(requestData[paramName].ToString(), out version);
-        }
+        var userParam = requestData.Children().ToDictionary(KeyValue => KeyValue.Path, KeyValue => requestData[KeyValue.Path].ToObject<object>());
+        return UserModel.Create(userParam);
       }
 
-      return new UserModel(userId, userName, password, isDelete,
-                           string.Empty, null, string.Empty, null, version);
-
+      return UserModel.Create(new Dictionary<string,object>());
     }
 
     /// <summary>
