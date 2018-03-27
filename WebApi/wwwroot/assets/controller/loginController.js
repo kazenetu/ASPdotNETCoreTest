@@ -1,71 +1,76 @@
-front.controller.LoginController = function LoginController($location, webApiService, userService) {
-    front.common.utils.extendController(this, front.common.controller.PageBase);
-    this.setTitle('ログイン');
+(function () {
+    'use strict';
 
-    var ctrl = this;
+    front.controller.LoginController = function LoginController($location, webApiService, userService) {
+        front.common.utils.extendController(this, front.common.controller.PageBase);
+        this.setTitle('ログイン');
 
-    ctrl.userId = "";
-    ctrl.password = "";
+        var ctrl = this;
 
-    // 入力情報のエラークラス
-    ctrl.errorUserId = "";
-    ctrl.errorPassword = "";
+        ctrl.userId = "";
+        ctrl.password = "";
 
-    ctrl.login = function () {
-        // 入力チェック
-        if (!validateInput()) {
-            return;
-        }
+        // 入力情報のエラークラス
+        ctrl.errorUserId = "";
+        ctrl.errorPassword = "";
 
-        webApiService.post('api/account/login', {
-            id: ctrl.userId,
-            password: ctrl.password
-        }, function (response) {
-            if (response.result !== "OK") {
-                ctrl.showError(response.errorMessage);
-            } else {
-                ctrl.hideError();
-                userService.setId(ctrl.userId);
-                userService.setName(response.responseData.name);
-                $location.path('/main');
+        ctrl.login = function () {
+            // 入力チェック
+            if (!validateInput()) {
+                return;
             }
-        });
-    }
 
-    /**
- * DB反映前の入力チェック
- */
-    function validateInput() {
-        // エラーなし状態に設定
-        ctrl.hideError();
-        ctrl.errorUserId = '';
-        ctrl.errorPassword = '';
-
-        if (ctrl.userId === '') {
-            ctrl.showError('E0013', ['ユーザーID']);
-            ctrl.errorUserId = 'has-error';
-            return false;
+            webApiService.post('api/account/login', {
+                id: ctrl.userId,
+                password: ctrl.password
+            }, function (response) {
+                if (response.result !== "OK") {
+                    ctrl.showError(response.errorMessage);
+                } else {
+                    ctrl.hideError();
+                    userService.setId(ctrl.userId);
+                    userService.setName(response.responseData.name);
+                    $location.path('/main');
+                }
+            });
         }
 
-        if (ctrl.password === '') {
-            ctrl.showError('E0013', ['パスワード']);
-            ctrl.errorPassword = 'has-error';
-            return false;
+        /**
+         * DB反映前の入力チェック
+         */
+        function validateInput() {
+            // エラーなし状態に設定
+            ctrl.hideError();
+            ctrl.errorUserId = '';
+            ctrl.errorPassword = '';
+
+            if (ctrl.userId === '') {
+                ctrl.showError('E0013', ['ユーザーID']);
+                ctrl.errorUserId = 'has-error';
+                return false;
+            }
+
+            if (ctrl.password === '') {
+                ctrl.showError('E0013', ['パスワード']);
+                ctrl.errorPassword = 'has-error';
+                return false;
+            }
+            return true;
         }
-        return true;
+
+        /**
+         * ページ初期化処理
+         */
+        ctrl.init = function () {
+            webApiService.post('api/account/logout', {
+                id: ctrl.userId,
+                password: ctrl.password
+            }, function (response) {
+            });
+        }
+
     }
 
-    /**
-     * ページ初期化処理
-     */
-    ctrl.init = function () {
-        webApiService.post('api/account/logout', {
-            id: ctrl.userId,
-            password: ctrl.password
-        }, function (response) {
-        });
-    }
-
-}
-
-angular.module('App').controller('loginController', front.controller.LoginController);
+    // コントローラー定義
+    angular.module('App').controller('loginController', front.controller.LoginController);
+}());
