@@ -1,13 +1,18 @@
-front.controller.MainController = function MainController($location, webApiService, userService, storageService) {
-    front.common.utils.extendController(this, front.common.controller.PageBase);
-    this.setTitle('メニュー');
+(function () {
+    'use strict';
 
-    var ctrl = this;
+    front.controller.MainController = function MainController($location, webApiService, userService, storageService) {
+        front.common.utils.extendController(this, front.common.controller.PageBase);
+        this.setTitle('メニュー');
 
-    ctrl.gotoPage = function (pageUrl) {
-        $location.path(pageUrl);
+        var ctrl = this;
+
+        ctrl.gotoPage = function (pageUrl) {
+            $location.path(pageUrl);
+        }
+
     }
 
-}
-
-angular.module('App').controller('mainController', front.controller.MainController);
+    // コントローラー定義
+    angular.module('App').controller('mainController', ['$location', 'webApiService', 'userService', front.controller.MainController]);
+}());
