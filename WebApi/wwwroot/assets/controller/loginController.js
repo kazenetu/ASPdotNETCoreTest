@@ -72,5 +72,5 @@
     }
 
     // コントローラー定義
-    angular.module('App').controller('loginController',['$location', 'webApiService', 'userService', front.controller.LoginController]);
+    angular.module('App').controller('loginController', ['$location', 'webApiService', 'userService', front.controller.LoginController]);
 }());
