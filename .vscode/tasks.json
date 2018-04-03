@@ -5,7 +5,7 @@
   "tasks": [
     {
       "label": "buildWeb",
-      "command": "dotnet build ${workspaceFolder}/WebApi/WebApi.csproj",
+      "command": "dotnet build ${workspaceFolder}/WebApi/WebApi.csproj -o ${workspaceFolder}/WebApi/bin/Debug/netcoreapp2.0",
       "type": "shell",
       "group": "build",
       "presentation": {
