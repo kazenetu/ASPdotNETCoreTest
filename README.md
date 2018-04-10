@@ -1,6 +1,13 @@
 # ASPdotNETCoreTest
 [https://github.com/kazenetu/dotNETCoreTest](https://github.com/kazenetu/dotNETCoreTest) をベースとしたASP.NET Coreのテスト
 
+# 発行方法
+下記コマンドを発行する
+* CentOS7  
+`dotnet publish --configuration Release  -r centos.7-x64 -o publish`
+* Windows  
+`dotnet publish --configuration Release  -r win-x86 -o publish`
+
 # TODO
 - [X] パスワードのハッシュ化
 - [X] CSV出力対象カラムの設定機能
