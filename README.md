@@ -2,11 +2,11 @@
 [https://github.com/kazenetu/dotNETCoreTest](https://github.com/kazenetu/dotNETCoreTest) をベースとしたASP.NET Coreのテスト
 
 # 発行方法
-下記コマンドを発行する
+下記コマンドを発行する  
 * CentOS7  
 `dotnet publish --configuration Release  -r centos.7-x64 -o publish`
 * Windows  
-`dotnet publish --configuration Release  -r win-x86 -o publish`
+`dotnet publish --configuration Release  -r win-x64 -o publish`
 
 # TODO
 - [X] パスワードのハッシュ化
