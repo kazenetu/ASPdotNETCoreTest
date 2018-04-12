@@ -6,7 +6,8 @@
 * CentOS7  
 `dotnet publish --configuration Release  -r centos.7-x64 -o publish`
 * Windows  
-`dotnet publish --configuration Release  -r win-x64 -o publish`
+`dotnet publish --configuration Release  -r win-x64 -o publish`  
+`dotnet publish --configuration Release  -r win-x86 -o publish`
 
 # TODO
 - [X] パスワードのハッシュ化
