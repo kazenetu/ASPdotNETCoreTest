@@ -39,7 +39,7 @@ namespace WebApi.Controllers
     /// </summary>
     /// <param name="service">サービスインスタンス</param>
     /// <param name="logger">ログインスタンス</param>
-    public AccountController(IUserService service, ILogger<UsersController> logger)
+    public AccountController(IUserService service, ILogger<AccountController> logger)
     {
       this.service = service;
       this.logger = logger;
