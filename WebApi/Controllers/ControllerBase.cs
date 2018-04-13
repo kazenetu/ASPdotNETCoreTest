@@ -72,7 +72,7 @@ namespace WebApi.Controllers
     /// <summary>
     /// ログインチェック
     /// </summary>
-    /// <param name="userID">入力されたユーザーID</param>
+    /// <param name="param">入力されたユーザーID</param>
     /// <returns>ログイン結果</returns>
     protected bool isLogin(Dictionary<string, object> param)
     {
