@@ -58,7 +58,7 @@ namespace WebApi.Controllers
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/login</remarks>
     [HttpPost("login")]
-    [AutoValidateAntiforgeryToken]
+    //[AutoValidateAntiforgeryToken]
     public IActionResult Login([FromBody]Dictionary<string, object> param)
     {
       var paramNameUserId = "id";

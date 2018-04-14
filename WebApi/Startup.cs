@@ -14,6 +14,7 @@ using Domain.Repository.User;
 using Domain.Service.User;
 using Commons.ConfigModel;
 using WebApi.Controllers;
+using Swashbuckle.AspNetCore;
 
 namespace WebApi
 {
@@ -29,7 +30,15 @@ namespace WebApi
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddMvc();
+      if (Configuration["ASPNETCORE_ENVIRONMENT"] == "Development")
+      {
+        services.AddMvc();
+      }
+      else
+      {
+        services.AddMvc(options =>
+            options.Filters.Add(new Microsoft.AspNetCore.Mvc.AutoValidateAntiforgeryTokenAttribute()));
+      }
 
       // トークン設定
       services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
@@ -48,11 +57,17 @@ namespace WebApi
       // session
       services.AddSession(options =>
       {
-          // Set a short timeout for easy testing.
-          // options.IdleTimeout = TimeSpan.FromSeconds(10);
-          // options.Cookie.HttpOnly = true;
-          
-          options.Cookie.Name = ControllerBase.SessionCookieName;
+        // Set a short timeout for easy testing.
+        // options.IdleTimeout = TimeSpan.FromSeconds(10);
+        // options.Cookie.HttpOnly = true;
+
+        options.Cookie.Name = ControllerBase.SessionCookieName;
+      });
+
+      // SwaggerGenサービスの登録
+      services.AddSwaggerGen(c =>
+      {
+        c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "My API", Version = "v1" });
       });
     }
 
@@ -68,7 +83,6 @@ namespace WebApi
       app.UseSession();
 
       app.UseMvc();
-
       // ルートアクセス時にトークン発行
       app.Use(next => context =>
       {
@@ -90,6 +104,14 @@ namespace WebApi
 
       // 静的ファイルを使用する
       app.UseStaticFiles();
+
+      // Swaggerミドルウェアの登録
+      app.UseSwagger();
+      // SwaggerUIミドルウェアの登録
+      app.UseSwaggerUI(c =>
+      {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+      });
     }
   }
 }
