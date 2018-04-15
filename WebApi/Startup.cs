@@ -30,15 +30,13 @@ namespace WebApi
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      if (Configuration["ASPNETCORE_ENVIRONMENT"] == "Development")
-      {
-        services.AddMvc();
-      }
-      else
-      {
+#if DEBUG
+      services.AddMvc();
+#else
+        // トークンキーを発行
         services.AddMvc(options =>
             options.Filters.Add(new Microsoft.AspNetCore.Mvc.AutoValidateAntiforgeryTokenAttribute()));
-      }
+#endif
 
       // トークン設定
       services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
