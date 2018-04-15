@@ -69,7 +69,6 @@ namespace WebApi.Controllers
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/totalpage</remarks>
     [HttpPost("totalpage")]
-    [AutoValidateAntiforgeryToken]
     public IActionResult Totalpage([FromBody]Dictionary<string, object> param)
     {
       // ログインチェック
@@ -139,7 +138,6 @@ namespace WebApi.Controllers
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/page</remarks>
     [HttpPost("page")]
-    [AutoValidateAntiforgeryToken]
     public IActionResult Page([FromBody]Dictionary<string, object> param)
     {
       // ログインチェック
@@ -185,7 +183,6 @@ namespace WebApi.Controllers
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/find</remarks>
     [HttpPost("find")]
-    [AutoValidateAntiforgeryToken]
     public IActionResult Find([FromBody]Dictionary<string, object> param)
     {
       // ログインチェック
@@ -252,7 +249,6 @@ namespace WebApi.Controllers
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/insert</remarks>
     [HttpPost("insert")]
-    [AutoValidateAntiforgeryToken]
     public IActionResult Insert([FromBody]Dictionary<string, object> param)
     {
       // ログインチェック
@@ -313,7 +309,6 @@ namespace WebApi.Controllers
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/update</remarks>
     [HttpPost("update")]
-    [AutoValidateAntiforgeryToken]
     public IActionResult Update([FromBody]Dictionary<string, object> param)
     {
       // ログインチェック
@@ -394,6 +389,7 @@ namespace WebApi.Controllers
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/download</remarks>
     [HttpPost("download")]
+    [IgnoreAntiforgeryToken]
     public ActionResult Download(string json)
     {
       var csvData = new System.Text.StringBuilder();
@@ -449,6 +445,7 @@ namespace WebApi.Controllers
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/download</remarks>
     [HttpPost("downloadHeaderCSV")]
+    [IgnoreAntiforgeryToken]
     public ActionResult DownloadHeaderCSV(string json)
     {
       var csvData = new System.Text.StringBuilder();
@@ -504,7 +501,6 @@ namespace WebApi.Controllers
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/download</remarks>
     [HttpPost("downloadJS")]
-    [AutoValidateAntiforgeryToken]
     public IActionResult DownloadJS([FromBody]Dictionary<string, object> param)
     {
       // ログインチェック
@@ -569,7 +565,6 @@ namespace WebApi.Controllers
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/downloadHeaderCSVJS</remarks>
     [HttpPost("downloadHeaderCSVJS")]
-    [AutoValidateAntiforgeryToken]
     public IActionResult DownloadHeaderCSVJS([FromBody]Dictionary<string, object> param)
     {
       // ログインチェック

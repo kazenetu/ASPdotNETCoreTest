@@ -58,7 +58,6 @@ namespace WebApi.Controllers
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/login</remarks>
     [HttpPost("login")]
-    //[AutoValidateAntiforgeryToken]
     public IActionResult Login([FromBody]Dictionary<string, object> param)
     {
       var paramNameUserId = "id";
@@ -131,7 +130,6 @@ namespace WebApi.Controllers
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/logout</remarks>
     [HttpPost("logout")]
-    [AutoValidateAntiforgeryToken]
     public IActionResult Logout([FromBody]Dictionary<string, object> param)
     {
 
@@ -154,7 +152,6 @@ namespace WebApi.Controllers
     /// <returns>結果(json)</returns>
     /// <remarks>POST api/user/passwordChange</remarks>
     [HttpPost("passwordChange")]
-    [AutoValidateAntiforgeryToken]
     public IActionResult PasswordChange([FromBody]Dictionary<string, object> param)
     {
       var paramNameUserId = "id";
