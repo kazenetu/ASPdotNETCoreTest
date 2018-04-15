@@ -39,7 +39,7 @@ namespace WebApi.Controllers
       }
     }
     #endregion
- 
+
     #region メソッド
 
     /// <summary>
@@ -63,7 +63,8 @@ namespace WebApi.Controllers
     protected string getLoginUserId(Dictionary<string, object> param)
     {
       var paramNameUserId = "loginUserId";
-      if(!param.ContainsKey(paramNameUserId)){
+      if (!param.ContainsKey(paramNameUserId))
+      {
         return null;
       }
       return param[paramNameUserId].ToString();
