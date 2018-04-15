@@ -64,11 +64,14 @@ namespace WebApi
         options.Cookie.Name = ControllerBase.SessionCookieName;
       });
 
+#if DEBUG
       // SwaggerGenサービスの登録
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "My API", Version = "v1" });
       });
+#endif
+
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -105,6 +108,7 @@ namespace WebApi
       // 静的ファイルを使用する
       app.UseStaticFiles();
 
+#if DEBUG
       // Swaggerミドルウェアの登録
       app.UseSwagger();
       // SwaggerUIミドルウェアの登録
@@ -112,6 +116,8 @@ namespace WebApi
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
       });
+#endif
+
     }
   }
 }
