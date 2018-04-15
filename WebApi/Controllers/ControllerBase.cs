@@ -84,7 +84,11 @@ namespace WebApi.Controllers
         return true;
       }
 
+#if DEBUG
+      return true;
+#else
       return false;
+#endif
     }
 
     /// <summary>
