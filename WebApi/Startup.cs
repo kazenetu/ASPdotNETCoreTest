@@ -15,6 +15,8 @@ using Domain.Service.User;
 using Commons.ConfigModel;
 using WebApi.Controllers;
 using Swashbuckle.AspNetCore;
+using System.Reflection;
+using System.IO;
 
 namespace WebApi
 {
@@ -67,6 +69,11 @@ namespace WebApi
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "My API", Version = "v1" });
+
+        // XMLコメントを反映
+        var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory,xmlFile);
+        c.IncludeXmlComments(xmlPath);
       });
 #endif
 
