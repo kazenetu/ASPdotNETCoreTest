@@ -17,6 +17,7 @@ using WebApi.Controllers;
 using Swashbuckle.AspNetCore;
 using System.Reflection;
 using System.IO;
+using System.Text;
 
 namespace WebApi
 {
@@ -120,6 +121,17 @@ namespace WebApi
       app.UseSwaggerUI(c =>
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+
+        c.IndexStream = () =>
+        {
+          using (var readStream = new StreamReader($"{AppContext.BaseDirectory}swaggerIndex.html"))
+          {
+            var html = readStream.ReadToEnd();
+
+            return new MemoryStream(Encoding.UTF8.GetBytes(html));
+          }
+        };
+
       });
 #endif
 
