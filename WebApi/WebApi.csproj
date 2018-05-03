@@ -28,6 +28,8 @@
 
     <None Include="Resource/Test.db" CopyToOutputDirectory="PreserveNewest" />
     <Content Update="nlog.config" CopyToOutputDirectory="PreserveNewest" />
+
+    <None Update="swaggerIndex.html" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
